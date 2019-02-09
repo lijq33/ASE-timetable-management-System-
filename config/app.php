@@ -160,6 +160,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
+        /*
+        * Other Service Providers...
+        */
+        Nexmo\Laravel\NexmoServiceProvider::class,
     ],
 
     /*

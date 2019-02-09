@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::post('User/signup', ['as' => 'user.signup', 'uses' => 'RegisterController@store']);
+
+Route::post('appointment/create', 'AppointmentController@store');
+
+// });
+
+Route::get('{any}', function () {
+    return view('index');
+})->where('any', '.*');

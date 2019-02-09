@@ -13,6 +13,39 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([ 'prefix' => 'api:auth'], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
+
+Route::group(['middleware' => 'auth'], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::get('feedback/show', 'FeedbackController@all');
+    // Route::get('customers', 'CustomersController@all');
+    // Route::get('customers/{id}', 'CustomersController@get');
+    Route::post('feedback/create', 'FeedbackController@store');
+
+});
+Route::group(['prefix' => 'auth'], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
+
+Route::group(['prefix' => 'api'], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::get('feedback/show', 'FeedbackController@all');
+    // Route::get('customers', 'CustomersController@all');
+    // Route::get('customers/{id}', 'CustomersController@get');
+    Route::post('feedback/create', 'FeedbackController@store');
+
 });
