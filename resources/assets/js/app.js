@@ -28,11 +28,11 @@ Vue.use(VueGoogleMaps, {
   },
 });
 
-Vue.component('GRecaptcha', require('./components/GRecaptcha'));
-Vue.component('DatePicker', require('./components/DatePicker'));
-Vue.component('TimePicker', require('./components/TimePicker'));
-Vue.component('BaseMap', require('./components/BaseMap'));
-Vue.component('GoogleMap', require('./components/GoogleMap'));
+// Vue.component('GRecaptcha', require('./components/GRecaptcha'));
+// Vue.component('DatePicker', require('./components/DatePicker'));
+// Vue.component('TimePicker', require('./components/TimePicker'));
+// Vue.component('BaseMap', require('./components/BaseMap'));
+// Vue.component('GoogleMap', require('./components/GoogleMap'));
 
 
 const store = new Vuex.Store(StoreData);
