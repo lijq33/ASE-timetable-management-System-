@@ -13,39 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group([ 'prefix' => 'api:auth'], function ($router) {
-
+Route::group([ 'prefix' => 'auth'], function ($router) {
+    Route::post('register', 'RegisterController@store');
     Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('logout', 'AuthController@logout');
 
 });
 
-Route::group(['middleware' => 'auth'], function ($router) {
+Route::group(['middleware' => 'auth.user'], function ($router) {
+    Route::get('appointment/get', 'AppointmentController@show');
+    Route::post('appointment/new', 'AppointmentController@store');
+    Route::post('appointment/update', 'AppointmentController@update');
 
-    Route::post('login', 'AuthController@login');
-    Route::get('feedback/show', 'FeedbackController@all');
-    // Route::get('customers', 'CustomersController@all');
-    // Route::get('customers/{id}', 'CustomersController@get');
+    Route::post('appointment/delete', 'AppointmentController@destroy');
     Route::post('feedback/create', 'FeedbackController@store');
 
 });
-Route::group(['prefix' => 'auth'], function ($router) {
 
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
-});
-
-Route::group(['prefix' => 'api'], function ($router) {
-
-    Route::post('login', 'AuthController@login');
+Route::group(['middleware' => 'auth.admin'], function ($router) {
     Route::get('feedback/show', 'FeedbackController@all');
-    // Route::get('customers', 'CustomersController@all');
-    // Route::get('customers/{id}', 'CustomersController@get');
-    Route::post('feedback/create', 'FeedbackController@store');
-
 });

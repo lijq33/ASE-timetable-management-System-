@@ -11,9 +11,6 @@
 |
 */
 
-
-Route::post('User/signup', ['as' => 'user.signup', 'uses' => 'RegisterController@store']);
-
 Route::post('appointment/create', 'AppointmentController@store');
 
 // });

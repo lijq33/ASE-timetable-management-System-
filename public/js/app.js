@@ -60560,150 +60560,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_UserRegister__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_UserRegister___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_UserRegister__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyRegister__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyRegister___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyRegister__);
 //
 //
 //
@@ -60760,44 +60620,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a
+        'user-register': __WEBPACK_IMPORTED_MODULE_0__components_UserRegister___default.a,
+        'company-register': __WEBPACK_IMPORTED_MODULE_1__components_CompanyRegister___default.a
     },
 
+    mounted: function mounted() {
+        var _this = this;
+
+        this.groups.forEach(function (group) {
+            _this.filterGroup(group);
+        });
+    },
     data: function data() {
         return {
-            name: '',
-            nric: '',
-            password: '',
-            password_confirmation: '',
-            email: '',
-            telephone_number: '',
-            error: [],
-            isLoading: false,
-            wrongPassword: ''
+            isIndividual: false,
+            isCompany: false
         };
     },
 
 
     methods: {
-        register: function register() {
-            var _this = this;
-
-            this.isLoading = true;
-            axios.post("/User/signup", {
-                name: this.name,
-                email: this.email,
-                password: this.password,
-                password_confirmation: this.password_confirmation,
-                nric: this.nric,
-                telephone_number: this.telephone_number
-            }).then(function (response) {
-                _this.$router.replace("/login");
-            }).catch(function (error) {
-                _this.error = error.response.data.errors;
-                _this.isLoading = false;
-            });
+        Individual: function Individual() {
+            this.isIndividual = true;
+            this.isCompany = false;
+        },
+        Company: function Company() {
+            this.isIndividual = false;
+            this.isCompany = true;
         }
     }
+
 });
 
 /***/ }),
@@ -60811,541 +60663,108 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "tw-flex tw-pb-4 tw-mb-4" }, [
+          _c("div", { staticClass: "tw-w-full" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "tw-w-full tw-pb-2 tw-text-lg tw-font-semibold tw-font-montserrat tw-text-grey-darkest"
+              },
+              [
+                _vm._v(
+                  "\n                        I am registering as an \n                    "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "tw-w-full" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    " hover:tw-bg-blue-dark tw-text-white tw-font-bold tw-py-3 tw-px-6",
+                  class: {
+                    "tw-bg-blue-dark": _vm.isIndividual,
+                    "tw-bg-blue": !_vm.isIndividual
+                  },
+                  on: { click: _vm.Individual }
+                },
+                [
+                  _vm._v(
+                    "\n                            Individual\n                        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "hover:tw-bg-blue-dark tw-text-white tw-font-bold tw-py-3 tw-px-6",
+                  class: {
+                    "tw-bg-blue-dark": _vm.isCompany,
+                    "tw-bg-blue": !_vm.isCompany
+                  },
+                  on: { click: _vm.Company }
+                },
+                [
+                  _vm._v(
+                    "\n                            Company\n                        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-            _vm._v("Registration Form")
+            _vm._v(
+              "\n                    Create Your Account\n                "
+            )
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-body" },
-            [
-              _c("div", { staticClass: "form-group row" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "tw-flex tw-justify-center " }, [
+              _c("div", { staticClass: "tw-w-full" }, [
                 _c(
-                  "label",
+                  "div",
                   {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "nric" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            NRIC \n                            "
-                    ),
-                    _c(
-                      "popper",
+                    directives: [
                       {
-                        attrs: {
-                          trigger: "hover",
-                          options: { placement: "bottom" }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "popper tw-font-hairline tw-text-grey-dark"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    This is your login ID\n                                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          { attrs: { slot: "reference" }, slot: "reference" },
-                          [
-                            _c("i", {
-                              staticClass:
-                                "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ],
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.isIndividual,
+                        expression: "isIndividual"
+                      }
+                    ]
+                  },
+                  [_c("user-register")],
                   1
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("input", {
+                _c(
+                  "div",
+                  {
                     directives: [
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.nric,
-                        expression: "nric"
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.isCompany,
+                        expression: "isCompany"
                       }
-                    ],
-                    staticClass:
-                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    class: {
-                      "tw-border-red-light": _vm.error["nric"] != undefined
-                    },
-                    attrs: {
-                      type: "text",
-                      id: "nric",
-                      placeholder: "S4123451E",
-                      required: "",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.nric },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.nric = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.error["nric"] != undefined
-                    ? _c("div", { staticClass: "tw-text-red" }, [
-                        _c("span", [
-                          _vm._v(
-                            " " + _vm._s(this.error["nric"].toString()) + " "
-                          )
-                        ])
-                      ])
-                    : _vm._e()
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "name" }
+                    ]
                   },
-                  [
-                    _vm._v(
-                      "\n                            Full Name\n                            "
-                    ),
-                    _c(
-                      "popper",
-                      {
-                        attrs: {
-                          trigger: "hover",
-                          options: { placement: "bottom" }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "popper tw-font-hairline tw-text-grey-dark"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Full Name as per NRIC\n                                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          { attrs: { slot: "reference" }, slot: "reference" },
-                          [
-                            _c("i", {
-                              staticClass:
-                                "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ],
+                  [_c("company-register")],
                   1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.name,
-                        expression: "name"
-                      }
-                    ],
-                    staticClass:
-                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    class: {
-                      "tw-border-red-light": _vm.error["name"] != undefined
-                    },
-                    attrs: {
-                      type: "text",
-                      id: "name",
-                      placeholder: "John Doe",
-                      required: "",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.name = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.error["name"] != undefined
-                    ? _c("div", { staticClass: "tw-text-red" }, [
-                        _c("span", [
-                          _vm._v(
-                            " " + _vm._s(this.error["name"].toString()) + " "
-                          )
-                        ])
-                      ])
-                    : _vm._e()
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "password" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            Password\n                            "
-                    ),
-                    _c(
-                      "popper",
-                      {
-                        attrs: {
-                          trigger: "hover",
-                          options: { placement: "bottom" }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "popper tw-font-hairline tw-text-grey-dark"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Your password should contain a minimum of 6 characters\n                                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          { attrs: { slot: "reference" }, slot: "reference" },
-                          [
-                            _c("i", {
-                              staticClass:
-                                "fas fa-exclamation-circle tw-text-grey-dark tw-cursor-pointer"
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.password,
-                        expression: "password"
-                      }
-                    ],
-                    staticClass:
-                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    class: {
-                      "tw-border-red-light": _vm.error["password"] != undefined
-                    },
-                    attrs: {
-                      type: "password",
-                      id: "password",
-                      oncopy: "return false",
-                      oncut: "return false",
-                      onpaste: "return false",
-                      required: "",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.password },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.password = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.error["password"] != undefined
-                    ? _c("div", { staticClass: "tw-text-red" }, [
-                        _c("span", [
-                          _vm._v(
-                            " " +
-                              _vm._s(this.error["password"].toString()) +
-                              " "
-                          )
-                        ])
-                      ])
-                    : _vm._e()
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "password_confirmation" }
-                  },
-                  [_vm._v("Confirm Password")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.password_confirmation,
-                        expression: "password_confirmation"
-                      }
-                    ],
-                    staticClass:
-                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    attrs: {
-                      type: "password",
-                      id: "password_confirmation",
-                      oncopy: "return false",
-                      oncut: "return false",
-                      onpaste: "return false",
-                      required: "",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.password_confirmation },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.password_confirmation = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "email" }
-                  },
-                  [_vm._v("Email")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.email,
-                        expression: "email"
-                      }
-                    ],
-                    staticClass:
-                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    class: {
-                      "tw-border-red-light": _vm.error["email"] != undefined
-                    },
-                    attrs: {
-                      type: "text",
-                      id: "email",
-                      placeholder: "JohnDoe@gmail.com",
-                      required: "",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.email },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.email = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.error["email"] != undefined
-                    ? _c("div", { staticClass: "tw-text-red" }, [
-                        _c("span", [
-                          _vm._v(
-                            " " + _vm._s(this.error["email"].toString()) + " "
-                          )
-                        ])
-                      ])
-                    : _vm._e()
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "telephone_number" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            Telephone Number\n                             "
-                    ),
-                    _c(
-                      "popper",
-                      {
-                        attrs: {
-                          trigger: "hover",
-                          options: { placement: "bottom" }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "popper tw-font-hairline tw-text-grey-dark"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Your appointment details will be sent to you via SMS.\n                                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          { attrs: { slot: "reference" }, slot: "reference" },
-                          [
-                            _c("i", {
-                              staticClass:
-                                "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.telephone_number,
-                        expression: "telephone_number"
-                      }
-                    ],
-                    staticClass:
-                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    class: {
-                      "tw-border-red-light":
-                        _vm.error["telephone_number"] != undefined
-                    },
-                    attrs: {
-                      type: "text",
-                      id: "telephone_number",
-                      placeholder: "9512 2314",
-                      required: "",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.telephone_number },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.telephone_number = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.error["telephone_number"] != undefined
-                    ? _c("div", { staticClass: "tw-text-red" }, [
-                        _c("span", [
-                          _vm._v(
-                            " " +
-                              _vm._s(
-                                this.error["telephone_number"].toString()
-                              ) +
-                              " "
-                          )
-                        ])
-                      ])
-                    : _vm._e()
-                ])
-              ]),
-              _vm._v(" "),
-              _c("g-recaptcha"),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row tw-my-6" }, [
-                _c("div", { staticClass: "col-md-6 offset-md-4" }, [
-                  !_vm.isLoading
-                    ? _c("div", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary",
-                            attrs: { type: "submit" },
-                            on: {
-                              click: function($event) {
-                                return _vm.register()
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Register\n                                "
-                            )
-                          ]
-                        )
-                      ])
-                    : _c("div", [
-                        _c("img", {
-                          attrs: {
-                            src: "/assets/img/loader.gif",
-                            alt: "Loading..."
-                          }
-                        })
-                      ])
-                ])
+                )
               ])
-            ],
-            1
-          )
+            ])
+          ])
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _c("div", [_vm._v("\n        test\n    ")])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -75025,6 +74444,2044 @@ exports.push([module.i, ".fade-enter-active, .fade-leave-active {\n    transitio
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 289 */,
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(291)
+/* template */
+var __vue_template__ = __webpack_require__(292)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/UserRegister.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-72081e45", Component.options)
+  } else {
+    hotAPI.reload("data-v-72081e45", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 291 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a
+    },
+
+    data: function data() {
+        return {
+            name: '',
+            nric: '',
+            password: '',
+            password_confirmation: '',
+            email: '',
+            telephone_number: '',
+            error: [],
+            isLoading: false,
+            registration_type: 'individual'
+        };
+    },
+
+
+    methods: {
+        register: function register() {
+            var _this = this;
+
+            this.isLoading = true;
+            this.error = [];
+
+            axios.post("/api/auth/register", {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.password_confirmation,
+                nric: this.nric,
+                telephone_number: this.telephone_number,
+                registration_type: this.registration_type
+            }).then(function (response) {
+                _this.$router.replace("/login");
+            }).catch(function (error) {
+                _this.error = error.response.data.errors;
+                _this.isLoading = false;
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "nric" }
+        },
+        [
+          _vm._v("\n            NRIC \n            "),
+          _c(
+            "popper",
+            { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+            [
+              _c(
+                "div",
+                { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                [
+                  _vm._v(
+                    "\n                    This is your login ID\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { attrs: { slot: "reference" }, slot: "reference" },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                  })
+                ]
+              )
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.nric,
+              expression: "nric"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          class: { "tw-border-red-light": _vm.error["nric"] != undefined },
+          attrs: {
+            type: "text",
+            id: "nric",
+            placeholder: "S4123451E",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.nric },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.nric = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.error["nric"] != undefined
+          ? _c("div", { staticClass: "tw-text-red" }, [
+              _c("span", [
+                _vm._v(" " + _vm._s(this.error["nric"].toString()) + " ")
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "name" }
+        },
+        [
+          _vm._v("\n            Full Name\n            "),
+          _c(
+            "popper",
+            { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+            [
+              _c(
+                "div",
+                { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                [
+                  _vm._v(
+                    "\n                    Full Name as per NRIC\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { attrs: { slot: "reference" }, slot: "reference" },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                  })
+                ]
+              )
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          class: { "tw-border-red-light": _vm.error["name"] != undefined },
+          attrs: {
+            type: "text",
+            id: "name",
+            placeholder: "John Doe",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.error["name"] != undefined
+          ? _c("div", { staticClass: "tw-text-red" }, [
+              _c("span", [
+                _vm._v(" " + _vm._s(this.error["name"].toString()) + " ")
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "password" }
+        },
+        [
+          _vm._v("\n            Password\n            "),
+          _c(
+            "popper",
+            { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+            [
+              _c(
+                "div",
+                { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                [
+                  _vm._v(
+                    "\n                    Your password should contain a minimum of 6 characters\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { attrs: { slot: "reference" }, slot: "reference" },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fas fa-exclamation-circle tw-text-grey-dark tw-cursor-pointer"
+                  })
+                ]
+              )
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          class: { "tw-border-red-light": _vm.error["password"] != undefined },
+          attrs: {
+            type: "password",
+            id: "password",
+            oncopy: "return false",
+            oncut: "return false",
+            onpaste: "return false",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.error["password"] != undefined
+          ? _c("div", { staticClass: "tw-text-red" }, [
+              _c("span", [
+                _vm._v(" " + _vm._s(this.error["password"].toString()) + " ")
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "password_confirmation" }
+        },
+        [_vm._v("Confirm Password")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password_confirmation,
+              expression: "password_confirmation"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          attrs: {
+            type: "password",
+            id: "password_confirmation",
+            oncopy: "return false",
+            oncut: "return false",
+            onpaste: "return false",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.password_confirmation },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password_confirmation = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "email" }
+        },
+        [_vm._v("Email")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          class: { "tw-border-red-light": _vm.error["email"] != undefined },
+          attrs: {
+            type: "text",
+            id: "email",
+            placeholder: "JohnDoe@gmail.com",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.error["email"] != undefined
+          ? _c("div", { staticClass: "tw-text-red" }, [
+              _c("span", [
+                _vm._v(" " + _vm._s(this.error["email"].toString()) + " ")
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "telephone_number" }
+        },
+        [
+          _vm._v("\n            Telephone Number\n                "),
+          _c(
+            "popper",
+            { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+            [
+              _c(
+                "div",
+                { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                [
+                  _vm._v(
+                    "\n                    Your appointment details will be sent to you via SMS.\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { attrs: { slot: "reference" }, slot: "reference" },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                  })
+                ]
+              )
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.telephone_number,
+              expression: "telephone_number"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          class: {
+            "tw-border-red-light": _vm.error["telephone_number"] != undefined
+          },
+          attrs: {
+            type: "text",
+            id: "telephone_number",
+            placeholder: "9512 2314",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.telephone_number },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.telephone_number = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.error["telephone_number"] != undefined
+          ? _c("div", { staticClass: "tw-text-red" }, [
+              _c("span", [
+                _vm._v(
+                  " " + _vm._s(this.error["telephone_number"].toString()) + " "
+                )
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row tw-my-6" }, [
+      _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+        !_vm.isLoading
+          ? _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "submit" },
+                  on: {
+                    click: function($event) {
+                      return _vm.register()
+                    }
+                  }
+                },
+                [_vm._v("\n                    Register\n                ")]
+              )
+            ])
+          : _c("div", [
+              _c("img", {
+                attrs: { src: "/assets/img/loader.gif", alt: "Loading..." }
+              })
+            ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-72081e45", module.exports)
+  }
+}
+
+/***/ }),
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(304)
+/* template */
+var __vue_template__ = __webpack_require__(305)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/CompanyRegister.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-07f1ed59", Component.options)
+  } else {
+    hotAPI.reload("data-v-07f1ed59", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 304 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a
+    },
+
+    data: function data() {
+        return {
+            registration_type: 'company',
+            company_name: '',
+            company_type: '',
+            industry_type: '',
+
+            website: '',
+            tagline: '',
+            selectedFile: null,
+
+            password: '',
+            password_confirmation: '',
+            email: '',
+            telephone_number: '',
+
+            image: '',
+
+            error: [],
+
+            isLoading: false,
+
+            company_types: ["Public company", "Self-employed", "Government agency", "Nonprofit", "Sole proprietorship", "Privately held", "Partnership"],
+            industry_types: ["Accounting", "Airlines/Aviation", "Alternative Dispute Resolution", "Alternative Medicine", "Animation", "Apparel & Fashion", "Architecture & Planning", "Arts & Crafts", "Automotive", "Aviation & Aerospace", "Banking", "Biotechnology", "Broadcast Media", "Building Materials", "Business Supplies & Equipment", "Capital Markets", "Chemicals", "Civic & Social Organization", "Civil Engineering", "Commercial Real Estate", "Computer & Network Security", "Computer Games", "Computer Hardware", "Computer Networking", "Computer Software", "Construction", "Consumer Electronics", "Consumer Goods", "Consumer Services", "Cosmetics", "Dairy", "Defense & Space", "Design", "E-learning", "Education Management", "Electrical & Electronic Manufacturing", "Entertainment", "Environmental Services", "Events Services", "Executive Office", "Facilities Services", "Farming", "Financial Services", "Fine Art", "Fishery", "Food & Beverages", "Food Production", "Fundraising", "Furniture", "Gambling & Casinos", "Glass, Ceramics & Concrete", "Government Administration", "Government Relations", "Graphic Design", "Health, Wellness & Fitness", "Higher Education", "Hospital & Health Care", "Hospitality", "Human Resources", "Import & Export", "Individual & Family Services", "Industrial Automation", "Information Services", "Information Technology & Services", "Insurance", "International Affairs", "International Trade & Development", "Internet", "Investment Banking", "Investment Management", "Judiciary", "Law Enforcement", "Law Practice", "Legal Services", "Legislative Office", "Leisure, Travel & Tourism", "Libraries", "Logistics & Supply Chain", "Luxury Goods & Jewelry", "Machinery", "Management Consulting", "Maritime", "Market Research", "Marketing & Advertising", "Mechanical Or Industrial Engineering", "Media Production", "Medical Device", "Medical Practice", "Mental Health Care", "Military", "Mining & Metals", "Motion Pictures & Film", "Museums & Institutions", "Music", "Nanotechnology", "Newspapers", "Non-profit Organization Management", "Oil & Energy", "Online Media", "Outsourcing/Offshoring", "Package/Freight Delivery", "Packaging & Containers", "Paper & Forest Products", "Performing Arts", "Pharmaceuticals", "Philanthropy", "Photography", "Plastics", "Political Organization", "Primary/Secondary Education", "Printing", "Professional Training & Coaching", "Program Development", "Public Policy", "Public Relations & Communications", "Public Safety", "Publishing", "Railroad Manufacture", "Ranching", "Real Estate", "Recreational Facilities & Services", "Religious Institutions", "Renewables & Environment", "Research", "Restaurants", "Retail", "Security & Investigations", "Semiconductors", "Shipbuilding", "Sporting Goods", "Sports", "Staffing & Recruiting", "Supermarkets", "Telecommunications", "Textiles", "Think Tanks", "Tobacco", "Translation & Localization", "Transportation/Trucking/Railroad", "Utilities", "Venture Capital & Private Equity", "Veterinary", "Warehousing", "Wholesale", "Wine & Spirits", "Wireless", "Writing & Editing"]
+
+        };
+    },
+
+
+    methods: {
+        register: function register() {
+            var _this = this;
+
+            this.isLoading = true;
+
+            var fd = new FormData();
+
+            fd.append('registration_type', this.registration_type);
+            fd.append('company_name', this.company_name);
+            fd.append('company_type', this.company_type);
+            fd.append('industry_type', this.industry_type);
+
+            fd.append('website', this.website);
+            fd.append('tagline', this.tagline);
+            fd.append('logo', this.selectedFile);
+
+            fd.append('password', this.password);
+            fd.append('password_confirmation', this.password_confirmation);
+            fd.append('email', this.email);
+            fd.append('telephone_number', this.telephone_number);
+
+            var config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            };
+
+            this.error = [];
+
+            axios.post('/api/auth/register', fd, config).then(function (response) {
+                _this.$router.replace("/login");
+            }).catch(function (error) {
+                _this.error = error.response.data.errors;
+                _this.isLoading = false;
+            });
+        },
+        uploadImage: function uploadImage(e) {
+            document.querySelector('.upload-image-input').click();
+        },
+        removeImage: function removeImage() {
+            this.image = '';
+            this.selectedFile = null;
+        },
+        createImage: function createImage(file) {
+            var _this2 = this;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                _this2.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        onFileSelected: function onFileSelected(event) {
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.selectedFile = files[0];
+
+            this.createImage(this.selectedFile);
+        }
+    }
+});
+
+/***/ }),
+/* 305 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", {}, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.company_name,
+                expression: "company_name"
+              }
+            ],
+            staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+            class: {
+              "tw-border-red-light": _vm.error["company_name"] != undefined
+            },
+            attrs: {
+              type: "text",
+              id: "company_name",
+              required: "",
+              autofocus: ""
+            },
+            domProps: { value: _vm.company_name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.company_name = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.error["company_name"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(
+                    " " + _vm._s(this.error["company_name"].toString()) + " "
+                  )
+                ])
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _vm._m(2),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.industry_type,
+                  expression: "industry_type"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { required: "" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.industry_type = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                {
+                  attrs: { value: "", disabled: "", selected: "", hidden: "" }
+                },
+                [_vm._v("--Select your option--")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.industry_types, function(industry_type, index) {
+                return _c("option", { key: index }, [
+                  _vm._v(_vm._s(industry_type))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.error["industry_type"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(
+                    " " + _vm._s(this.error["industry_type"].toString()) + " "
+                  )
+                ])
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _vm._m(3),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.company_type,
+                  expression: "company_type"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { required: "" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.company_type = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                {
+                  attrs: { value: "", disabled: "", selected: "", hidden: "" }
+                },
+                [_vm._v("--Select your option--")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.company_types, function(company_type, index) {
+                return _c("option", { key: index }, [
+                  _vm._v(_vm._s(company_type))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _vm.error["company_type"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(
+                    " " + _vm._s(this.error["company_type"].toString()) + " "
+                  )
+                ])
+              ])
+            : _vm._e()
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _vm._m(4),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c(
+          "label",
+          {
+            staticClass: "col-md-4 col-form-label text-md-right",
+            attrs: { for: "website" }
+          },
+          [
+            _vm._v("\n                Website \n                "),
+            _c(
+              "popper",
+              { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+              [
+                _c(
+                  "div",
+                  { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                  [
+                    _vm._v(
+                      "\n                        This is a link to your external website.\n                    "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { attrs: { slot: "reference" }, slot: "reference" },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                    })
+                  ]
+                )
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.website,
+                expression: "website"
+              }
+            ],
+            staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+            class: { "tw-border-red-light": _vm.error["website"] != undefined },
+            attrs: { type: "text", id: "website", required: "", autofocus: "" },
+            domProps: { value: _vm.website },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.website = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.error["website"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(" " + _vm._s(this.error["website"].toString()) + " ")
+                ])
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c(
+          "label",
+          {
+            staticClass: "col-md-4 col-form-label text-md-right",
+            attrs: { for: "tagline" }
+          },
+          [
+            _vm._v("\n                Tagline\n                "),
+            _c(
+              "popper",
+              { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+              [
+                _c(
+                  "div",
+                  { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                  [
+                    _vm._v(
+                      "\n                        Use your tagline to briefly describe what your company does. \n                    "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { attrs: { slot: "reference" }, slot: "reference" },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                    })
+                  ]
+                )
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.tagline,
+                expression: "tagline"
+              }
+            ],
+            staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+            class: { "tw-border-red-light": _vm.error["tagline"] != undefined },
+            attrs: { type: "text", id: "tagline", required: "", autofocus: "" },
+            domProps: { value: _vm.tagline },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.tagline = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.error["tagline"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(" " + _vm._s(this.error["tagline"].toString()) + " ")
+                ])
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c(
+          "label",
+          {
+            staticClass: "col-md-4 col-form-label text-md-right",
+            attrs: { for: "logo" }
+          },
+          [_vm._v("\n                Logo\n            ")]
+        ),
+        _vm._v(" "),
+        _vm.image === ""
+          ? _c("div", { staticClass: "col-md-6" }, [
+              _c("input", {
+                staticClass: "upload-image-input tw-hidden",
+                attrs: { accept: "image/*", type: "file" },
+                on: { change: _vm.onFileSelected }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded",
+                  on: { click: _vm.uploadImage }
+                },
+                [
+                  _vm._v(
+                    "\n                    Select A Profile\n                "
+                  )
+                ]
+              )
+            ])
+          : _c("div", { staticClass: "col-md-6" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden"
+                },
+                [
+                  _c("img", {
+                    staticClass:
+                      "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                    attrs: { src: _vm.image }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded",
+                  on: { click: _vm.removeImage }
+                },
+                [
+                  _vm._v(
+                    "\n                    Choose Another Profile\n                "
+                  )
+                ]
+              )
+            ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _vm._m(5),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c(
+          "label",
+          {
+            staticClass: "col-md-4 col-form-label text-md-right",
+            attrs: { for: "password" }
+          },
+          [
+            _vm._v("\n                Password"),
+            _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")]),
+            _vm._v(" "),
+            _c(
+              "popper",
+              { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+              [
+                _c(
+                  "div",
+                  { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                  [
+                    _vm._v(
+                      "\n                        Your password should contain a minimum of 6 characters\n                    "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { attrs: { slot: "reference" }, slot: "reference" },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "fas fa-exclamation-circle tw-text-grey-dark tw-cursor-pointer"
+                    })
+                  ]
+                )
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password,
+                expression: "password"
+              }
+            ],
+            staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+            class: {
+              "tw-border-red-light": _vm.error["password"] != undefined
+            },
+            attrs: {
+              type: "password",
+              id: "password",
+              oncopy: "return false",
+              oncut: "return false",
+              onpaste: "return false",
+              required: "",
+              autofocus: ""
+            },
+            domProps: { value: _vm.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.password = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.error["password"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(" " + _vm._s(this.error["password"].toString()) + " ")
+                ])
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _vm._m(6),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password_confirmation,
+                expression: "password_confirmation"
+              }
+            ],
+            staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+            attrs: {
+              type: "password",
+              id: "password_confirmation",
+              oncopy: "return false",
+              oncut: "return false",
+              onpaste: "return false",
+              required: "",
+              autofocus: ""
+            },
+            domProps: { value: _vm.password_confirmation },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.password_confirmation = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _vm._m(7),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.email,
+                expression: "email"
+              }
+            ],
+            staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+            class: { "tw-border-red-light": _vm.error["email"] != undefined },
+            attrs: {
+              type: "text",
+              id: "email",
+              placeholder: "JohnDoe@gmail.com",
+              required: "",
+              autofocus: ""
+            },
+            domProps: { value: _vm.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.email = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.error["email"] != undefined
+            ? _c("div", { staticClass: "tw-text-red" }, [
+                _c("span", [
+                  _vm._v(" " + _vm._s(this.error["email"].toString()) + " ")
+                ])
+              ])
+            : _vm._e()
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-4 col-form-label text-md-right",
+          attrs: { for: "telephone_number" }
+        },
+        [
+          _vm._v("\n            Telephone Number"),
+          _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")]),
+          _vm._v(" "),
+          _c(
+            "popper",
+            { attrs: { trigger: "hover", options: { placement: "bottom" } } },
+            [
+              _c(
+                "div",
+                { staticClass: "popper tw-font-hairline tw-text-grey-dark" },
+                [
+                  _vm._v(
+                    "\n                        All appointment details will be sent to you via SMS.\n                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { attrs: { slot: "reference" }, slot: "reference" },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                  })
+                ]
+              )
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.telephone_number,
+              expression: "telephone_number"
+            }
+          ],
+          staticClass: "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+          class: {
+            "tw-border-red-light": _vm.error["telephone_number"] != undefined
+          },
+          attrs: {
+            type: "text",
+            id: "telephone_number",
+            placeholder: "9512 2314",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.telephone_number },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.telephone_number = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.error["telephone_number"] != undefined
+          ? _c("div", { staticClass: "tw-text-red" }, [
+              _c("span", [
+                _vm._v(
+                  " " + _vm._s(this.error["telephone_number"].toString()) + " "
+                )
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row tw-my-6" }, [
+      _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+        !_vm.isLoading
+          ? _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "submit" },
+                  on: {
+                    click: function($event) {
+                      return _vm.register()
+                    }
+                  }
+                },
+                [_vm._v("\n                    Register\n                ")]
+              )
+            ])
+          : _c("div", [
+              _c("img", {
+                attrs: { src: "/assets/img/loader.gif", alt: "Loading..." }
+              })
+            ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "tw-flex tw-text-xl tw-items-center tw-flex tw-ml-8 tw-border-b tw-pb-4 tw-m-8"
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "tw-flex tw-items-center tw-justify-center tw-rounded-full \n                    tw-border-2 tw-border-blue-dark tw-text-blue-dark tw-mr-2\n                    tw-w-10 tw-h-10"
+          },
+          [_vm._v("\n                1\n            ")]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "tw-font-bold" }, [_vm._v("Company details")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-4 col-form-label text-md-right",
+        attrs: { for: "company_name" }
+      },
+      [
+        _vm._v("\n                Company name"),
+        _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-4 col-form-label text-md-right",
+        attrs: { for: "industry" }
+      },
+      [
+        _vm._v("\n                Industry Type"),
+        _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-4 col-form-label text-md-right",
+        attrs: { for: "company_type" }
+      },
+      [
+        _vm._v("\n                Company Type"),
+        _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "tw-flex tw-text-xl tw-items-center tw-flex tw-ml-8 tw-border-b tw-pb-4 tw-m-8"
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "tw-flex tw-items-center tw-justify-center tw-rounded-full \n                    tw-border-2 tw-border-blue-dark tw-text-blue-dark tw-mr-2\n                    tw-w-10 tw-h-10"
+          },
+          [_vm._v("\n                2\n            ")]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "tw-font-bold" }, [_vm._v("Profile details")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "tw-flex tw-text-xl tw-items-center tw-flex tw-ml-8 tw-border-b tw-pb-4 tw-m-8"
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "tw-flex tw-items-center tw-justify-center tw-rounded-full \n                    tw-border-2 tw-border-blue-dark tw-text-blue-dark tw-mr-2\n                    tw-w-10 tw-h-10"
+          },
+          [_vm._v("\n                3\n            ")]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "tw-font-bold" }, [_vm._v("Account details")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-4 col-form-label text-md-right",
+        attrs: { for: "password_confirmation" }
+      },
+      [
+        _vm._v("\n                Confirm Password"),
+        _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-4 col-form-label text-md-right",
+        attrs: { for: "email" }
+      },
+      [
+        _vm._v("\n                Email"),
+        _c("span", { staticClass: "tw-text-red" }, [_vm._v("*")])
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-07f1ed59", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
