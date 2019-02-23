@@ -5,11 +5,19 @@ namespace App;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Feedback;
+use App\Individual;
 
-Abstract class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+
+    /**
+     * Get all of the owning userable models.
+     */
+    public function userable()
+    {
+        return $this->morphTo();
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -63,5 +71,18 @@ Abstract class User extends Authenticatable implements JWTSubject
      * createAccount function to be implemented by concrete class
      * 
      */
-    public abstract function createAccount($data);
+    // public abstract function createAccount($data);
+
+
+     /**
+     * Fetch the Individual Or Company 
+     * 
+     */
+    public static function fetchUserable($id)
+    {
+        $user = User::where('id', $id)->first();
+        $userable = $user->userable;
+        
+        return $userable;
+    }
 }

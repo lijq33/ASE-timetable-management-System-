@@ -27,6 +27,14 @@ class Company extends User
     ];
 
     /**
+     * Get the user's model.
+     */
+    public function user()
+    {
+        return $this->morphOne('App\User', 'userable');
+    }
+
+    /**
      * @param $data
      * 
      * Create an individual account based on $data

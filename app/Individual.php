@@ -18,6 +18,14 @@ class Individual extends User
     ];
 
     /**
+     * Get the user's model.
+     */
+    public function user()
+    {
+        return $this->morphOne('App\User', 'userable');
+    }
+
+    /**
      * @param $data
      * 
      * Create an individual account based on $data
@@ -39,7 +47,7 @@ class Individual extends User
             'password' => 'bail|required|string|min:6|confirmed|max:30',
             'telephone_number' => 'bail|required|digits:8',
         ];
-    
+
         $messages = [
             'unique' => 'This :attribute has been taken!',
             'required' => 'We need to know your :attribute!',

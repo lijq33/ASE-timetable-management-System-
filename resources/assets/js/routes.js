@@ -12,6 +12,10 @@ export const routes = [
     {
         path : '/register',
         component: require('./views/Register')
+    }, 
+    {
+        path : '/test',
+        component: require('./views/test')
     },    
     // {
     //     path : '/HealthServices/Hospital',
