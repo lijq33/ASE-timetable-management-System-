@@ -9,23 +9,15 @@
                         <!-- login -->
                         <div class="form-group row">
                             <label for="login_id" class="col-md-4 col-form-label text-md-right">
-                                Login ID
-                                <popper trigger="hover" :options = "{placement: 'bottom'}">
-                                    <div class="popper tw-font-hairline tw-text-grey-dark">
-                                        Your login ID is your NRIC
-                                    </div>
-                                    <button slot="reference">   
-                                        <i class="fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"></i>
-                                    </button>
-                                </popper> 
+                                Email
                             </label>
 
                             <div class="col-md-6">
                                 <input type = "text"
                                     id="login_id" 
-                                    v-model = "form.nric"
+                                    v-model = "form.email"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
-                                    placeholder = "S4123451E"
+                                    placeholder = "JohnDoe@gmail.com"
                                     required autofocus
                                 >
                             </div>
@@ -105,7 +97,8 @@
         data() {
             return {
                 form: {
-                    nric: '',
+                    registration_type: 'individual',
+                    email: '',
                     password: '',
                 },
                 error: null,

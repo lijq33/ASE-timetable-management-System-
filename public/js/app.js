@@ -18532,7 +18532,7 @@ function login(credentials) {
             Object(__WEBPACK_IMPORTED_MODULE_0__general__["b" /* setAuthorization */])(response.data.access_token);
             res(response.data);
         }).catch(function (err) {
-            rej("Wrong Login ID or password");
+            rej("Wrong Email or password");
         });
     });
 }
@@ -60110,14 +60110,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -60133,7 +60125,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             form: {
-                nric: '',
+                registration_type: 'individual',
+                email: '',
                 password: ''
             },
             error: null,
@@ -60304,44 +60297,9 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n                            Login ID\n                            "
-                  ),
-                  _c(
-                    "popper",
-                    {
-                      attrs: {
-                        trigger: "hover",
-                        options: { placement: "bottom" }
-                      }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "popper tw-font-hairline tw-text-grey-dark"
-                        },
-                        [
-                          _vm._v(
-                            "\n                                    Your login ID is your NRIC\n                                "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        { attrs: { slot: "reference" }, slot: "reference" },
-                        [
-                          _c("i", {
-                            staticClass:
-                              "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                          })
-                        ]
-                      )
-                    ]
+                    "\n                            Email\n                        "
                   )
-                ],
-                1
+                ]
               ),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
@@ -60350,8 +60308,8 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.form.nric,
-                      expression: "form.nric"
+                      value: _vm.form.email,
+                      expression: "form.email"
                     }
                   ],
                   staticClass:
@@ -60359,17 +60317,17 @@ var render = function() {
                   attrs: {
                     type: "text",
                     id: "login_id",
-                    placeholder: "S4123451E",
+                    placeholder: "JohnDoe@gmail.com",
                     required: "",
                     autofocus: ""
                   },
-                  domProps: { value: _vm.form.nric },
+                  domProps: { value: _vm.form.email },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.form, "nric", $event.target.value)
+                      _vm.$set(_vm.form, "email", $event.target.value)
                     }
                   }
                 })

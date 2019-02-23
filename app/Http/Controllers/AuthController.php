@@ -6,14 +6,22 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    protected $auth = '';
     /**
      * Create a new AuthController instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->middleware('auth:api', ['except' => ['login']]);
+        
+        $data = request()->all();
+        $user_class = \App\UserFactory::build(ucfirst($data['registration_type']));
+
+        var_dump($user_class == \App\Individual::class);
+        $this->auth = auth('api');
+
     }
 
     /**
@@ -21,11 +29,13 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['nric', 'password']);
+        
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        $credentials = request(['email', 'password']);
+
+        if (! $token = $this->auth->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -39,7 +49,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        return response()->json($this->auth->user());
     }
 
     /**
@@ -49,7 +59,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth('api')->logout();
+        $this->auth->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -61,7 +71,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth('api')->refresh());
+        return $this->respondWithToken($this->auth->refresh());
     }
 
     /**
@@ -77,7 +87,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'user' => $this->guard()->user(),
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => $this->auth->factory()->getTTL() * 60
         ]);
     }
 

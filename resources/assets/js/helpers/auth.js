@@ -8,7 +8,7 @@ export function login(credentials) {
                 res(response.data);
             })
             .catch((err) =>{
-                rej("Wrong Login ID or password");
+                rej("Wrong Email or password");
             })
     })
 }
