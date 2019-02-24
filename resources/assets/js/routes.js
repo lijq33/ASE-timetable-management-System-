@@ -20,7 +20,11 @@ export const routes = [
     {
         path : '/test',
         component: require('./views/test')
-    },    
+    },
+    {
+        path : '/calendar1',
+        component: require('./views/Calendar1')
+    },     
     // {
     //     path : '/HealthServices/Hospital',
     //     component: require('./views/HealthServices/Hospital'),
