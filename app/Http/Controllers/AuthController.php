@@ -19,8 +19,11 @@ class AuthController extends Controller
         $data = request()->all();
         $user_class = \App\UserFactory::build(ucfirst($data['registration_type']));
 
-        var_dump($user_class == \App\Individual::class);
-        $this->auth = auth('api');
+        if( is_a($user_class, \App\Individual::class)){
+            $this->auth = auth('individual');
+        }else{
+            $this->auth = auth('company');
+        }
 
     }
 

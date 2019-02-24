@@ -49,7 +49,16 @@
                             </div>
                         </div>
 
-                        
+                        <div class="form-group row">
+                            <div class="col-md-4 col-form-label text-md-right">
+                                Logging in as
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="radio" name="registration_type" v-model = "form.registration_type" value="individual" /> Individual<br>
+                                <input type="radio" name="registration_type" v-model = "form.registration_type" value="company" /> Company<br>
+                            </div>
+                        </div>
 
                         <div class="form-group row tw-my-6">
                             <div class="col-md-6 offset-md-4">
@@ -97,7 +106,7 @@
         data() {
             return {
                 form: {
-                    registration_type: 'individual',
+                    registration_type:'individual',
                     email: '',
                     password: '',
                 },

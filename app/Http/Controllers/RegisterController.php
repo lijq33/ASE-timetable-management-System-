@@ -39,11 +39,10 @@ class RegisterController extends Controller
      */
     protected function store(Request $request)
     {
-        //obtaining all information that the server send
         $data = request()->all();
-        // var_dump($data);
+
         $user_class = \App\UserFactory::build(ucfirst($data['registration_type']));
-        //$user_class can be either Individual or Company
+
         $validator = $user_class->createAccount($data);
         
         if (isset($validator)) {

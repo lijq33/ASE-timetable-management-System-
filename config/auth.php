@@ -38,21 +38,22 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'individual',
+            'provider' => 'users',
         ],
 
         'api' => [
             'driver' => 'jwt',
-            'provider' => 'individual',
-        ],
-        'web.company' => [
-            'driver' => 'session',
-            'provider' => 'company',
+            'provider' => 'users',
         ],
 
-        'api.company' => [
+        'individual' => [
             'driver' => 'jwt',
-            'provider' => 'company',
+            'provider' => 'individuals',
+        ],
+
+        'company' => [
+            'driver' => 'jwt',
+            'provider' => 'companies',
         ],
     ],
 
@@ -74,20 +75,25 @@ return [
     */
 
     'providers' => [
-        'individual' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\User::class,
+        ],
+
+        'individuals' => [
             'driver' => 'eloquent',
             'model' => App\Individual::class,
         ],
 
-        'company' => [
+        'companies' => [
             'driver' => 'eloquent',
             'model' => App\Company::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
     ],
 
     /*

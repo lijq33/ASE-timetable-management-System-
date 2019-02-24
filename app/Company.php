@@ -27,11 +27,11 @@ class Company extends User
     ];
 
     /**
-     * Get the user's model.
-     */
+    * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+    */
     public function user()
     {
-        return $this->morphOne('App\User', 'userable');
+        return $this->morphOne(User::class, 'userable');
     }
 
     /**
@@ -73,7 +73,8 @@ class Company extends User
             $image->save(public_path('logos\\') .  $imageName . ".{$data['logo']->getClientOriginalExtension()}"); // Original Image
             $imageName = $imageName.".".$data['logo']->getClientOriginalExtension();
         }
-        Company::create([
+
+        $company = Company::create([
             'company_name' => $data['company_name'],
             'company_type' => $data['company_type'],
             'industry_type' => $data['industry_type'],
@@ -86,6 +87,10 @@ class Company extends User
             'password' => Hash::make($data['password']),
             'telephone_number' => $data['telephone_number'],
         ]);
+
+        $user = new User(['userable_id' => $company->id, 'userable_type' => Company::class]);
+
+        $company->user()->save($user);
         
     }
 

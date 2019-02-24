@@ -12,7 +12,17 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     /**
-     * Get all of the owning userable models.
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'userable_type',
+        'userable_id'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function userable()
     {

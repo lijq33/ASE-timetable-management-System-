@@ -18,11 +18,11 @@ class Individual extends User
     ];
 
     /**
-     * Get the user's model.
-     */
+    * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+    */
     public function user()
     {
-        return $this->morphOne('App\User', 'userable');
+        return $this->morphOne(User::class, 'userable');
     }
 
     /**
@@ -63,7 +63,7 @@ class Individual extends User
             return $validator;
         }
 
-        Individual::create([
+        $individual = Individual::create([
             'name' => $data['name'],
             'nric' => $data['nric'],
             'email' => $data['email'],
@@ -71,6 +71,9 @@ class Individual extends User
             'telephone_number' => $data['telephone_number'],
         ]);
         
+        $user = new User(['userable_id' => $individual->id, 'userable_type' => Individual::class]);
+
+        $individual->user()->save($user);
     }
 
     /**
