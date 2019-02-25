@@ -17,12 +17,6 @@ Route::group([ 'prefix' => 'auth'], function ($router) {
     Route::post('register', 'RegisterController@store');
     Route::post('login', 'AuthController@login');
     
-
-
-
-    
-
-
     Route::post('me', 'AuthController@me');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('logout', 'AuthController@logout');
@@ -31,15 +25,35 @@ Route::group([ 'prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.user'], function ($router) {
-    Route::get('appointment/get', 'AppointmentController@show');
-    Route::post('appointment/new', 'AppointmentController@store');
-    Route::post('appointment/update', 'AppointmentController@update');
 
+    Route::get('timetable/get', 'TimetableController@show');
+    Route::post('timetable', 'TimetableController@store');
+    Route::post('timetable/update', 'TimetableController@update');
+    Route::post('timetable/delete', 'TimetableController@destroy');
+    
+    Route::get('appointment/get', 'AppointmentController@show');
+    // Route::post('appointment', 'AppointmentController@store');
+    Route::post('appointment/update', 'AppointmentController@update');
     Route::post('appointment/delete', 'AppointmentController@destroy');
-    Route::post('feedback/create', 'FeedbackController@store');
 
 });
 
-Route::group(['middleware' => 'auth.admin'], function ($router) {
-    Route::get('feedback/show', 'FeedbackController@all');
+
+Route::group(['middleware' => 'auth.individual'], function ($router) {
+
+    Route::get('timetable/get', 'TimetableController@show');
+    Route::post('timetable', 'TimetableController@store');
+    Route::post('timetable/update', 'TimetableController@update');
+    Route::post('timetable/delete', 'TimetableController@destroy');
+    
+    Route::get('appointment/get', 'AppointmentController@show');
+    // Route::post('appointment', 'AppointmentController@store');
+    Route::post('appointment/update', 'AppointmentController@update');
+    Route::post('appointment/delete', 'AppointmentController@destroy');
+
+});
+
+Route::group(['middleware' => 'auth.company'], function ($router) {
+    Route::post('appointment', 'AppointmentController@store');
+
 });

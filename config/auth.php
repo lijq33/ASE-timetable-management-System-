@@ -80,19 +80,28 @@ return [
             'model' => App\User::class,
         ],
 
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
+
         'individuals' => [
             'driver' => 'eloquent',
             'model' => App\Individual::class,
         ],
 
+        'individuals' => [
+            'driver' => 'database',
+            'table' => 'individuals',
+        ],
         'companies' => [
             'driver' => 'eloquent',
             'model' => App\Company::class,
         ],
 
-        'users' => [
+        'companies' => [
             'driver' => 'database',
-            'table' => 'users',
+            'table' => 'companies',
         ],
     ],
 

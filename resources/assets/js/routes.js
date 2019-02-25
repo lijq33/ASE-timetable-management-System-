@@ -21,6 +21,10 @@ export const routes = [
         path : '/test',
         component: require('./views/test')
     },    
+    {
+        path : '/testappointment',
+        component: require('./views/testappointment')
+    },    
     // {
     //     path : '/HealthServices/Hospital',
     //     component: require('./views/HealthServices/Hospital'),
