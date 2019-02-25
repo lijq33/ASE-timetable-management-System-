@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;

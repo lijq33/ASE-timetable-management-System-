@@ -14,16 +14,18 @@ class AuthController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        // $this->middleware('auth:api', ['except' => ['login']]);
 
         $data = request()->all();
         $user_class = \App\UserFactory::build(ucfirst($data['registration_type']));
 
         if( is_a($user_class, \App\Individual::class)){
             $this->auth = auth('individual');
+            $this->middleware('auth:individual', ['except' => ['login']]);
 
         }else{
             $this->auth = auth('company');
+            $this->middleware('auth:company', ['except' => ['login']]);
         }
 
     }
