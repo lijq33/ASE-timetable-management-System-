@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Providers\Auth\Illuminate;
 
 class TimetableController extends Controller
 {
@@ -16,20 +17,22 @@ class TimetableController extends Controller
      */
     public function store(Request $request)
     {
-        //
         // UserID date time "date+time is unique" 
         // purpose description 
         $data = request()->all();
+
+        $user = User::fetchUserable((new Illuminate(\Auth::Guard('api')))->user()['id']);
+
+        dd($user);
         
         //Fetch the user with $data['user_id']
-        $userable = User::fetchUserable($data['user_id']);
+        // $userable = User::fetchUserable($data['user_id']);
         
         var_dump($userable);
         die();
         // For user with $data['user_id'], fetch all appointment at $data['date'], 
         //ensure at $data['time'], they do not have any other appointment
         
-
         $this->fetchAppointment($data['user_id'], $data['time']);
 
         $rules = [

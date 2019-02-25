@@ -1,5 +1,12 @@
 ## TBD
 
+#auth
+Update $this->middleware('auth:api', ['except' => ['login']]); if not working
+REMOVE IF UNNECCESSARY
+AUTHCOMPANY
+AUTHINDIVIDUAL
+KERNEL
+
 # Timetable
 Import timetable(store)
 View timetable(show)
