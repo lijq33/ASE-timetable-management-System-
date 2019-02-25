@@ -11,7 +11,14 @@
   </div>
 </template>
 <script>
-
+  import '@syncfusion/ej2-base/styles/material.css';
+  import '@syncfusion/ej2-buttons/styles/material.css';
+  import '@syncfusion/ej2-calendars/styles/material.css';
+  import '@syncfusion/ej2-dropdowns/styles/material.css';
+  import '@syncfusion/ej2-inputs/styles/material.css';
+  import '@syncfusion/ej2-navigations/styles/material.css';
+  import '@syncfusion/ej2-popups/styles/material.css';
+  import '@syncfusion/ej2-vue-schedule/styles/material.css';
   import Vue from 'vue'; 
   import { extend } from '@syncfusion/ej2-base';
   import { SchedulePlugin,  WorkWeek, Month, Week } from '@syncfusion/ej2-vue-schedule';
@@ -56,13 +63,4 @@
     }
   }
 </script>
- <style>
-@import '/node_modules/@syncfusion/ej2-base/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-buttons/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-calendars/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-inputs/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-navigations/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-popups/styles/material.css';
-@import '/node_modules/@syncfusion/ej2-vue-schedule/styles/material.css';
-</style>
+ 
