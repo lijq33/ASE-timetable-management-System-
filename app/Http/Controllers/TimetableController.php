@@ -17,24 +17,13 @@ class TimetableController extends Controller
      */
     public function store(Request $request)
     {
-        // UserID date time "date+time is unique" 
-        // purpose description 
         $data = request()->all();
-
-        $user = User::fetchUserable((new Illuminate(\Auth::Guard('api')))->user()['id']);
-
-        dd($user);
         
-        //Fetch the user with $data['user_id']
-        // $userable = User::fetchUserable($data['user_id']);
+        //get current user
+        // $user_id = (new Illuminate(\Auth::Guard('api')))->user()['id'];
+        // $current_user = app('App\User')->userable($user_id);
         
-        var_dump($userable);
-        die();
-        // For user with $data['user_id'], fetch all appointment at $data['date'], 
-        //ensure at $data['time'], they do not have any other appointment
-        
-        $this->fetchAppointment($data['user_id'], $data['time']);
-
+        //Validate Timetable
         $rules = [
             'user_id' => 'bail|required|digits_between:1,100',
             'date' => 'bail|required|date|after:today',
@@ -47,11 +36,10 @@ class TimetableController extends Controller
             'required' => 'We need to know your :attribute!',
             'max' => 'Your :attribute is too long!',
         ];
-        //Ensure that for every user, they do not have multiple appointment in a single time slot
+
         $validator = Validator::make($data = request()->all(), $rules, $messages);
 
-     
-        //if got error
+        //if got error return response
         if ($validator->fails()){
             return response()->json([
                 'errors' => $validator->errors(),
@@ -60,12 +48,20 @@ class TimetableController extends Controller
 
         //store data into database
         Timetable::create([
-            'user_id' => $data['user_id'],
-            'date' => $data['date'],
-            'time' => $data['time'],
-            'purpose' => $data['purpose'],
             'description' => $data['description'],
+            'end_time' => $data['end_time'],
+            'is_all_day' => $data['is_all_day'],
+            'location' => $data['location'],
+            'start_time' => $data['start_time'],
+            'subject' => $data['subject'],
+            'is_appointment' => $data['is_appointment'],
+            'date' => $data['date'],
+            'interval' => $data['interval'],
         ]);
+
+        if ($data['isAppointment'] === true){
+
+        }
 
         return response()->json([
             'message' => 'Account is created successfully'

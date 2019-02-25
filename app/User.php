@@ -5,7 +5,6 @@ namespace App;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Individual;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -49,33 +48,33 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
     
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login()
-    {
-        $credentials = request(['nric', 'password']);
+    // /**
+    //  * Get a JWT via given credentials.
+    //  *
+    //  * @return \Illuminate\Http\JsonResponse
+    //  */
+    // public function login()
+    // {
+    //     $credentials = request(['nric', 'password']);
 
-        if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+    //     if (! $token = auth('api')->attempt($credentials)) {
+    //         return response()->json(['error' => 'Unauthorized'], 401);
+    //     }
 
-        return $this->respondWithToken($token);
-    }
+    //     return $this->respondWithToken($token);
+    // }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        auth('api')->logout();
+    // /**
+    //  * Log the user out (Invalidate the token).
+    //  *
+    //  * @return \Illuminate\Http\JsonResponse
+    //  */
+    // public function logout()
+    // {
+    //     auth('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
-    }
+    //     return response()->json(['message' => 'Successfully logged out']);
+    // }
 
     /**
      * createAccount function to be implemented by concrete class
