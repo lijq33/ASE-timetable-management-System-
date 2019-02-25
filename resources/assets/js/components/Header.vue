@@ -27,13 +27,17 @@
                     </li>
 
                     <!-- Only when not logged in -->
-                    <template v-if = "!currentUser">
+                    <template v-if = "!currentUser"> 
+                        <li>
+                            <router-link to="/calendar1" class="nav-link">Calendar</router-link>
+                        </li>
+
                         <li>
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                         <li>
                             <router-link to="/register" class="nav-link">Register</router-link>
-                        </li>
+                        </li> 
                     </template>
 
                     <template v-else>
