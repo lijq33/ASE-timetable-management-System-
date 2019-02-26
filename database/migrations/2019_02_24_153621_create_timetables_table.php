@@ -18,10 +18,15 @@ class CreateTimetablesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                    ->references('id')->on('users');
-            $table->time('time');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->date('date');
-            $table->string('purpose');
+            $table->string('subject');
             $table->string('description');
+            $table->boolval('is_all_day');
+            $table->string('location');
+            $table->boolval('is_appointment');
+            $table->string('intervals');
             $table->timestamps();
         });
     }
