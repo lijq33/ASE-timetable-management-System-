@@ -14,10 +14,6 @@ export const routes = [
         component: require('./views/Register')
     }, 
     {
-        path : '/calendar',
-        component: require('./views/Calendar')
-    },    
-    {
         path : '/test',
         component: require('./views/test')
     },
@@ -26,8 +22,8 @@ export const routes = [
         component: require('./views/testAppointment')
     },
     {
-        path : '/calendar1',
-        component: require('./views/Calendar1')
+        path : '/calendar',
+        component: require('./views/Calendar')
     },     
     // {
     //     path : '/HealthServices/Hospital',
