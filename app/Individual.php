@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
 
 class Individual extends Authenticatable implements JWTSubject
 {
@@ -47,6 +49,14 @@ class Individual extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+    * Get the timetable for the individual.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
     }
 
     /**

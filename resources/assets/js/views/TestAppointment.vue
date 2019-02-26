@@ -1,7 +1,12 @@
 <template>
+    <div>
     <button type="submit" class="btn btn-primary" @click ="test()" >
         Run test
+    </button>    
+    <button type="submit" class="btn btn-primary" @click ="retrieveTimetable()" >
+        Run retrieveTimetable
     </button>
+    </div>
 </template>
 
 <script>
@@ -35,6 +40,14 @@
                     isAppointment: true,
                 })
             },
+
+            retrieveTimetable() {
+                axios.get("/api/timetable")
+                .then((res) => {
+                    console.log(res.data.timetables)
+                })
+            },
+      
         }
     }
 </script>

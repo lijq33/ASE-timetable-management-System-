@@ -32,7 +32,9 @@ Login for both individual and company
 
 
 ## TODO
-
+Sync google calendar
+Stripe
+CRUD APPOINTMENT AND TIMETABLE
 
 
 
