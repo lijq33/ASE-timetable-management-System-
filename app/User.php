@@ -2,7 +2,10 @@
 
 namespace App;
 
-class User 
+use Tymon\JWTAuth\Providers\Auth\Illuminate;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
 {
 
     /**
@@ -11,6 +14,7 @@ class User
      * @var array
      */
     protected $fillable = ['userable_type', 'userable_id'];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -21,14 +25,26 @@ class User
     }
 
     /**
+    * Get the timetable for the user.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
+    }
+
+    /**
      * Fetch the Individual Or Company 
      * 
      */
-    public static function fetchUserable($id)
+    public function fetchUser()
     {
-        $user = User::where('id', $id)->first();
-        $userable = $user->userable;
+
+        $user = (new Illuminate(\Auth::Guard('individual')))->user();
         
-        return $userable;
+        if( !isset($user) )
+            $user = (new Illuminate(\Auth::Guard('company')))->user();
+        
+        return $user->user;
     }
+
 }

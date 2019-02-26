@@ -19,44 +19,7 @@
 
     </div>
 </template>
-<style>
-.custom-field-row {
-    margin-bottom: 20px;
-}
-.block-events.e-schedule .template-wrap {
-                width: 100%;
-        }
 
-        .block-events.e-schedule .e-vertical-view .e-resource-cells {
-                height: 58px;
-        }
-
-        .block-events.e-schedule .e-timeline-view .e-resource-left-td,
-        .block-events.e-schedule .e-timeline-month-view .e-resource-left-td {
-                width: 170px;
-        }
-
-        .block-events.e-schedule .e-resource-cells.e-child-node .employee-category,
-        .block-events.e-schedule .e-resource-cells.e-child-node .employee-name {
-                padding: 5px
-        }
-
-        .block-events.e-schedule .employee-image {
-                width: 45px;
-                height: 40px;
-                float: left;
-                border-radius: 50%;
-                margin-right: 10px;
-        }
-
-        .block-events.e-schedule .employee-name {
-                font-size: 13px;
-        }
-
-        .block-events.e-schedule .employee-designation {
-                font-size: 10px;
-        }
-</style>
 <script>
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
@@ -117,111 +80,6 @@ export default Vue.extend({
                 StartTime: new Date(2018, 1, 15, 12, 0),
                 EndTime: new Date(2018, 1, 15, 14, 0),
                 CategoryColor: "#00bdae"
-            },
-            {
-                Id: 6,
-                Subject: "Mysteries of Bermuda Triangle",
-                StartTime: new Date(2018, 1, 15, 9, 30),
-                EndTime: new Date(2018, 1, 15, 11, 0),
-                CategoryColor: "#f57f17"
-            },
-            {
-                Id: 7,
-                Subject: "Glaciers and Snowflakes",
-                StartTime: new Date(2018, 1, 16, 11, 0),
-                EndTime: new Date(2018, 1, 16, 12, 30),
-                CategoryColor: "#1aaa55"
-            },
-            {
-                Id: 8,
-                Subject: "Life on Mars",
-                StartTime: new Date(2018, 1, 17, 9, 0),
-                EndTime: new Date(2018, 1, 17, 10, 0),
-                CategoryColor: "#357cd2"
-            },
-            {
-                Id: 9,
-                Subject: "Alien Civilization",
-                StartTime: new Date(2018, 1, 19, 11, 0),
-                EndTime: new Date(2018, 1, 19, 13, 0),
-                CategoryColor: "#7fa900"
-            },
-            {
-                Id: 10,
-                Subject: "Wildlife Galleries",
-                StartTime: new Date(2018, 1, 21, 11, 0),
-                EndTime: new Date(2018, 1, 21, 13, 0),
-                CategoryColor: "#ea7a57"
-            },
-            {
-                Id: 11,
-                Subject: "Best Photography 2018",
-                StartTime: new Date(2018, 1, 22, 9, 30),
-                EndTime: new Date(2018, 1, 22, 11, 0),
-                CategoryColor: "#00bdae"
-            },
-            {
-                Id: 12,
-                Subject: "Smarter Puppies",
-                StartTime: new Date(2018, 1, 9, 10, 0),
-                EndTime: new Date(2018, 1, 9, 11, 30),
-                CategoryColor: "#f57f17"
-            },
-            {
-                Id: 13,
-                Subject: "Myths of Andromeda Galaxy",
-                StartTime: new Date(2018, 1, 7, 10, 30),
-                EndTime: new Date(2018, 1, 7, 12, 30),
-                CategoryColor: "#1aaa55"
-            },
-            {
-                Id: 14,
-                Subject: "Aliens vs Humans",
-                StartTime: new Date(2018, 1, 5, 10, 0),
-                EndTime: new Date(2018, 1, 5, 11, 30),
-                CategoryColor: "#357cd2"
-            },
-            {
-                Id: 15,
-                Subject: "Facts of Humming Birds",
-                StartTime: new Date(2018, 1, 20, 9, 30),
-                EndTime: new Date(2018, 1, 20, 11, 0),
-                CategoryColor: "#7fa900"
-            },
-            {
-                Id: 16,
-                Subject: "Sky Gazers",
-                StartTime: new Date(2018, 1, 23, 11, 0),
-                EndTime: new Date(2018, 1, 23, 13, 0),
-                CategoryColor: "#ea7a57"
-            },
-            {
-                Id: 17,
-                Subject: "The Cycle of Seasons",
-                StartTime: new Date(2018, 1, 12, 5, 30),
-                EndTime: new Date(2018, 1, 12, 7, 30),
-                CategoryColor: "#00bdae"
-            },
-            {
-                Id: 18,
-                Subject: "Space Galaxies and Planets",
-                StartTime: new Date(2018, 1, 12, 17, 0),
-                EndTime: new Date(2018, 1, 12, 18, 30),
-                CategoryColor: "#f57f17"
-            },
-            {
-                Id: 19,
-                Subject: "Lifecycle of Bumblebee",
-                StartTime: new Date(2018, 1, 15, 6, 0),
-                EndTime: new Date(2018, 1, 15, 7, 30),
-                CategoryColor: "#7fa900"
-            },
-            {
-                Id: 20,
-                Subject: "Sky Gazers",
-                StartTime: new Date(2018, 1, 15, 16, 0),
-                EndTime: new Date(2018, 1, 15, 18, 0),
-                CategoryColor: "#ea7a57"
             }
         ];
 
@@ -259,17 +117,25 @@ export default Vue.extend({
                 args.element.style.backgroundColor = categoryColor;
             }
         },
+
+
+        //POPUP = selecting a slot
         onPopupOpen: function(args) {
-            console.log(args);
+            //Editor == more detail
             if (args.type === "Editor") {
-                // Create required custom elements in initial time
                 if (!args.element.querySelector(".custom-field-row")) {
-                    let row = createElement("div", { className: "custom-field-row" });
+                    
+                    let row = createElement("div", { 
+                        className: "custom-field-row" 
+                    });
+
                     let formElement = args.element.querySelector(".e-schedule-form");
+
                     formElement.firstChild.insertBefore(
                         row,
                         args.element.querySelector(".e-title-location-row")
                     );
+
                     let container = createElement("div", {
                         className: "custom-field-container"
                     });
@@ -281,6 +147,37 @@ export default Vue.extend({
                     row.appendChild(container);
                     var dropDownList = new DropDownList({
                         dataSource: [
+                            { text: "Maintenance", value: "maintenance" },
+                            { text: "Commercial Event", value: "commercial-event" },
+                            { text: "Family Event", value: "family-event" }
+                        ],
+                        fields: { text: "text", value: "value" },
+                        value: "",
+                        floatLabelType: "Always",
+                        placeholder: "Event Type"
+                    });
+                    dropDownList.appendTo(inputEle);
+                    inputEle.setAttribute("name", "EventType");
+                }
+
+                if (!args.element.querySelector(".custom-field-row2")) {
+                    let row = createElement("div", { className: "custom-field-row2" });
+                    let formElement = args.element.querySelector(".e-schedule-form");
+                    formElement.firstChild.insertBefore(
+                        row,
+                        args.element.querySelector(".e-title-location-row2")
+                    );
+                    let container2 = createElement("div", {
+                        className: "custom-field-container2"
+                    });
+                    let inputEle = createElement("input", {
+                        className: "e-field2",
+                        attrs: { name: "EventType" }
+                    });
+                    container2.appendChild(inputEle);
+                    row.appendChild(container2);
+                    var dropDownList = new DropDownList({
+                        dataSource: [
                             { text: "Public Event", value: "public-event" },
                             { text: "Maintenance", value: "maintenance" },
                             { text: "Commercial Event", value: "commercial-event" },
@@ -289,13 +186,53 @@ export default Vue.extend({
                         fields: { text: "text", value: "value" },
                         value: "",
                         floatLabelType: "Always",
-                        placeholder: "Customized Event Type"
+                        placeholder: "Event Type"
                     });
                     dropDownList.appendTo(inputEle);
                     inputEle.setAttribute("name", "EventType");
                 }
+
             }
         }
     }
 });
 </script>
+
+<style>
+.custom-field-row {
+    margin-bottom: 20px;
+}
+.block-events.e-schedule .template-wrap {
+                width: 100%;
+        }
+
+        .block-events.e-schedule .e-vertical-view .e-resource-cells {
+                height: 58px;
+        }
+
+        .block-events.e-schedule .e-timeline-view .e-resource-left-td,
+        .block-events.e-schedule .e-timeline-month-view .e-resource-left-td {
+                width: 170px;
+        }
+
+        .block-events.e-schedule .e-resource-cells.e-child-node .employee-category,
+        .block-events.e-schedule .e-resource-cells.e-child-node .employee-name {
+                padding: 5px
+        }
+
+        .block-events.e-schedule .employee-image {
+                width: 45px;
+                height: 40px;
+                float: left;
+                border-radius: 50%;
+                margin-right: 10px;
+        }
+
+        .block-events.e-schedule .employee-name {
+                font-size: 13px;
+        }
+
+        .block-events.e-schedule .employee-designation {
+                font-size: 10px;
+        }
+</style>

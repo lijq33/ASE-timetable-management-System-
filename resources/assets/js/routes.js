@@ -25,6 +25,10 @@ export const routes = [
         path : '/calendar',
         component: require('./views/Calendar')
     },     
+    {
+        path : '/calendar1',
+        component: require('./views/Calendar1')
+    },     
     // {
     //     path : '/HealthServices/Hospital',
     //     component: require('./views/HealthServices/Hospital'),

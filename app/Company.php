@@ -9,6 +9,7 @@ use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
 
 class Company extends Authenticatable implements JWTSubject
 {
@@ -48,6 +49,15 @@ class Company extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+    * Get the timetable for the company.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
+    }
+
     /**
      * @param $data
      * 
