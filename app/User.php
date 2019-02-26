@@ -2,24 +2,19 @@
 
 namespace App;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Individual;
+use Tymon\JWTAuth\Providers\Auth\Illuminate;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Model
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'userable_type',
-        'userable_id'
-    ];
+    protected $fillable = ['userable_type', 'userable_id'];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -30,69 +25,26 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
+    * Get the timetable for the user.
+    */
+    public function timetable()
     {
-        return $this->getKey();
+        return $this->hasMany('App\Timetable');
     }
 
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-    
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login()
-    {
-        $credentials = request(['nric', 'password']);
-
-        if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->respondWithToken($token);
-    }
-
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        auth('api')->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
-    }
-
-    /**
-     * createAccount function to be implemented by concrete class
-     * 
-     */
-    // public abstract function createAccount($data);
-
-
-     /**
      * Fetch the Individual Or Company 
      * 
      */
-    public static function fetchUserable($id)
+    public function fetchUser()
     {
-        $user = User::where('id', $id)->first();
-        $userable = $user->userable;
+
+        $user = (new Illuminate(\Auth::Guard('individual')))->user();
         
-        return $userable;
+        if( !isset($user) )
+            $user = (new Illuminate(\Auth::Guard('company')))->user();
+        
+        return $user->user;
     }
+
 }

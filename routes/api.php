@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group([ 'prefix' => 'auth'], function ($router) {
+Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('register', 'RegisterController@store');
     Route::post('login', 'AuthController@login');
     
@@ -25,9 +25,10 @@ Route::group([ 'prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.user'], function ($router) {
+    Route::resource('timetable', 'TimetableController', ['except' => ['', 'edit']]);
 
     Route::get('timetable/get', 'TimetableController@show');
-    Route::post('timetable', 'TimetableController@store');
+
     Route::post('timetable/update', 'TimetableController@update');
     Route::post('timetable/delete', 'TimetableController@destroy');
     
@@ -35,7 +36,6 @@ Route::group(['middleware' => 'auth.user'], function ($router) {
     // Route::post('appointment', 'AppointmentController@store');
     Route::post('appointment/update', 'AppointmentController@update');
     Route::post('appointment/delete', 'AppointmentController@destroy');
-
 });
 
 

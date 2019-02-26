@@ -1,31 +1,53 @@
 <template>
+    <div>
     <button type="submit" class="btn btn-primary" @click ="test()" >
         Run test
+    </button>    
+    <button type="submit" class="btn btn-primary" @click ="retrieveTimetable()" >
+        Run retrieveTimetable
     </button>
+    </div>
 </template>
 
 <script>
     export default {
         data() {
             return {
-                userID: '1',
-                time: '10:00:00', 
-                purpose: 'test',
-                description: 'a long long description',
-                date:'12/12/2012'
+                Timetable_id: '1', //If not how to update??
+                Description: '1',
+                EndTime: '1',
+                IsAllDay: '1',
+                Location: '1',
+                RecurrenceRule: '1',
+                StartTime: '1',
+                StartTimezone: '1',
+                Subject: '1',
             }
         }, 
 
         methods: {
             test() {
-                axios.post("/api/appointment", {
-                    user_id: this.userID,
-                    time: this.time,
-                    purpose: this.purpose,
-                    description: this.description,
-                    date: this.date
+                axios.post("/api/timetable", {
+                    timetable_id: this.timetable_id, //If not how to update??
+                    description: this.Description,
+                    end_time: this.EndTime,
+                    is_all_day: this.IsAllDay,
+                    location: this.Location,
+                    recurrence_rule: this.RecurrenceRule,
+                    start_time: this.StartTime,
+                    start_timezone: this.StartTimezone,
+                    subject: this.Subject,
+                    isAppointment: true,
                 })
             },
+
+            retrieveTimetable() {
+                axios.get("/api/timetable")
+                .then((res) => {
+                    console.log(res.data.timetables)
+                })
+            },
+      
         }
     }
 </script>

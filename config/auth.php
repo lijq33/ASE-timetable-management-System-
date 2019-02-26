@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -48,12 +48,12 @@ return [
 
         'individual' => [
             'driver' => 'jwt',
-            'provider' => 'individuals',
+            'provider' => 'individual',
         ],
 
         'company' => [
             'driver' => 'jwt',
-            'provider' => 'companies',
+            'provider' => 'company',
         ],
     ],
 
@@ -85,23 +85,14 @@ return [
             'table' => 'users',
         ],
 
-        'individuals' => [
+        'individual' => [
             'driver' => 'eloquent',
             'model' => App\Individual::class,
         ],
 
-        'individuals' => [
-            'driver' => 'database',
-            'table' => 'individuals',
-        ],
-        'companies' => [
+        'company' => [
             'driver' => 'eloquent',
             'model' => App\Company::class,
-        ],
-
-        'companies' => [
-            'driver' => 'database',
-            'table' => 'companies',
         ],
     ],
 

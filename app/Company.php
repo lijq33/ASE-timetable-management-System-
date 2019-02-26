@@ -3,28 +3,24 @@
 namespace App;
 
 use Illuminate\Support\Facades\Hash;
-use App\User;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
-class Company extends User
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
+
+class Company extends Authenticatable implements JWTSubject
 {
+
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [            
-        'company_name',
-        'company_type',
-        'industry_type',
-        'website',
-        'tagline',
-        'logo',
-        'email',
-        'password',
-        'telephone_number',
-    ];
+    protected $fillable = ['company_name', 'company_type', 'industry_type', 'website', 'tagline', 'logo', 'email', 'password', 'telephone_number'];
 
     /**
     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
@@ -32,6 +28,34 @@ class Company extends User
     public function user()
     {
         return $this->morphOne(User::class, 'userable');
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+    * Get the timetable for the company.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
     }
 
     /**

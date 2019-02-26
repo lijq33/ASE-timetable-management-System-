@@ -3,11 +3,17 @@
 namespace App;
 
 use Illuminate\Support\Facades\Hash;
-use App\User;
 use Illuminate\Support\Facades\Validator;
 
-class Individual extends User
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
+
+class Individual extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +29,34 @@ class Individual extends User
     public function user()
     {
         return $this->morphOne(User::class, 'userable');
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+    * Get the timetable for the individual.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
     }
 
     /**
