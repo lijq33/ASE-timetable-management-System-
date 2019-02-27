@@ -26,6 +26,22 @@ class TimetableController extends Controller
     }
 
     /**
+    * Display a specific resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function show(Timetable $timetable)
+    {
+        if ($timetable->is_appointment == false) 
+            return response()->json([
+                'message' => 'Selected timeslot is not an appointment.'
+            ], 200);
+
+        return response()->json([
+            'timetable' => $timetable,
+        ], 200);
+    }
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,7 +56,6 @@ class TimetableController extends Controller
   
         //perform validation
 
-
         // end_time
         // event_type
         // is_all_day
@@ -50,22 +65,28 @@ class TimetableController extends Controller
         // subject:
         // is_appointment
         // description
-
-    
-
+            
         //store data into database
         Timetable::create([
+            'id' => $data['id'],
             'user_id' => $user_id,
-            'description' => $data['description'],
-            'end_time' => $data['end_time'],
-            'is_all_day' => $data['is_all_day'],
-            'location' => $data['location'],
-            'start_time' => $data['start_time'],
-            'subject' => $data['subject'],
+            
             'is_appointment' => $data['is_appointment'],
-            'date' => $data['date'],
-        ]);
+            'event_type' => $data['limited_to'],
 
+            'subject' => $data['subject'],
+            'description' => $data['description'],
+
+            'location' => $data['location'],
+            'date' => $data['date'],
+            'start_time' => $data['start_time'],
+            'end_time' => $data['end_time'],
+            
+            'is_all_day' => $data['is_all_day'],        
+            'require_payment' => $data['require_payment'],
+            'price' => $data['price'],
+        ]);
+        
         return response()->json([
             'message' => 'Account is created successfully'
         ], 200);
@@ -106,7 +127,8 @@ class TimetableController extends Controller
             'subject' => $data['subject'],
             'is_appointment' => $data['is_appointment'],
             'date' => $data['date'],
-            'interval' => $data['interval'],         
+            'interval' => $data['interval'],
+            'event_type' => $data['event_type'],      
             ]);
        
         return response()->json([

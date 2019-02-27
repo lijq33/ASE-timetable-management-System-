@@ -13,8 +13,9 @@ class Timetable extends Model
     *
     * @var array
     */
-    protected $fillable = ['company_name', 'company_type', 'industry_type', 'website', 'tagline', 'logo', 'email', 'password', 'telephone_number'];
-
+    protected $fillable = ['id', 'user_id', 'is_appointment', 'limited_to', 
+    'subject', 'description', 'location', 'date', 'start_time', 'end_time','is_all_day',
+    'require_payment','price'];
 
     /**
     * @return \Illuminate\Database\Eloquent\Relations\HasMany
