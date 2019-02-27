@@ -26,6 +26,22 @@ class TimetableController extends Controller
     }
 
     /**
+    * Display a specific resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function show(Timetable $timetable)
+    {
+        if ($timetable->is_appointment == false) 
+            return response()->json([
+                'message' => 'Selected timeslot is not an appointment.'
+            ], 200);
+
+        return response()->json([
+            'timetable' => $timetable,
+        ], 200);
+    }
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
