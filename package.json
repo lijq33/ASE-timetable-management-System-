@@ -28,7 +28,6 @@
         "@turf/turf": "^5.1.6",
         "bootstrap-datepicker": "^1.8.0",
         "bootstrap-vue": "^2.0.0-rc.11",
-        "kalendar-vue": "^0.2.8",
         "npm": "^6.4.1",
         "simplebar": "^3.0.0-beta.4",
         "validate.js": "^0.12.0",
@@ -37,6 +36,7 @@
         "vue-popperjs": "^1.5.0",
         "vue-recaptcha": "^1.1.1",
         "vue-router-middleware": "^0.2.1",
+        "vue-stripe-elements-plus": "^0.2.9",
         "vue2-google-maps": "^0.10.2",
         "vuex": "^3.1.0"
     }

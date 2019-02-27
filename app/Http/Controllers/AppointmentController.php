@@ -8,7 +8,25 @@ use App\User;
 
 class AppointmentController extends Controller
 {
-    
+    /**
+    * Display a listing of the resource.
+    * Retrieve a listing of all appointment that the current user made
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function index()
+    {
+        $user = new User();
+        $user = $user->fetchUser();
+
+        $appointment = $user->appointment->all();
+
+        return response()->json([
+            'appointment' => $appointment,
+        ], 200);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

@@ -15,9 +15,9 @@
         >
         </ejs-schedule>
       </div>
-    </div>
-
   </div>
+  </div>
+
 </template>
 <script>
 import "@syncfusion/ej2-base/styles/material.css";
@@ -297,41 +297,41 @@ export default Vue.extend({
 });
 </script>
 
-<style>
-.custom-field-row {
-  margin-bottom: 20px;
-}
-.block-events.e-schedule .template-wrap {
-  width: 100%;
-}
+ <style>
+  .custom-field-row { 
+    margin-bottom: 20px; 
+  } 
+  .block-events.e-schedule .template-wrap { 
+    width: 100%; 
+  } 
 
-.block-events.e-schedule .e-vertical-view .e-resource-cells {
-  height: 58px;
-}
+  .block-events.e-schedule .e-vertical-view .e-resource-cells { 
+    height: 58px; 
+  } 
 
-.block-events.e-schedule .e-timeline-view .e-resource-left-td,
-.block-events.e-schedule .e-timeline-month-view .e-resource-left-td {
-  width: 170px;
-}
+  .block-events.e-schedule .e-timeline-view .e-resource-left-td, 
+  .block-events.e-schedule .e-timeline-month-view .e-resource-left-td { 
+    width: 170px; 
+  } 
 
-.block-events.e-schedule .e-resource-cells.e-child-node .employee-category,
-.block-events.e-schedule .e-resource-cells.e-child-node .employee-name {
-  padding: 5px;
-}
+  .block-events.e-schedule .e-resource-cells.e-child-node .employee-category, 
+  .block-events.e-schedule .e-resource-cells.e-child-node .employee-name { 
+    padding: 5px; 
+  } 
 
-.block-events.e-schedule .employee-image {
-  width: 45px;
-  height: 40px;
-  float: left;
-  border-radius: 50%;
-  margin-right: 10px;
-}
+  .block-events.e-schedule .employee-image { 
+    width: 45px; 
+    height: 40px; 
+    float: left; 
+    border-radius: 50%; 
+    margin-right: 10px; 
+  } 
 
-.block-events.e-schedule .employee-name {
-  font-size: 13px;
-}
+  .block-events.e-schedule .employee-name { 
+    font-size: 13px; 
+  } 
 
-.block-events.e-schedule .employee-designation {
-  font-size: 10px;
-}
-</style>
+  .block-events.e-schedule .employee-designation { 
+    font-size: 10px; 
+  } 
+ </style>

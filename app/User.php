@@ -33,12 +33,19 @@ class User extends Model
     }
 
     /**
+    * Get the appointment for the user.
+    */
+    public function appointment()
+    {
+        return $this->hasMany('App\Appointment');
+    }
+
+    /**
      * Fetch the Individual Or Company 
      * 
      */
     public function fetchUser()
     {
-
         $user = (new Illuminate(\Auth::Guard('individual')))->user();
         
         if( !isset($user) )

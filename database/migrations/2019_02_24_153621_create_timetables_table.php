@@ -14,13 +14,13 @@ class CreateTimetablesTable extends Migration
     public function up()
     {
         Schema::create('timetables', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references('id')->on('users');
 
             $table->tinyInteger('is_appointment');
-            $table->tinyInteger('event_type');
+            $table->tinyInteger('limited_to'); //public private invites
             
             $table->string('subject');
             $table->string('description');

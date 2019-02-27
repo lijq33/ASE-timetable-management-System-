@@ -14,6 +14,7 @@
 
 {{-- google recaptcha --}}
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://js.stripe.com/v3/"></script>
 
 <style>
     .bootstrap-timepicker-widget {

@@ -13,17 +13,9 @@ class test extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     * THIS IS ONLY FOR PHP
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        // for both timetable 
+        // and appointment
+        // done
     }
 
     /**
@@ -34,31 +26,11 @@ class test extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // for both timetable 
+        // and appointment
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -68,7 +40,7 @@ class test extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //timetable only
     }
 
     /**
@@ -79,6 +51,7 @@ class test extends Controller
      */
     public function destroy($id)
     {
-        //
+        // for both timetable 
+        // and appointment
     }
 }
