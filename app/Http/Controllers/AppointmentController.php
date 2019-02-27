@@ -39,15 +39,8 @@ class AppointmentController extends Controller
 
         //store data into database
         Timetable::create([
-            'description' => $data['description'],
-            'end_time' => $data['end_time'],
-            'is_all_day' => $data['is_all_day'],
-            'location' => $data['location'],
-            'start_time' => $data['start_time'],
-            'subject' => $data['subject'],
-            'is_appointment' => $data['is_appointment'],
-            'date' => $data['date'],
-            'interval' => $data['interval'],
+            'timetable_id' => $data['timetable_id'],
+            'user_id' => $data['user_id'],
         ]);
 
         if ($data['isAppointment'] === true){

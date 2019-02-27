@@ -13,7 +13,7 @@ class Appointment extends Model
      *
      * @var array
     */
-    protected $fillable = ['timetable_id', 'user_id' ];
+    protected $fillable = ['timetable_id', 'user_id'];
 
     public function timeTable()
     {

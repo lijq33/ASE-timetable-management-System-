@@ -31,6 +31,8 @@ class CreateTimetablesTable extends Migration
             $table->time('end_time');
             
             $table->tinyInteger('is_all_day');
+            $table->tinyInteger('require_payment');
+            $table->tinyInteger('price');
             $table->timestamps();
         });
     }
