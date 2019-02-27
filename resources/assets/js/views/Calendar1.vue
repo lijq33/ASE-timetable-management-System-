@@ -16,6 +16,25 @@
       </div>
     </div>
 
+    <div>
+      <!-- Modal Component -->
+      <b-modal
+        ref="myModalRef"
+        hide-footer
+        title="Using Component Methods"
+      >
+        <div class="d-block text-center">
+          <h3>Hello From My Modal!</h3>
+        </div>
+        <b-button
+          class="mt-3"
+          variant="outline-danger"
+          block
+          @click="hideModal"
+        >Close Me</b-button>
+      </b-modal>
+    </div>
+
   </div>
 </template>
 <script>
@@ -32,6 +51,7 @@ import { createElement, extend, enableRipple } from "@syncfusion/ej2-base";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { Modal } from "bootstrap-vue/es/components";
 import {
   SchedulePlugin,
   Day,
@@ -240,8 +260,10 @@ export default Vue.extend({
       }
     },
     customButtonEvent: function(event) {
-      console.log("button pressed");
-      console.log(event);
+      this.$refs.myModalRef.show();
+    },
+    hideModal() {
+      this.$refs.myModalRef.hide();
     },
     onPopupOpen: function(args) {
       console.log(args);
@@ -305,11 +327,15 @@ export default Vue.extend({
           });
           container_button1.appendChild(inputEle_button1);
           row.appendChild(container_button1);
-          var button1 = new Button({
+          let button1 = new Button({
             content: "More",
             disabled: false
           });
-          button1.addEventListener("click", this.customButtonEvent, false);
+          container_button1.addEventListener(
+            "click",
+            this.customButtonEvent,
+            false
+          );
           button1.appendTo(inputEle_button1);
           inputEle_button1.setAttribute("name", "IsButton1");
         }
