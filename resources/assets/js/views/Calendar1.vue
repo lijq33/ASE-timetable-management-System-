@@ -11,13 +11,12 @@
           :eventRendered="oneventRendered"
           :popupOpen="onPopupOpen"
           :actionComplete="onActionComplete"
-          :cssClass='cssClass'
         >
         </ejs-schedule>
       </div>
-  </div>
-  </div>
+    </div>
 
+  </div>
 </template>
 <script>
 import "@syncfusion/ej2-base/styles/material.css";
@@ -29,9 +28,9 @@ import "@syncfusion/ej2-navigations/styles/material.css";
 import "@syncfusion/ej2-popups/styles/material.css";
 import "@syncfusion/ej2-vue-schedule/styles/material.css";
 import Vue from "vue";
-import { createElement, extend } from "@syncfusion/ej2-base";
+import { createElement, extend, enableRipple } from "@syncfusion/ej2-base";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
-import { CheckBox } from "@syncfusion/ej2-vue-buttons";
+import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
   SchedulePlugin,
@@ -44,6 +43,7 @@ import {
   Resize,
   DragAndDrop
 } from "@syncfusion/ej2-vue-schedule";
+enableRipple(true);
 Vue.use(SchedulePlugin);
 
 export default Vue.extend({
@@ -57,10 +57,10 @@ export default Vue.extend({
     let scheduleData = [
       {
         Id: 1,
-        Subject: "Explosion of Betelgeuse Star",
+        Subject: "Not Available",
         StartTime: new Date(2018, 1, 11, 9, 30),
         EndTime: new Date(2018, 1, 11, 11, 0),
-        CategoryColor: "#1aaa55",
+        CategoryColor: "#D4D2D4",
         IsBlock: true
       },
       {
@@ -76,7 +76,7 @@ export default Vue.extend({
         StartTime: new Date(2018, 1, 13, 9, 30),
         EndTime: new Date(2018, 1, 13, 11, 0),
         CategoryColor: "#7fa900",
-        IsSunny: true,
+        IsAppointment: true,
         IsAllDay: true
       },
       {
@@ -204,17 +204,16 @@ export default Vue.extend({
     scheduleData.forEach(element => {
       //console.log(element.Subject)
       if (element.Subject === "Blue Moon Eclipse") {
-        this.isSunny = element.IsSunny;
+        this.isAppointment = element.IsAppointment;
       }
     });
 
     return {
-      isSunny: [],
+      isAppointment: [],
       eventSettings: {
         dataSource: extend([], scheduleData, null, true)
       },
-      selectedDate: new Date(2018, 1, 15),
-      cssClass: "block-events"
+      selectedDate: new Date(2018, 1, 15)
     };
   },
   provide: {
@@ -223,6 +222,7 @@ export default Vue.extend({
   methods: {
     //New event, update event
     onActionComplete: function(event) {
+      console.log(event);
       if (event.requestType == "eventChanged") console.log("update data");
       else if (event.requestType == "eventCreated")
         console.log("saved settings");
@@ -238,6 +238,10 @@ export default Vue.extend({
       } else {
         args.element.style.backgroundColor = categoryColor;
       }
+    },
+    customButtonEvent: function(event) {
+      console.log("button pressed");
+      console.log(event);
     },
     onPopupOpen: function(args) {
       console.log(args);
@@ -269,7 +273,7 @@ export default Vue.extend({
             fields: { text: "text", value: "value" },
             value: "",
             floatLabelType: "Always",
-            placeholder: "Customized Event Type"
+            placeholder: "Event Type"
           });
           dropDownList.appendTo(inputEle);
           inputEle.setAttribute("name", "EventType");
@@ -280,16 +284,34 @@ export default Vue.extend({
           });
           let inputEle_checkbox1 = createElement("input", {
             className: "e-field",
-            attrs: { name: "IsSunny" }
+            attrs: { name: "IsAppointment" }
           });
           container_checkbox1.appendChild(inputEle_checkbox1);
           row.appendChild(container_checkbox1);
           var checkbox1 = new CheckBox({
-            label: "Sunny",
-            checked: this.isSunny
+            label: "Appointment",
+            checked: this.isAppointment
           });
           checkbox1.appendTo(inputEle_checkbox1);
-          inputEle_checkbox1.setAttribute("name", "IsSunny");
+          inputEle_checkbox1.setAttribute("name", "IsAppointment");
+
+          //custom button
+          let container_button1 = createElement("div", {
+            className: "custom-field-container-button1"
+          });
+          let inputEle_button1 = createElement("button", {
+            className: "e-field",
+            attrs: { name: "IsButton1" }
+          });
+          container_button1.appendChild(inputEle_button1);
+          row.appendChild(container_button1);
+          var button1 = new Button({
+            content: "More",
+            disabled: false
+          });
+          button1.addEventListener("click", this.customButtonEvent, false);
+          button1.appendTo(inputEle_button1);
+          inputEle_button1.setAttribute("name", "IsButton1");
         }
       }
     }
@@ -297,41 +319,3 @@ export default Vue.extend({
 });
 </script>
 
- <style>
-  .custom-field-row { 
-    margin-bottom: 20px; 
-  } 
-  .block-events.e-schedule .template-wrap { 
-    width: 100%; 
-  } 
-
-  .block-events.e-schedule .e-vertical-view .e-resource-cells { 
-    height: 58px; 
-  } 
-
-  .block-events.e-schedule .e-timeline-view .e-resource-left-td, 
-  .block-events.e-schedule .e-timeline-month-view .e-resource-left-td { 
-    width: 170px; 
-  } 
-
-  .block-events.e-schedule .e-resource-cells.e-child-node .employee-category, 
-  .block-events.e-schedule .e-resource-cells.e-child-node .employee-name { 
-    padding: 5px; 
-  } 
-
-  .block-events.e-schedule .employee-image { 
-    width: 45px; 
-    height: 40px; 
-    float: left; 
-    border-radius: 50%; 
-    margin-right: 10px; 
-  } 
-
-  .block-events.e-schedule .employee-name { 
-    font-size: 13px; 
-  } 
-
-  .block-events.e-schedule .employee-designation { 
-    font-size: 10px; 
-  } 
- </style>
