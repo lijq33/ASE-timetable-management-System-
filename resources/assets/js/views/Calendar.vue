@@ -14,6 +14,21 @@
 					:cssClass='cssClass'
 				>
 				</ejs-schedule>
+				
+				<appointment 
+					:timetable-id="timetableId"
+				>
+				</appointment>
+
+				<div>
+					<b-modal ref="myModalRef" hide-footer title="Using Component Methods">
+					<div class="d-block text-center">
+						<h3>Hello From My Modal!</h3>
+					</div>
+					<b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-button>
+					</b-modal>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -36,7 +51,14 @@
 	import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda, View, Resize, DragAndDrop } from "@syncfusion/ej2-vue-schedule";
 	Vue.use(SchedulePlugin);
 
+	import Appointment from './Appointment';
+
 	export default Vue.extend({
+
+		components: {
+            'appointment': Appointment
+		},
+		
 		data() {
 			var dataManger = new DataManager({
 				url: "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData",
@@ -99,7 +121,9 @@
 				},
 				isSunny: [],
 				selectedDate: new Date(2018, 1, 15),
-				cssClass: "block-events"
+				cssClass: "block-events",
+				timetableId: null,
+				showModal: false,
 			};
 		},
 
@@ -148,6 +172,17 @@
 				})
 			},
 		
+			makeAppointment(id){
+				this.timetableId = id;
+				this.showModal= true;	 
+			},
+			
+			showModal() {
+				this.$refs.myModalRef.show()
+			},
+			hideModal() {
+				this.$refs.myModalRef.hide()
+			},
 
 			oneventRendered: function(args) {
 				let scheduleObj = this.$refs.ScheduleObj;
