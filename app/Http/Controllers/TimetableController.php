@@ -51,6 +51,8 @@ class TimetableController extends Controller
         // is_appointment
         // description
 
+    
+
         //store data into database
         Timetable::create([
             'user_id' => $user_id,
@@ -62,7 +64,6 @@ class TimetableController extends Controller
             'subject' => $data['subject'],
             'is_appointment' => $data['is_appointment'],
             'date' => $data['date'],
-            'interval' => $data['interval'],
         ]);
 
         return response()->json([
