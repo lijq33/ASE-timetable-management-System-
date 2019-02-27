@@ -17,11 +17,20 @@ class CreateTimetablesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
-                   ->references('id')->on('users');
-            $table->time('time');
-            $table->date('date');
-            $table->string('purpose');
+                ->references('id')->on('users');
+
+            $table->tinyInteger('is_appointment');
+            $table->tinyInteger('event_type');
+            
+            $table->string('subject');
             $table->string('description');
+            
+            $table->string('location');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
+            
+            $table->tinyInteger('is_all_day');
             $table->timestamps();
         });
     }

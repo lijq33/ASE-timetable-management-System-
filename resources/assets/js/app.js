@@ -28,6 +28,9 @@ Vue.use(VueGoogleMaps, {
   },
 });
 
+
+
+
 // Vue.component('GRecaptcha', require('./components/GRecaptcha'));
 // Vue.component('DatePicker', require('./components/DatePicker'));
 // Vue.component('TimePicker', require('./components/TimePicker'));

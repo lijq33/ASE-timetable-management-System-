@@ -25,7 +25,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.user'], function ($router) {
-    Route::post('timetable', 'TimetableController@store');
+    Route::resource('timetable', 'TimetableController', ['except' => ['', 'edit']]);
+
     Route::get('timetable/get', 'TimetableController@show');
 
     Route::post('timetable/update', 'TimetableController@update');

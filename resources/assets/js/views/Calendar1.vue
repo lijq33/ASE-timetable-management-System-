@@ -10,6 +10,8 @@
           :eventSettings='eventSettings'
           :eventRendered="oneventRendered"
           :popupOpen="onPopupOpen"
+          :actionComplete="onActionComplete"
+          :cssClass='cssClass'
         >
         </ejs-schedule>
       </div>
@@ -17,11 +19,6 @@
 
   </div>
 </template>
-<style>
-.custom-field-row {
-  margin-bottom: 20px;
-}
-</style>
 <script>
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
@@ -34,6 +31,7 @@ import "@syncfusion/ej2-vue-schedule/styles/material.css";
 import Vue from "vue";
 import { createElement, extend } from "@syncfusion/ej2-base";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
+import { CheckBox } from "@syncfusion/ej2-vue-buttons";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import {
   SchedulePlugin,
@@ -49,20 +47,21 @@ import {
 Vue.use(SchedulePlugin);
 
 export default Vue.extend({
-  data: function() {
+  data() {
     var dataManger = new DataManager({
       url: "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData",
       adaptor: new WebApiAdaptor(),
       crossDomain: true
     });
 
-    var scheduleData = [
+    let scheduleData = [
       {
         Id: 1,
         Subject: "Explosion of Betelgeuse Star",
         StartTime: new Date(2018, 1, 11, 9, 30),
         EndTime: new Date(2018, 1, 11, 11, 0),
-        CategoryColor: "#1aaa55"
+        CategoryColor: "#1aaa55",
+        IsBlock: true
       },
       {
         Id: 2,
@@ -76,7 +75,9 @@ export default Vue.extend({
         Subject: "Blue Moon Eclipse",
         StartTime: new Date(2018, 1, 13, 9, 30),
         EndTime: new Date(2018, 1, 13, 11, 0),
-        CategoryColor: "#7fa900"
+        CategoryColor: "#7fa900",
+        IsSunny: true,
+        IsAllDay: true
       },
       {
         Id: 4,
@@ -199,17 +200,33 @@ export default Vue.extend({
       }
     ];
 
+    //process custom field
+    scheduleData.forEach(element => {
+      //console.log(element.Subject)
+      if (element.Subject === "Blue Moon Eclipse") {
+        this.isSunny = element.IsSunny;
+      }
+    });
+
     return {
+      isSunny: [],
       eventSettings: {
         dataSource: extend([], scheduleData, null, true)
       },
-      selectedDate: new Date(2018, 1, 15)
+      selectedDate: new Date(2018, 1, 15),
+      cssClass: "block-events"
     };
   },
   provide: {
     schedule: [Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]
   },
   methods: {
+    //New event, update event
+    onActionComplete: function(event) {
+      if (event.requestType == "eventChanged") console.log("update data");
+      else if (event.requestType == "eventCreated")
+        console.log("saved settings");
+    },
     oneventRendered: function(args) {
       let scheduleObj = this.$refs.ScheduleObj;
       let categoryColor = args.data.CategoryColor;
@@ -223,6 +240,7 @@ export default Vue.extend({
       }
     },
     onPopupOpen: function(args) {
+      console.log(args);
       if (args.type === "Editor") {
         // Create required custom elements in initial time
         if (!args.element.querySelector(".custom-field-row")) {
@@ -255,9 +273,65 @@ export default Vue.extend({
           });
           dropDownList.appendTo(inputEle);
           inputEle.setAttribute("name", "EventType");
+
+          //checkbox 1
+          let container_checkbox1 = createElement("div", {
+            className: "custom-field-container-checkbox1"
+          });
+          let inputEle_checkbox1 = createElement("input", {
+            className: "e-field",
+            attrs: { name: "IsSunny" }
+          });
+          container_checkbox1.appendChild(inputEle_checkbox1);
+          row.appendChild(container_checkbox1);
+          var checkbox1 = new CheckBox({
+            label: "Sunny",
+            checked: this.isSunny
+          });
+          checkbox1.appendTo(inputEle_checkbox1);
+          inputEle_checkbox1.setAttribute("name", "IsSunny");
         }
       }
     }
   }
 });
 </script>
+
+<style>
+.custom-field-row {
+  margin-bottom: 20px;
+}
+.block-events.e-schedule .template-wrap {
+  width: 100%;
+}
+
+.block-events.e-schedule .e-vertical-view .e-resource-cells {
+  height: 58px;
+}
+
+.block-events.e-schedule .e-timeline-view .e-resource-left-td,
+.block-events.e-schedule .e-timeline-month-view .e-resource-left-td {
+  width: 170px;
+}
+
+.block-events.e-schedule .e-resource-cells.e-child-node .employee-category,
+.block-events.e-schedule .e-resource-cells.e-child-node .employee-name {
+  padding: 5px;
+}
+
+.block-events.e-schedule .employee-image {
+  width: 45px;
+  height: 40px;
+  float: left;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.block-events.e-schedule .employee-name {
+  font-size: 13px;
+}
+
+.block-events.e-schedule .employee-designation {
+  font-size: 10px;
+}
+</style>

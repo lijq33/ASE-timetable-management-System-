@@ -12,7 +12,7 @@ Import timetable(store)
 View timetable(show)
 update timetable(update)
 create timetable(new timetable)
-https://pusher.com/tutorials/calendar-vue
+database for timetable might require manual input rather than auto increment
 
 
 # Appointment
@@ -32,7 +32,9 @@ Login for both individual and company
 
 
 ## TODO
-
+Sync google calendar
+Stripe
+CRUD APPOINTMENT AND TIMETABLE
 
 
 
