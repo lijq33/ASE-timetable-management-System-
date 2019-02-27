@@ -25,35 +25,35 @@ Route::group(['prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.user'], function ($router) {
-    Route::resource('timetable', 'TimetableController', ['except' => ['', 'edit']]);
+    Route::resource('timetable', 'TimetableController', ['except' => ['create', 'edit']]);
+    Route::resource('appointment', 'AppointmentController', ['except' => ['create', 'edit', 'update']]);
+    // Route::get('timetable/get', 'TimetableController@show');
 
-    Route::get('timetable/get', 'TimetableController@show');
-
-    Route::post('timetable/update', 'TimetableController@update');
-    Route::post('timetable/delete', 'TimetableController@destroy');
+    // Route::post('timetable/update', 'TimetableController@update');
+    // Route::post('timetable/delete', 'TimetableController@destroy');
     
-    Route::get('appointment/get', 'AppointmentController@show');
+    // Route::get('appointment/get', 'AppointmentController@show');
     // Route::post('appointment', 'AppointmentController@store');
-    Route::post('appointment/update', 'AppointmentController@update');
-    Route::post('appointment/delete', 'AppointmentController@destroy');
+    // Route::post('appointment/update', 'AppointmentController@update');
+    // Route::post('appointment/delete', 'AppointmentController@destroy');
 });
 
 
 Route::group(['middleware' => 'auth.individual'], function ($router) {
 
-    Route::get('timetable/get', 'TimetableController@show');
-    Route::post('timetable', 'TimetableController@store');
-    Route::post('timetable/update', 'TimetableController@update');
-    Route::post('timetable/delete', 'TimetableController@destroy');
+    // Route::get('timetable/get', 'TimetableController@show');
+    // Route::post('timetable', 'TimetableController@store');
+    // Route::post('timetable/update', 'TimetableController@update');
+    // Route::post('timetable/delete', 'TimetableController@destroy');
     
-    Route::get('appointment/get', 'AppointmentController@show');
-    // Route::post('appointment', 'AppointmentController@store');
-    Route::post('appointment/update', 'AppointmentController@update');
-    Route::post('appointment/delete', 'AppointmentController@destroy');
+    // Route::get('appointment/get', 'AppointmentController@show');
+    // // Route::post('appointment', 'AppointmentController@store');
+    // Route::post('appointment/update', 'AppointmentController@update');
+    // Route::post('appointment/delete', 'AppointmentController@destroy');
 
 });
 
 Route::group(['middleware' => 'auth.company'], function ($router) {
-    Route::post('appointment', 'AppointmentController@store');
+    // Route::post('appointment', 'AppointmentController@store');
 
 });

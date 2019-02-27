@@ -56,7 +56,6 @@ class TimetableController extends Controller
   
         //perform validation
 
-
         // end_time
         // event_type
         // is_all_day

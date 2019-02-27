@@ -37,20 +37,21 @@ class AppointmentController extends Controller
     {
         $data = request()->all();
 
+        if ($data['isAppointment'] === false){   
+            return response()->json([
+                'message' => 'Invalid request'
+            ], 401);
+        }
+
         //store data into database
-        Timetable::create([
+        Appointment::create([
             'timetable_id' => $data['timetable_id'],
             'user_id' => $data['user_id'],
         ]);
 
-        if ($data['isAppointment'] === true){
-
-        }
-
         return response()->json([
-            'message' => 'Account is created successfully'
+            'message' => 'Appointment has been successfully booked !'
         ], 200);
-
     }
 
     
