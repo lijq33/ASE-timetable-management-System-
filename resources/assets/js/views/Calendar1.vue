@@ -1,5 +1,32 @@
 <template>
+
   <div>
+
+    <div>
+      <!-- Google Calendar Modal Component -->
+      <b-button
+        @click="showGoogleCalendar"
+        ref="btnGoogleCalendarShow"
+      >Google Calendar</b-button>
+
+      <b-modal
+        ref="btnGoogleCalendarShow"
+        hide-footer
+        title="Google Calendar Sychronization"
+      >
+        <div class="d-block text-center">
+          <h3>Status:</h3>
+        </div>
+        <b-button
+          class="mt-3"
+          variant="outline-danger"
+          block
+          @click="hideGoogleCalendar"
+        >Close Me</b-button>
+      </b-modal>
+    </div>
+
+    <!-- calendar -->
     <div class="col-md-12 control-section">
       <div class="content-wrapper">
         <ejs-schedule
@@ -11,13 +38,14 @@
           :eventRendered="oneventRendered"
           :popupOpen="onPopupOpen"
           :actionComplete="onActionComplete"
+          :readonly="readonly"
         >
         </ejs-schedule>
       </div>
     </div>
 
     <div>
-      <!-- Modal Component -->
+      <!-- Custom Edit Modal Component -->
       <b-modal
         ref="myModalRef"
         hide-footer
@@ -50,7 +78,7 @@ import Vue from "vue";
 import { createElement, extend, enableRipple } from "@syncfusion/ej2-base";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { Modal } from "bootstrap-vue/es/components";
 import {
   SchedulePlugin,
@@ -67,13 +95,32 @@ enableRipple(true);
 Vue.use(SchedulePlugin);
 
 export default Vue.extend({
-  data() {
-    var dataManger = new DataManager({
-      url: "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData",
-      adaptor: new WebApiAdaptor(),
-      crossDomain: true
-    });
+  mounted() {
+    var scope = this;
+    //google calender api
+    var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
+    var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
 
+    axios
+      .get(
+        "https://www.googleapis.com/calendar/v3/calendars/" +
+          calendarId +
+          "/events?key=" +
+          publicKey
+      )
+      .then(function(response) {
+        // handle success
+        console.log(response);
+
+        //process data
+        scope.processGoogleCalendarData(response.data);
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
+  },
+  data() {
     let scheduleData = [
       {
         Id: 1,
@@ -229,6 +276,8 @@ export default Vue.extend({
     });
 
     return {
+      readonly: false,
+      googleCalendarData: [],
       isAppointment: [],
       eventSettings: {
         dataSource: extend([], scheduleData, null, true)
@@ -240,6 +289,42 @@ export default Vue.extend({
     schedule: [Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]
   },
   methods: {
+    processGoogleCalendarData(e) {
+      var scope = this;
+
+      var items = e.items;
+      var scheduleData1 = [];
+      if (items.length > 0) {
+        for (var i = 0; i < items.length; i++) {
+          var event = items[i];
+          var when = event.start.dateTime;
+          var start = event.start.dateTime;
+          var end = event.end.dateTime;
+          if (!when) {
+            when = event.start.date;
+            start = event.start.date;
+            end = event.end.date;
+          }
+          scheduleData1.push({
+            Id: event.id,
+            Subject: event.summary,
+            StartTime: new Date(start),
+            EndTime: new Date(end),
+            IsAllDay: !event.start.dateTime
+          });
+        }
+      }
+      scope.googleCalendarData = scheduleData1;
+      //console.log(scheduleData);
+    },
+
+    showGoogleCalendar() {
+      //this.$refs.btnGoogleCalendarShow.show();
+      this.googleCalendarDataBinding();
+    },
+    hideGoogleCalendar() {
+      this.$refs.btnGoogleCalendarShow.hide();
+    },
     //New event, update event
     onActionComplete: function(event) {
       console.log(event);
