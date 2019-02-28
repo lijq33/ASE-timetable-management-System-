@@ -1,5 +1,32 @@
 <template>
+
   <div>
+
+    <div>
+      <!-- Google Calendar Modal Component -->
+      <b-button
+        @click="showGoogleCalendar"
+        ref="btnGoogleCalendarShow"
+      >Google Calendar</b-button>
+
+      <b-modal
+        ref="btnGoogleCalendarShow"
+        hide-footer
+        title="Google Calendar Sychronization"
+      >
+        <div class="d-block text-center">
+          <h3>Status:</h3>
+        </div>
+        <b-button
+          class="mt-3"
+          variant="outline-danger"
+          block
+          @click="hideGoogleCalendar"
+        >Close Me</b-button>
+      </b-modal>
+    </div>
+
+    <!-- calendar -->
     <div class="col-md-12 control-section">
       <div class="content-wrapper">
         <ejs-schedule
@@ -11,13 +38,32 @@
           :eventRendered="oneventRendered"
           :popupOpen="onPopupOpen"
           :actionComplete="onActionComplete"
-          :cssClass='cssClass'
+          :readonly="readonly"
         >
         </ejs-schedule>
       </div>
-  </div>
-  </div>
+    </div>
 
+    <div>
+      <!-- Custom Edit Modal Component -->
+      <b-modal
+        ref="myModalRef"
+        hide-footer
+        title="Using Component Methods"
+      >
+        <div class="d-block text-center">
+          <h3>Hello From My Modal!</h3>
+        </div>
+        <b-button
+          class="mt-3"
+          variant="outline-danger"
+          block
+          @click="hideModal"
+        >Close Me</b-button>
+      </b-modal>
+    </div>
+
+  </div>
 </template>
 <script>
 import "@syncfusion/ej2-base/styles/material.css";
@@ -29,10 +75,11 @@ import "@syncfusion/ej2-navigations/styles/material.css";
 import "@syncfusion/ej2-popups/styles/material.css";
 import "@syncfusion/ej2-vue-schedule/styles/material.css";
 import Vue from "vue";
-import { createElement, extend } from "@syncfusion/ej2-base";
+import { createElement, extend, enableRipple } from "@syncfusion/ej2-base";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
-import { CheckBox } from "@syncfusion/ej2-vue-buttons";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
+import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
+import { Modal } from "bootstrap-vue/es/components";
 import {
   SchedulePlugin,
   Day,
@@ -44,23 +91,43 @@ import {
   Resize,
   DragAndDrop
 } from "@syncfusion/ej2-vue-schedule";
+enableRipple(true);
 Vue.use(SchedulePlugin);
 
 export default Vue.extend({
-  data() {
-    var dataManger = new DataManager({
-      url: "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData",
-      adaptor: new WebApiAdaptor(),
-      crossDomain: true
-    });
+  mounted() {
+    var scope = this;
+    //google calender api
+    var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
+    var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
 
+    axios
+      .get(
+        "https://www.googleapis.com/calendar/v3/calendars/" +
+          calendarId +
+          "/events?key=" +
+          publicKey
+      )
+      .then(function(response) {
+        // handle success
+        console.log(response);
+
+        //process data
+        scope.processGoogleCalendarData(response.data);
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
+  },
+  data() {
     let scheduleData = [
       {
         Id: 1,
-        Subject: "Explosion of Betelgeuse Star",
+        Subject: "Not Available",
         StartTime: new Date(2018, 1, 11, 9, 30),
         EndTime: new Date(2018, 1, 11, 11, 0),
-        CategoryColor: "#1aaa55",
+        CategoryColor: "#D4D2D4",
         IsBlock: true
       },
       {
@@ -76,7 +143,7 @@ export default Vue.extend({
         StartTime: new Date(2018, 1, 13, 9, 30),
         EndTime: new Date(2018, 1, 13, 11, 0),
         CategoryColor: "#7fa900",
-        IsSunny: true,
+        IsAppointment: true,
         IsAllDay: true
       },
       {
@@ -204,25 +271,63 @@ export default Vue.extend({
     scheduleData.forEach(element => {
       //console.log(element.Subject)
       if (element.Subject === "Blue Moon Eclipse") {
-        this.isSunny = element.IsSunny;
+        this.isAppointment = element.IsAppointment;
       }
     });
 
     return {
-      isSunny: [],
+      readonly: false,
+      googleCalendarData: [],
+      isAppointment: [],
       eventSettings: {
         dataSource: extend([], scheduleData, null, true)
       },
-      selectedDate: new Date(2018, 1, 15),
-      cssClass: "block-events"
+      selectedDate: new Date(2018, 1, 15)
     };
   },
   provide: {
     schedule: [Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]
   },
   methods: {
+    processGoogleCalendarData(e) {
+      var scope = this;
+
+      var items = e.items;
+      var scheduleData1 = [];
+      if (items.length > 0) {
+        for (var i = 0; i < items.length; i++) {
+          var event = items[i];
+          var when = event.start.dateTime;
+          var start = event.start.dateTime;
+          var end = event.end.dateTime;
+          if (!when) {
+            when = event.start.date;
+            start = event.start.date;
+            end = event.end.date;
+          }
+          scheduleData1.push({
+            Id: event.id,
+            Subject: event.summary,
+            StartTime: new Date(start),
+            EndTime: new Date(end),
+            IsAllDay: !event.start.dateTime
+          });
+        }
+      }
+      scope.googleCalendarData = scheduleData1;
+      //console.log(scheduleData);
+    },
+
+    showGoogleCalendar() {
+      //this.$refs.btnGoogleCalendarShow.show();
+      this.googleCalendarDataBinding();
+    },
+    hideGoogleCalendar() {
+      this.$refs.btnGoogleCalendarShow.hide();
+    },
     //New event, update event
     onActionComplete: function(event) {
+      console.log(event);
       if (event.requestType == "eventChanged") console.log("update data");
       else if (event.requestType == "eventCreated")
         console.log("saved settings");
@@ -238,6 +343,12 @@ export default Vue.extend({
       } else {
         args.element.style.backgroundColor = categoryColor;
       }
+    },
+    customButtonEvent: function(event) {
+      this.$refs.myModalRef.show();
+    },
+    hideModal() {
+      this.$refs.myModalRef.hide();
     },
     onPopupOpen: function(args) {
       console.log(args);
@@ -269,7 +380,7 @@ export default Vue.extend({
             fields: { text: "text", value: "value" },
             value: "",
             floatLabelType: "Always",
-            placeholder: "Customized Event Type"
+            placeholder: "Event Type"
           });
           dropDownList.appendTo(inputEle);
           inputEle.setAttribute("name", "EventType");
@@ -280,16 +391,38 @@ export default Vue.extend({
           });
           let inputEle_checkbox1 = createElement("input", {
             className: "e-field",
-            attrs: { name: "IsSunny" }
+            attrs: { name: "IsAppointment" }
           });
           container_checkbox1.appendChild(inputEle_checkbox1);
           row.appendChild(container_checkbox1);
           var checkbox1 = new CheckBox({
-            label: "Sunny",
-            checked: this.isSunny
+            label: "Appointment",
+            checked: this.isAppointment
           });
           checkbox1.appendTo(inputEle_checkbox1);
-          inputEle_checkbox1.setAttribute("name", "IsSunny");
+          inputEle_checkbox1.setAttribute("name", "IsAppointment");
+
+          //custom button
+          let container_button1 = createElement("div", {
+            className: "custom-field-container-button1"
+          });
+          let inputEle_button1 = createElement("button", {
+            className: "e-field",
+            attrs: { name: "IsButton1" }
+          });
+          container_button1.appendChild(inputEle_button1);
+          row.appendChild(container_button1);
+          let button1 = new Button({
+            content: "More",
+            disabled: false
+          });
+          container_button1.addEventListener(
+            "click",
+            this.customButtonEvent,
+            false
+          );
+          button1.appendTo(inputEle_button1);
+          inputEle_button1.setAttribute("name", "IsButton1");
         }
       }
     }
@@ -297,41 +430,3 @@ export default Vue.extend({
 });
 </script>
 
- <style>
-  .custom-field-row { 
-    margin-bottom: 20px; 
-  } 
-  .block-events.e-schedule .template-wrap { 
-    width: 100%; 
-  } 
-
-  .block-events.e-schedule .e-vertical-view .e-resource-cells { 
-    height: 58px; 
-  } 
-
-  .block-events.e-schedule .e-timeline-view .e-resource-left-td, 
-  .block-events.e-schedule .e-timeline-month-view .e-resource-left-td { 
-    width: 170px; 
-  } 
-
-  .block-events.e-schedule .e-resource-cells.e-child-node .employee-category, 
-  .block-events.e-schedule .e-resource-cells.e-child-node .employee-name { 
-    padding: 5px; 
-  } 
-
-  .block-events.e-schedule .employee-image { 
-    width: 45px; 
-    height: 40px; 
-    float: left; 
-    border-radius: 50%; 
-    margin-right: 10px; 
-  } 
-
-  .block-events.e-schedule .employee-name { 
-    font-size: 13px; 
-  } 
-
-  .block-events.e-schedule .employee-designation { 
-    font-size: 10px; 
-  } 
- </style>
