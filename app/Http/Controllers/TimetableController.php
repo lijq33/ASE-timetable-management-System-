@@ -55,16 +55,6 @@ class TimetableController extends Controller
         $data = request()->all();
   
         //perform validation
-
-        // end_time
-        // event_type
-        // is_all_day
-        // Location
-        // RecurrenceRule
-        // start_time
-        // subject:
-        // is_appointment
-        // description
             
         //store data into database
         Timetable::create([
