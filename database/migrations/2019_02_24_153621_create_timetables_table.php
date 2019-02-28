@@ -14,7 +14,7 @@ class CreateTimetablesTable extends Migration
     public function up()
     {
         Schema::create('timetables', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references('id')->on('users');
@@ -24,9 +24,12 @@ class CreateTimetablesTable extends Migration
             
             $table->string('subject');
             $table->string('description');
+            $table->Integer('no_of_slots');
+            $table->string('recurrence_rule');
             
             $table->string('location');
-            $table->date('date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->time('start_time');
             $table->time('end_time');
             

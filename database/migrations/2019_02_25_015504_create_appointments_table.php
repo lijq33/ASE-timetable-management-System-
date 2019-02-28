@@ -13,6 +13,7 @@ class CreateAppointmentsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints(); 
         Schema::create('appointments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('timetable_id')->unsigned();

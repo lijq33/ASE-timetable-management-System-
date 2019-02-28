@@ -87,28 +87,28 @@ Vue.use(SchedulePlugin);
 
 export default Vue.extend({
   mounted() {
-    var scope = this;
-    //google calender api
-    var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
-    var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
+    // var scope = this;
+    // //google calender api
+    // var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
+    // var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
 
-    axios
-      .get(
-        "https://www.googleapis.com/calendar/v3/calendars/" +
-          calendarId +
-          "/events?key=" +
-          publicKey
-      )
-      .then(function(response) {
-        // handle success
-        console.log(response);
-        //process data
-        scope.processGoogleCalendarData(response.data);
-      })
-      .catch(function(error) {
-        // handle error
-        console.log(error);
-      });
+    // axios
+    //   .get(
+    //     "https://www.googleapis.com/calendar/v3/calendars/" +
+    //       calendarId +
+    //       "/events?key=" +
+    //       publicKey
+    //   )
+    //   .then(function(response) {
+    //     // handle success
+    //     console.log(response);
+    //     //process data
+    //     scope.processGoogleCalendarData(response.data);
+    //   })
+    //   .catch(function(error) {
+    //     // handle error
+    //     console.log(error);
+    //   });
   },
   data() {
     let scheduleData = [

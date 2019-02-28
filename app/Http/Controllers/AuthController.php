@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     protected $auth = '';
+    protected $user = '';
     /**
      * Create a new AuthController instance.
      *
@@ -23,10 +24,12 @@ class AuthController extends Controller
 
             if( is_a($user_class, \App\Individual::class)){
                 $this->auth = auth('individual');
+                $this->user = 'individual';
                 $this->middleware('auth:individual', ['except' => ['login']]);
 
             }else{
                 $this->auth = auth('company');
+                $this->user = 'company';
                 $this->middleware('auth:company', ['except' => ['login']]);
             }
         }
@@ -99,6 +102,6 @@ class AuthController extends Controller
     }
 
     public function guard() {
-        return \Auth::Guard('api');
+        return \Auth::Guard($this->user);
     }
 }

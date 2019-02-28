@@ -20,11 +20,16 @@ class TimetableController extends Controller
 
         $timetable = $user->timetable->all();
 
+        //processDateTime
+        $timetable['start_time'] = mergeDateTime($timetable->start_time, $timetable->start_date );
+        $timetable['end_time'] = mergeDateTime($timetable->end_time, $timetable->end_date );
+
         return response()->json([
             'timetable' => $timetable,
         ], 200);
     }
 
+    
     /**
     * Display a specific resource.
     *
@@ -41,6 +46,8 @@ class TimetableController extends Controller
             'timetable' => $timetable,
         ], 200);
     }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -54,36 +61,37 @@ class TimetableController extends Controller
         
         $data = request()->all();
   
-        //perform validation
-            
-        //store data into database
-        Timetable::create([
-            'id' => $data['id'],
-            'user_id' => $user_id,
-            
-            'is_appointment' => $data['is_appointment'],
-            'event_type' => $data['limited_to'],
+        //processDateTime
+        $data['start_time'] = formatDateTime($data['start_time'], 'g:i A');
+        $data['end_time'] = formatDateTime($data['end_time'], 'g:i A');
+        $data['start_date'] = formatDateTime($data['start_time'], 'd/m/Y');
+        $data['end_date'] = formatDateTime($data['end_time'], 'd/m/Y');
 
+        //store data into database
+        $timetable = Timetable::create([
+            'user_id' => $user_id,
+            'is_appointment' => $data['is_appointment'],
+            'limited_to' => $data['limited_to'],
             'subject' => $data['subject'],
             'description' => $data['description'],
-
+            'no_of_slots' => $data['no_of_slots'],
+            'recurrence_rule' => $data['recurrence_rule'],
             'location' => $data['location'],
-            'date' => $data['date'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
             'start_time' => $data['start_time'],
             'end_time' => $data['end_time'],
-            
             'is_all_day' => $data['is_all_day'],        
             'require_payment' => $data['require_payment'],
             'price' => $data['price'],
         ]);
         
         return response()->json([
-            'message' => 'Account is created successfully'
+            'message' => 'Timetable is created successfully',
+            'id' => $timetable->id
         ], 200);
 
     }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -94,6 +102,7 @@ class TimetableController extends Controller
      */
     public function update(Request $request, Timetable $timetable)
     {
+        
         //retrieve all appointment
         $timetable->appointment();
 
@@ -105,20 +114,28 @@ class TimetableController extends Controller
         }
 
         $data = request()->all();
-
-        //perform validation
+        
+        //processDateTime
+        $data['start_time'] = formatDateTime($data['start_time'], 'g:i A');
+        $data['end_time'] = formatDateTime($data['end_time'], 'g:i A');
+        $data['start_date'] = formatDateTime($data['start_time'], 'd/m/Y');
+        $data['end_date'] = formatDateTime($data['end_time'], 'd/m/Y');
 
         $timetable->update([
-            'description' => $data['description'],
-            'end_time' => $data['end_time'],
-            'is_all_day' => $data['is_all_day'],
-            'location' => $data['location'],
-            'start_time' => $data['start_time'],
-            'subject' => $data['subject'],
             'is_appointment' => $data['is_appointment'],
-            'date' => $data['date'],
-            'interval' => $data['interval'],
-            'event_type' => $data['event_type'],      
+            'limited_to' => $data['limited_to'],
+            'subject' => $data['subject'],
+            'description' => $data['description'],
+            'no_of_slots' => $data['no_of_slots'],
+            'recurrence_rule' => $data['recurrence_rule'],
+            'location' => $data['location'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
+            'start_time' => $data['start_time'],
+            'end_time' => $data['end_time'],            
+            'is_all_day' => $data['is_all_day'],        
+            'require_payment' => $data['require_payment'],
+            'price' => $data['price'], 
             ]);
        
         return response()->json([

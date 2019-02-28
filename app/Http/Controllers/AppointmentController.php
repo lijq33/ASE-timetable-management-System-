@@ -26,7 +26,6 @@ class AppointmentController extends Controller
         ], 200);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -53,19 +52,6 @@ class AppointmentController extends Controller
             'message' => 'Appointment has been successfully booked !'
         ], 200);
     }
-
-    
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //Show appointment
-    }
-
 
     /**
     * Remove the specified resource from storage.
