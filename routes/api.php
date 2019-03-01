@@ -20,7 +20,6 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('me', 'AuthController@me');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('logout', 'AuthController@logout');
-    Route::post('timetable', 'TimetableController@store');
 
 });
 

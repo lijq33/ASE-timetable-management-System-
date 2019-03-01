@@ -19,10 +19,16 @@ class AppointmentController extends Controller
         $user = new User();
         $user = $user->fetchUser();
 
-        $appointment = $user->appointment->all();
+        $appointments = $user->appointment->all();
+
+        $timetables = [];
+
+        foreach($appointments as $appointment){
+            $timetables += $appointment->timetable;
+        }
 
         return response()->json([
-            'appointment' => $appointment,
+            'appointment' => $timetables,
         ], 200);
     }
 

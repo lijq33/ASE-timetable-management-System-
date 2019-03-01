@@ -18,14 +18,17 @@ class TimetableController extends Controller
         $user = new User();
         $user = $user->fetchUser();
 
-        $timetable = $user->timetable->all();
+        $timetables = $user->timetable->all();
 
+        
         //processDateTime
-        $timetable['start_time'] = mergeDateTime($timetable->start_time, $timetable->start_date );
-        $timetable['end_time'] = mergeDateTime($timetable->end_time, $timetable->end_date );
-
+        foreach($timetables as $timetable) {
+            $timetable['start_time'] = mergeDateTime($timetable->start_time, $timetable->start_date );
+            $timetable['end_time'] = mergeDateTime($timetable->end_time, $timetable->end_date );
+        }
+        
         return response()->json([
-            'timetable' => $timetable,
+            'timetables' => $timetables,
         ], 200);
     }
 
@@ -60,7 +63,8 @@ class TimetableController extends Controller
         $user_id = $user->fetchUser()->id;
         
         $data = request()->all();
-  
+        var_dump($data);
+        
         //processDateTime
         $data['start_time'] = formatDateTime($data['start_time'], 'g:i A');
         $data['end_time'] = formatDateTime($data['end_time'], 'g:i A');

@@ -23,7 +23,7 @@
                     <template v-else>
 
                         <li>
-                            <router-link to="/calendar1" class="nav-link">Calendar</router-link>
+                            <router-link to="/calendar" class="nav-link">Calendar</router-link>
                         </li>
                         <li>
                             <router-link to="/timetable" class="nav-link">Timetable</router-link>

@@ -24,7 +24,7 @@ export const routes = [
     },
     {
         path : '/timetable',
-        component: require('./views/testAppointment')
+        component: require('./views/Calendar')
     },
     {
         path : '/calendar',
