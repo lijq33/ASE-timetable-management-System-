@@ -80,92 +80,56 @@ import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 import { Modal } from "bootstrap-vue/es/components";
-import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda, View, Resize, DragAndDrop } from "@syncfusion/ej2-vue-schedule";
-
+import {
+  SchedulePlugin,
+  Day,
+  Week,
+  WorkWeek,
+  Month,
+  Agenda,
+  View,
+  Resize,
+  DragAndDrop
+} from "@syncfusion/ej2-vue-schedule";
 enableRipple(true);
 Vue.use(SchedulePlugin);
 
+let scheduleData = [
+  {
+    Id: 1,
+    Subject: "Not Available",
+    StartTime: new Date(2018, 10, 11, 9, 30),
+    EndTime: new Date(2018, 10, 11, 11, 0),
+    CategoryColor: "#D4D2D4",
+    IsBlock: true
+  }
+];
+
 export default Vue.extend({
   mounted() {
-    // var scope = this;
-    // //google calender api
-    // var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
-    // var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
+    var scope = this;
+    //google calender api
+    var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
+    var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
 
-    // axios
-    //   .get(
-    //     "https://www.googleapis.com/calendar/v3/calendars/" +
-    //       calendarId +
-    //       "/events?key=" +
-    //       publicKey
-    //   )
-    //   .then(function(response) {
-    //     // handle success
-    //     console.log(response);
-    //     //process data
-    //     scope.processGoogleCalendarData(response.data);
-    //   })
-    //   .catch(function(error) {
-    //     // handle error
-    //     console.log(error);
-    //   });
+    axios
+      .get(
+        "https://www.googleapis.com/calendar/v3/calendars/" +
+          calendarId +
+          "/events?key=" +
+          publicKey
+      )
+      .then(function(response) {
+        // handle success
+        //process data
+        scope.processGoogleCalendarData(response.data);
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
   },
   data() {
-    let scheduleData = [
-      {
-        Id: 1,
-        Subject: "Not Available",
-        StartTime: new Date(2018, 1, 11, 9, 30),
-        EndTime: new Date(2018, 1, 11, 11, 0),
-        CategoryColor: "#D4D2D4",
-        IsBlock: true
-      },
-      {
-        Id: 2,
-        Subject: "Thule Air Crash Report",
-        StartTime: new Date(2018, 1, 12, 12, 0),
-        EndTime: new Date(2018, 1, 12, 14, 0),
-        CategoryColor: "#357cd2"
-      },
-      {
-        Id: 3,
-        Subject: "Blue Moon Eclipse",
-        StartTime: new Date(2018, 1, 13, 9, 30),
-        EndTime: new Date(2018, 1, 13, 11, 0),
-        CategoryColor: "#7fa900",
-        IsAppointment: true,
-        IsAllDay: true
-      },
-      {
-        Id: 4,
-        Subject: "Meteor Showers in 2018",
-        StartTime: new Date(2018, 1, 14, 13, 0),
-        EndTime: new Date(2018, 1, 14, 14, 30),
-        CategoryColor: "#ea7a57"
-      },
-      {
-        Id: 5,
-        Subject: "Milky Way as Melting pot",
-        StartTime: new Date(2018, 1, 15, 12, 0),
-        EndTime: new Date(2018, 1, 15, 14, 0),
-        CategoryColor: "#00bdae"
-      },
-      {
-        Id: 6,
-        Subject: "Mysteries of Bermuda Triangle",
-        StartTime: new Date(2018, 1, 15, 9, 30),
-        EndTime: new Date(2018, 1, 15, 11, 0),
-        CategoryColor: "#f57f17"
-      },
-      {
-        Id: 7,
-        Subject: "Glaciers and Snowflakes",
-        StartTime: new Date(2018, 1, 16, 11, 0),
-        EndTime: new Date(2018, 1, 16, 12, 30),
-        CategoryColor: "#1aaa55"
-      }
-    ];
-
     //process custom field
     scheduleData.forEach(element => {
       //console.log(element.Subject)
@@ -181,7 +145,7 @@ export default Vue.extend({
       eventSettings: {
         dataSource: extend([], scheduleData, null, true)
       },
-      selectedDate: new Date(2018, 1, 15)
+      selectedDate: new Date(2018, 10, 15)
     };
   },
   provide: {
@@ -189,8 +153,6 @@ export default Vue.extend({
   },
   methods: {
     processGoogleCalendarData(e) {
-      var scope = this;
-
       var items = e.items;
       var scheduleData1 = [];
       if (items.length > 0) {
@@ -213,13 +175,19 @@ export default Vue.extend({
           });
         }
       }
-      scope.googleCalendarData = scheduleData1;
-      //console.log(scheduleData);
+      this.googleCalendarData = scheduleData1;
     },
 
     showGoogleCalendar() {
       //this.$refs.btnGoogleCalendarShow.show();
-      this.googleCalendarDataBinding();
+
+      this.googleCalendarData.forEach(element => {
+        //console.log(element.Subject)
+        scheduleData.push(element);
+      });
+
+      //refresh calendar data
+      this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
     },
     hideGoogleCalendar() {
       this.$refs.btnGoogleCalendarShow.hide();
@@ -329,8 +297,3 @@ export default Vue.extend({
 });
 </script>
 
-<style>
-
-
-
-</style>
