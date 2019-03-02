@@ -63,14 +63,7 @@ class TimetableController extends Controller
         $user_id = $user->fetchUser()->id;
         
         $data = request()->all();
-        var_dump($data);
-        
-        //processDateTime
-        $data['start_time'] = formatDateTime($data['start_time'], 'g:i A');
-        $data['end_time'] = formatDateTime($data['end_time'], 'g:i A');
-        $data['start_date'] = formatDateTime($data['start_time'], 'd/m/Y');
-        $data['end_date'] = formatDateTime($data['end_time'], 'd/m/Y');
-
+ 
         //store data into database
         $timetable = Timetable::create([
             'user_id' => $user_id,
@@ -81,10 +74,10 @@ class TimetableController extends Controller
             'no_of_slots' => $data['no_of_slots'],
             'recurrence_rule' => $data['recurrence_rule'],
             'location' => $data['location'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'start_time' => $data['start_time'],
-            'end_time' => $data['end_time'],
+            'start_date' => substr($data['start_time'], 0, 10),
+            'end_date' => substr($data['end_time'], 0, 10),
+            'start_time' => substr($data['start_time'], 11, 8),
+            'end_time' => substr($data['end_time'], 11, 8),
             'is_all_day' => $data['is_all_day'],        
             'require_payment' => $data['require_payment'],
             'price' => $data['price'],

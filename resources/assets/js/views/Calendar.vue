@@ -66,24 +66,6 @@
 		},
 
 		data() {
-			// let scheduleData = [
-			// 	{
-			// 		Id: 1,
-			// 		Subject: "Not Available",
-			// 		StartTime: new Date(2018, 1, 11, 9, 30),
-			// 		EndTime: new Date(2018, 1, 11, 11, 0),
-			// 		CategoryColor: "#D4D2D4",
-			// 		IsBlock: true
-			// 	},
-			// ];
-
-			//process custom field
-			// scheduleData.forEach(element => {
-			// 	if (element.Subject === "Blue Moon Eclipse") {
-			// 		this.isAppointment = element.IsAppointment;
-			// 	}
-			// });
-
 			return {
 				readonly: false,
 				isAppointment: false,
@@ -138,15 +120,15 @@
 					start_time: event.data.StartTime,
 					end_time: event.data.EndTime,
 
-					event_type: event.data.EventType,
 					description: event.data.Description,
 					subject: event.data.Subject,
-					is_appointment: event.data.IsAppointment,
 					location: event.data.Location,
 					recurrence_rule: event.data.RecurrenceRule,
 
+					is_appointment: event.data.IsAppointment,
+					no_of_slots: event.data.NoOfSlots,
+					limited_to: event.data.LimitedTo
 				}).then((res) => {
-					//update timetable id with the response
 					console.log(res);
 				})
 			},
@@ -158,7 +140,7 @@
 					start_time: this.startTime,
 					end_time: this.endTime,
 
-					event_type: this.eventType,
+					event_type: this.LimitedTo,
 					subject: this.subject,
 					is_appointment: this.isAppointment,
 					description: this.description,
@@ -208,6 +190,8 @@
 			if (args.type === "Editor") {
 				// Create required custom elements in initial time
 				if (!args.element.querySelector(".custom-field-row")) {
+					
+					//event type
 					let row = createElement("div", { className: "custom-field-row" });
 					let formElement = args.element.querySelector(".e-schedule-form");
 					formElement.firstChild.insertBefore(
@@ -219,26 +203,53 @@
 					});
 					let inputEle = createElement("input", {
 						className: "e-field",
-						attrs: { name: "EventType" }
+						attrs: { name: "LimitedTo" }
 					});
 					container.appendChild(inputEle);
 					row.appendChild(container);
 					var dropDownList = new DropDownList({
 						dataSource: [
-							{ text: "Public Event", value: "public-event" },
-							{ text: "Maintenance", value: "maintenance" },
-							{ text: "Commercial Event", value: "commercial-event" },
-							{ text: "Family Event", value: "family-event" }
+							{ text: "Public", value: "public" },
+							{ text: "Invites Only", value: "invites only" },
+							{ text: "Private", value: "private" },
 						],
 						fields: { text: "text", value: "value" },
 						value: "",
 						floatLabelType: "Always",
-						placeholder: "Event Type"
+						placeholder: "This event is open to:"
 					});
 					dropDownList.appendTo(inputEle);
-					inputEle.setAttribute("name", "EventType");
+					inputEle.setAttribute("name", "LimitedTo");
 
-					//checkbox 1
+					//number of slots							
+					let row = createElement("div", { className: "custom-field-row" });
+					let formElement = args.element.querySelector(".e-schedule-form");
+					formElement.firstChild.insertBefore(
+						row,
+						args.element.querySelector(".e-title-location-row")
+					);
+					let container = createElement("div", {
+						className: "custom-field-container"
+					});
+					let inputEle = createElement("input", {
+						className: "e-field",
+						attrs: { name: "NoOfSlots" }
+					});
+					container.appendChild(inputEle);
+					row.appendChild(container);
+					var dropDownList = new DropDownList({
+						dataSource: [
+						
+						],
+						fields: { text: "text", value: "value" },
+						value: "",
+						floatLabelType: "Always",
+						placeholder: "How many slots are this event open to?"
+					});
+					dropDownList.appendTo(inputEle);
+					inputEle.setAttribute("name", "NoOfSlots");
+
+					//is appointment
 					let container_checkbox1 = createElement("div", {
 						className: "custom-field-container-checkbox1"
 					});
@@ -254,28 +265,6 @@
 					});
 					checkbox1.appendTo(inputEle_checkbox1);
 					inputEle_checkbox1.setAttribute("name", "IsAppointment");
-
-					//custom button
-					let container_button1 = createElement("div", {
-						className: "custom-field-container-button1"
-					});
-					let inputEle_button1 = createElement("button", {
-						className: "e-field",
-						attrs: { name: "IsButton1" }
-					});
-					container_button1.appendChild(inputEle_button1);
-					row.appendChild(container_button1);
-					let button1 = new Button({
-						content: "More",
-						disabled: false
-					});
-					container_button1.addEventListener(
-						"click",
-						this.customButtonEvent,
-						false
-					);
-					button1.appendTo(inputEle_button1);
-					inputEle_button1.setAttribute("name", "IsButton1");
 				}
 			}
 			}

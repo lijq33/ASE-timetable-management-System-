@@ -3,14 +3,16 @@
 use Carbon\Carbon;
 
 /**
- *  */
+ *  
+*/
 function formatDateTime($datetime, $format)
 {
+    var_dump($datetime);
     return Carbon::createFromFormat($format, $datetime);
 }
 
 /**
- *  Thu Feb 15 2018 14:00:00 GMT+0800 (Singapore Standard Time)
+ *  2018-02-12T02:30:00.000Z
  *  day month date year Hour:min:second GMT+0800 (Singapore Standard Time)
  */
 function mergeDateTime($time, $date)
