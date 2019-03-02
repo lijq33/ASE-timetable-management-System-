@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\User;
 use Illuminate\Http\Request;
 use App\Timetable;
@@ -20,11 +21,37 @@ class TimetableController extends Controller
 
         $timetables = $user->timetable->all();
 
-        
         //processDateTime
         foreach($timetables as $timetable) {
-            $timetable['start_time'] = mergeDateTime($timetable->start_time, $timetable->start_date );
-            $timetable['end_time'] = mergeDateTime($timetable->end_time, $timetable->end_date );
+            $timetable['StartTime'] = mergeDateTime($timetable->start_time , $timetable->start_date);
+            $timetable['EndTime'] = mergeDateTime($timetable->end_time , $timetable->end_date);
+
+            $timetable['Id'] = $timetable['id'];
+            $timetable['Subject'] = $timetable['subject'];
+            
+            // $timetable['Description'] = $timetable['description'];
+            // $timetable['RecurrenceRule'] = $timetable['recurrence_rule'];
+            // $timetable['Price'] = $timetable['price'];
+            // $timetable['NoOfSlots'] = $timetable['no_of_slots'];
+
+            unset($timetable['is_all_day']);
+            unset($timetable['is_appointment']);
+            unset($timetable['limited_to']);
+            unset($timetable['location']);
+            unset($timetable['id']);
+            unset($timetable['recurrence_rule']);
+            unset($timetable['description']);
+            unset($timetable['no_of_slots']);
+            unset($timetable['price']);
+            unset($timetable['subject']);
+            unset($timetable['user_id']);
+            unset($timetable['created_at']);
+            unset($timetable['updated_at']);
+
+            unset($timetable['start_date']);
+            unset($timetable['end_date']);
+            unset($timetable['start_time']);
+            unset($timetable['end_time']);
         }
         
         return response()->json([
@@ -64,23 +91,27 @@ class TimetableController extends Controller
         
         $data = request()->all();
  
+        $start_time = (Carbon::parse(substr($data['start_time'], 11, 8)))->addHours(8);
+        $end_time = (Carbon::parse(substr($data['end_time'], 11, 8)))->addHours(8);
+
         //store data into database
         $timetable = Timetable::create([
             'user_id' => $user_id,
-            'is_appointment' => $data['is_appointment'],
-            'limited_to' => $data['limited_to'],
             'subject' => $data['subject'],
-            'description' => $data['description'],
-            'no_of_slots' => $data['no_of_slots'],
-            'recurrence_rule' => $data['recurrence_rule'],
-            'location' => $data['location'],
+
             'start_date' => substr($data['start_time'], 0, 10),
             'end_date' => substr($data['end_time'], 0, 10),
-            'start_time' => substr($data['start_time'], 11, 8),
-            'end_time' => substr($data['end_time'], 11, 8),
+            'start_time' => $start_time,
+            'end_time' => $end_time,
             'is_all_day' => $data['is_all_day'],        
-            'require_payment' => $data['require_payment'],
-            'price' => $data['price'],
+
+            'is_appointment' => array_key_exists('is_appointment', $data) ? $data['is_appointment'] : false,
+            'limited_to' => array_key_exists('limited_to', $data) ? $data['limited_to'] : null,
+            'description' => array_key_exists('description', $data) ? $data['description'] : null,
+            'no_of_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
+            'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
+            'location' => array_key_exists('location', $data) ? $data['location'] : null,
+            'price' => array_key_exists('price', $data) ? $data['price'] : 0,
         ]);
         
         return response()->json([

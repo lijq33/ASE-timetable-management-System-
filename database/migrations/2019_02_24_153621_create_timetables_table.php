@@ -18,25 +18,26 @@ class CreateTimetablesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references('id')->on('users');
-
-            $table->tinyInteger('is_appointment');
-            $table->tinyInteger('limited_to'); //public private invites
-            
             $table->string('subject');
-            $table->string('description');
-            $table->Integer('no_of_slots');
-            $table->string('recurrence_rule');
-            
-            $table->string('location');
+
             $table->date('start_date');
             $table->date('end_date');
             $table->time('start_time');
             $table->time('end_time');
-            
             $table->tinyInteger('is_all_day');
-            $table->tinyInteger('require_payment');
-            $table->tinyInteger('price');
+
+            $table->tinyInteger('is_appointment');
+
+            $table->string('limited_to')->nullable(); //public private invites
+            $table->string('description')->nullable();
+            $table->integer('no_of_slots')->nullable();
+            $table->string('recurrence_rule')->nullable();
+            
+            $table->string('location')->nullable();
+
+            $table->double('price');
             $table->timestamps();
+
         });
     }
 

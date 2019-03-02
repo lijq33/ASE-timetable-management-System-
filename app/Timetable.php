@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use App\Appointment;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,25 +14,14 @@ class Timetable extends Model
     *
     * @var array
     */
-    protected $fillable = ['id', 'user_id', 'is_appointment', 'limited_to', 
-    'subject', 'description', 'location', 'date', 'start_time', 'end_time','is_all_day',
-    'require_payment','price'];
+    protected $fillable = ['user_id', 'subject', 'start_date', 'end_date', 'start_time', 'end_time','is_all_day',
+     'is_appointment', 'limited_to', 'description', 'no_of_slots', 'recurrence_rule', 'location', 'price'];
 
     /**
     * @return \Illuminate\Database\Eloquent\Relations\HasMany
     */
     public function appointment(){
         return $this->hasMany(Appointment::class, 'appointment_id');
-    }
-
-    public function getTimeToAttribute($time)
-    {
-        return Carbon::parse($time);
-    }
-
-    public function getTimeFromAttribute($time)
-    {
-        return Carbon::parse($time);
     }
 
     /**

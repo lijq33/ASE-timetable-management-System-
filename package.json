@@ -24,6 +24,7 @@
     "dependencies": {
         "@syncfusion/ej2-vue-buttons": "^16.4.53",
         "@syncfusion/ej2-vue-calendars": "^16.4.54",
+        "@syncfusion/ej2-vue-inputs": "^16.4.55",
         "@syncfusion/ej2-vue-schedule": "^16.4.54",
         "@turf/turf": "^5.1.6",
         "bootstrap-datepicker": "^1.8.0",

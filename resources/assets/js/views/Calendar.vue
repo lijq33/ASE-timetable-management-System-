@@ -48,7 +48,9 @@
 	import "@syncfusion/ej2-navigations/styles/material.css";
 	import "@syncfusion/ej2-popups/styles/material.css";
 	import "@syncfusion/ej2-vue-schedule/styles/material.css";
+	import "@syncfusion/ej2-vue-inputs/styles/material.css";
 	import Vue from "vue";
+	import { NumericTextBox } from '@syncfusion/ej2-inputs';
 	import { createElement, extend, enableRipple } from "@syncfusion/ej2-base";
 	import { DropDownList } from "@syncfusion/ej2-dropdowns";
 	import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
@@ -59,8 +61,17 @@
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
 
+	let scheduleData = [
+		{
+			Id: 1,
+			Subject: "Not Available",
+			StartTime: new Date(2018, 10, 11, 9, 30),
+			EndTime: new Date(2018, 10, 11, 11, 0),
+			CategoryColor: "#D4D2D4",
+		}
+	];
 	export default Vue.extend({
-		mounted() {
+		created() {
 			this.retrieveTimetable();	
 			this.retrieveAppointment();
 		},
@@ -68,11 +79,10 @@
 		data() {
 			return {
 				readonly: false,
-				isAppointment: false,
 				eventSettings: {
-					dataSource: extend([], /*scheduleData,*/ null, true)
+					dataSource: extend([], scheduleData, null, true)
 				},
-				selectedDate: new Date(2018, 1, 15)
+				selectedDate: new Date(2018, 1, 15),
 			};
 		},
 		
@@ -85,8 +95,13 @@
 			// retrieve the user's timetable from database, including the appointment that he has made			
 			retrieveTimetable(){
 				axios.get('/api/timetable')
-				.then((res) => {
-					console.log(res);
+				.then((res) => {										
+					res.data.timetables.forEach(element => {
+						scheduleData.push(element);
+					});
+
+					//refresh calendar data
+					this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
 				}).catch((error) => {
 
 				})
@@ -96,7 +111,7 @@
 			retrieveAppointment(){
 				axios.get('/api/appointment')
 				.then((res) => {
-					console.log(res);
+					// this.eventSettings.dataSource = res.data.timetables;
 				}).catch((error) => {
 
 				})
@@ -112,9 +127,8 @@
 					this.deleteTimetable(event);
 			},
 
+			//done
 			createTimetable(event){
-				console.log("123");
-				console.log(event.data.StartTime);
 				axios.post('/api/timetable', {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
@@ -185,19 +199,37 @@
 				this.$refs.myModalRef.hide();
 			},
 
+
+			// Create required custom elements in initial time
 			onPopupOpen: function(args) {
-			console.log(args);
 			if (args.type === "Editor") {
-				// Create required custom elements in initial time
 				if (!args.element.querySelector(".custom-field-row")) {
-					
-					//event type
+
 					let row = createElement("div", { className: "custom-field-row" });
 					let formElement = args.element.querySelector(".e-schedule-form");
 					formElement.firstChild.insertBefore(
 						row,
 						args.element.querySelector(".e-title-location-row")
 					);
+
+
+					//is appointment
+					let container_checkbox1 = createElement("div", {
+						className: "custom-field-container-checkbox1"
+					});
+					let inputEle_checkbox1 = createElement("input", {
+						className: "e-field",
+						attrs: { name: "IsAppointment" }
+					});
+					container_checkbox1.appendChild(inputEle_checkbox1);
+					row.appendChild(container_checkbox1);
+					var checkbox1 = new CheckBox({
+						label: "Requires Appointment",
+						checked: false
+					});
+					checkbox1.appendTo(inputEle_checkbox1);
+					inputEle_checkbox1.setAttribute("name", "IsAppointment");
+
 					let container = createElement("div", {
 						className: "custom-field-container"
 					});
@@ -220,51 +252,44 @@
 					});
 					dropDownList.appendTo(inputEle);
 					inputEle.setAttribute("name", "LimitedTo");
+				
 
 					//number of slots							
-					let row = createElement("div", { className: "custom-field-row" });
-					let formElement = args.element.querySelector(".e-schedule-form");
-					formElement.firstChild.insertBefore(
-						row,
-						args.element.querySelector(".e-title-location-row")
-					);
-					let container = createElement("div", {
+					let container2 = createElement("div", {
 						className: "custom-field-container"
 					});
-					let inputEle = createElement("input", {
+					let inputEle2 = createElement("input", {
 						className: "e-field",
 						attrs: { name: "NoOfSlots" }
 					});
-					container.appendChild(inputEle);
-					row.appendChild(container);
-					var dropDownList = new DropDownList({
-						dataSource: [
-						
-						],
-						fields: { text: "text", value: "value" },
-						value: "",
+					container2.appendChild(inputEle2);
+					row.appendChild(container2);
+					var numeric = new NumericTextBox({ min: 1, max: 500, format:'0', 
 						floatLabelType: "Always",
-						placeholder: "How many slots are this event open to?"
-					});
-					dropDownList.appendTo(inputEle);
-					inputEle.setAttribute("name", "NoOfSlots");
+						placeholder: "Number of slots:"
+					 });
+					numeric.appendTo(inputEle2);
+					inputEle2.setAttribute("name", "NoOfSlots");
 
-					//is appointment
-					let container_checkbox1 = createElement("div", {
-						className: "custom-field-container-checkbox1"
+					//price
+					let container3 = createElement("div", {
+						className: "custom-field-container"
 					});
-					let inputEle_checkbox1 = createElement("input", {
+					let inputEle3 = createElement("input", {
 						className: "e-field",
-						attrs: { name: "IsAppointment" }
+						attrs: { name: "price" }
 					});
-					container_checkbox1.appendChild(inputEle_checkbox1);
-					row.appendChild(container_checkbox1);
-					var checkbox1 = new CheckBox({
-						label: "Appointment",
-						checked: this.isAppointment
+					container3.appendChild(inputEle3);
+					row.appendChild(container3);
+					var price = new NumericTextBox({
+						format: 'c2',
+						value: '00',
+						placeholder: 'price',
+						floatLabelType: 'Auto'
 					});
-					checkbox1.appendTo(inputEle_checkbox1);
-					inputEle_checkbox1.setAttribute("name", "IsAppointment");
+					price.appendTo(inputEle3);
+					inputEle3.setAttribute("name", "price");
+
 				}
 			}
 			}
