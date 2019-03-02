@@ -66,7 +66,7 @@
 			Id: 1,
 			Subject: "Not Available",
 			StartTime: new Date(2018, 10, 11, 9, 30),
-			EndTime: new Date(2018, 10, 11, 11, 0),
+			EndTime: new Date(2018, 10, 11, 13, 0),
 			CategoryColor: "#D4D2D4",
 		}
 	];
@@ -82,7 +82,7 @@
 				eventSettings: {
 					dataSource: extend([], scheduleData, null, true)
 				},
-				selectedDate: new Date(2018, 1, 15),
+				selectedDate: new Date(2018, 10, 15),
 			};
 		},
 		
@@ -91,20 +91,82 @@
 		},
 
 		methods: {
+			processDate(dateObj){
+				console.log(dateObj)
+				var temp = dateObj.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+				var month=temp[2]-1;
+				var day = temp[1];
+				  
+				  //format month
+				  if(temp[2].charAt(0)=="0"){
+					  month = temp[2].charAt(1)-1;
+				  } 
+				  //format day
+				  if(temp[1].charAt(0)=="0"){
+					    day = temp[1].charAt(1);
+				  }
+
+				  var tempTime = temp[5].split(':')
+				  var hour=tempTime[0];
+				  var min=tempTime[1];
+				
+				 
+				//format startime hr
+				if(tempTime[0].charAt(0)=="0"){
+					    hour = tempTime[0].charAt(1)
+				}
+
+				//format startime min
+				if(tempTime[1].charAt(0)=="0"){
+					   min = tempTime[1].charAt(1)
+				}
+ 
+				  //format endtime
+
+				//   console.log("year: "+temp[4])
+				//   console.log("month: "+(month+1))
+				//   console.log("day: "+day)
+				    
+				// 	console.log("hour: "+hour)
+				// 	console.log("min: "+min)
+				// 	var gg = new Date(temp[4],month,day,hour,min);
+				// 	console.log(gg)
+				// 	console.log(" ")
+				
+				return new Date(temp[4],month,day,hour,min);
+			
+			//	EndTime: new Date(2018, 10, 11, 13, 0),
+			},
 
 			// retrieve the user's timetable from database, including the appointment that he has made			
 			retrieveTimetable(){
+				var scope = this;
 				axios.get('/api/timetable')
-				.then((res) => {										
-					res.data.timetables.forEach(element => {
-						scheduleData.push(element);
-					});
-
-					//refresh calendar data
-					this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
+				.then((res) => {	
+					res.data.timetables.forEach(element => { 
+						 
+						//process date object
+						scheduleData.push({
+							Id: element.Id,
+							Subject: element.Subject,
+							StartTime: scope.processDate(element.StartTime),
+							EndTime: scope.processDate(element.EndTime),
+							CategoryColor: "#A4D2D4",
+						}); 	
+						
+					}); 
+					
 				}).catch((error) => {
+						console.log(error)
+				}).then(function () {
+					// always executed
+					console.log(scheduleData)
+				//refresh calendar data
+				//scheduleData[1].StartTime = new Date(2018, 10, 11, 10, 30)
+				//scheduleData[1].EndTime = new Date(2018, 10, 11, 11, 30)
 
-				})
+					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
+				});
 				
 			},
 
@@ -129,6 +191,7 @@
 
 			//done
 			createTimetable(event){
+				console.log(event)
 				axios.post('/api/timetable', {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,

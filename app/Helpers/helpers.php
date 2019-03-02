@@ -17,6 +17,6 @@ function formatDateTime($datetime, $format)
  */
 function mergeDateTime($time, $date)
 {
-    $datetime = Carbon::parse("$date . $time")->format('D H M d Y h:i:s') . " GMT+0800 (Singapore Standard Time)";
+    $datetime = Carbon::parse("$date . $time")->format('D H m d Y h:i:s') . " GMT+0800 (Singapore Standard Time)";
     return $datetime;
 }
