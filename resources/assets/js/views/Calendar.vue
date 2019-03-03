@@ -61,15 +61,8 @@
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
 
-	let scheduleData = [
-		{
-			Id: 1,
-			Subject: "Not Available",
-			StartTime: new Date(2018, 10, 11, 9, 30),
-			EndTime: new Date(2018, 10, 11, 11, 0),
-			CategoryColor: "#D4D2D4",
-		}
-	];
+	let scheduleData = [];
+	
 	export default Vue.extend({
 		created() {
 			this.retrieveTimetable();	
@@ -82,7 +75,7 @@
 				eventSettings: {
 					dataSource: extend([], scheduleData, null, true)
 				},
-				selectedDate: new Date(2018, 1, 15),
+				selectedDate: new Date(2018, 10, 15),
 			};
 		},
 		
@@ -92,17 +85,37 @@
 
 		methods: {
 
-			// retrieve the user's timetable from database, including the appointment that he has made			
+			// retrieve the user's timetable from database
 			retrieveTimetable(){
+				var scope = this;
 				axios.get('/api/timetable')
-				.then((res) => {										
-					//refresh calendar data
-					res.data.timetables.forEach(element => {
-						scheduleData.push(element);
-					});
-					this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
-				}).catch((error) => {
+				.then((res) => {	
+					res.data.timetables.forEach(element => { 
+						 
+						//process date object
+						scheduleData.push({
+							Id: element.id,
+							Subject: element.subject,
+							StartTime: element.StartTime,
+							EndTime: element.EndTime,
+							// IsAllDay: element.is_all_day,
+							// Description: element.description,
+							// RecurrenceRule: element.recurrence_rule,
+							
+							// IsAppointment: element.is_appointment,
+							// LimitedTo: element.limited_to,
+							// NoOfSlots: element.no_of_slots,
+							// Location: element.location,
+							// price: element.price,
+							// CategoryColor: "#A4D2D4",
+						}); 	
 
+						scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
+					
+					}); 
+					
+				}).catch((error) => {
+					console.log(error)
 				})
 				
 			},
@@ -128,6 +141,7 @@
 
 			//done
 			createTimetable(event){
+				console.log(event)
 				axios.post('/api/timetable', {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
