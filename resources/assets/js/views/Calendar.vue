@@ -96,11 +96,10 @@
 			retrieveTimetable(){
 				axios.get('/api/timetable')
 				.then((res) => {										
+					//refresh calendar data
 					res.data.timetables.forEach(element => {
 						scheduleData.push(element);
 					});
-
-					//refresh calendar data
 					this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
 				}).catch((error) => {
 
@@ -166,7 +165,7 @@
 			},
 
 			deleteTimetable(event){
-				axios.post('/api/timetable/'+ event.data.Id)
+				axios.delete('/api/timetable/'+ event.data[0].Id)
 				.then((res) => {
 					console.log(res);
 				})
@@ -202,6 +201,7 @@
 
 			// Create required custom elements in initial time
 			onPopupOpen: function(args) {
+				console.log(args.type);
 			if (args.type === "Editor") {
 				if (!args.element.querySelector(".custom-field-row")) {
 

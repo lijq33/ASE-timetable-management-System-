@@ -42,7 +42,7 @@ class Timetable extends Model
      */
     private function hasAppointment()
     {
-        return $this->booking->first() !== null;
+        return $this->booking !== null;
     }
     
 }

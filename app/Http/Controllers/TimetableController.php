@@ -28,6 +28,7 @@ class TimetableController extends Controller
 
             $timetable['Id'] = $timetable['id'];
             $timetable['Subject'] = $timetable['subject'];
+            // unset($timetable['price']);
             
             // $timetable['Description'] = $timetable['description'];
             // $timetable['RecurrenceRule'] = $timetable['recurrence_rule'];
@@ -42,7 +43,7 @@ class TimetableController extends Controller
             unset($timetable['recurrence_rule']);
             unset($timetable['description']);
             unset($timetable['no_of_slots']);
-            unset($timetable['price']);
+            // unset($timetable['price']);
             unset($timetable['subject']);
             unset($timetable['user_id']);
             unset($timetable['created_at']);
@@ -186,8 +187,6 @@ class TimetableController extends Controller
                 'message' => 'There are appointment in place!'
             ], 422);
         }
-
-        $timetable->appointment()->delete();
 
         $timetable->delete();
        
