@@ -25,34 +25,6 @@ class TimetableController extends Controller
         foreach($timetables as $timetable) {
             $timetable['StartTime'] = mergeDateTime($timetable->start_time , $timetable->start_date);
             $timetable['EndTime'] = mergeDateTime($timetable->end_time , $timetable->end_date);
-
-            $timetable['Id'] = $timetable['id'];
-            $timetable['Subject'] = $timetable['subject'];
-            // unset($timetable['price']);
-            
-            // $timetable['Description'] = $timetable['description'];
-            // $timetable['RecurrenceRule'] = $timetable['recurrence_rule'];
-            // $timetable['Price'] = $timetable['price'];
-            // $timetable['NoOfSlots'] = $timetable['no_of_slots'];
-
-            unset($timetable['is_all_day']);
-            unset($timetable['is_appointment']);
-            unset($timetable['limited_to']);
-            unset($timetable['location']);
-            unset($timetable['id']);
-            unset($timetable['recurrence_rule']);
-            unset($timetable['description']);
-            unset($timetable['no_of_slots']);
-            // unset($timetable['price']);
-            unset($timetable['subject']);
-            unset($timetable['user_id']);
-            unset($timetable['created_at']);
-            unset($timetable['updated_at']);
-
-            unset($timetable['start_date']);
-            unset($timetable['end_date']);
-            unset($timetable['start_time']);
-            unset($timetable['end_time']);
         }
         
         return response()->json([
