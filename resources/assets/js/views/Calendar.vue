@@ -65,7 +65,7 @@
 	
 	export default Vue.extend({
 		mounted() {
-			this.retrieveGoogleCalendar();
+			// this.retrieveGoogleCalendar();
 			this.retrieveTimetable();	
 			this.retrieveAppointment();
 		},
@@ -197,6 +197,7 @@
 			//done
 			createTimetable(event){ 
 				var scope = this;
+				console.log("new event id", event.data.Id)
 				axios.post('/api/timetable', {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
@@ -211,14 +212,26 @@
 					no_of_slots: event.data.NoOfSlots,
 					limited_to: event.data.LimitedTo
 				}).then((res) => {
+					console.log(event.data.Id);
 					var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
+					console.log("index is " , index);
 					var newItem = index;
 					newItem.Id = res.data.id;
+					console.log("new id is " , index);
 					scope.scheduleData.splice(index, 1, newItem);
-				})
+					console.log("new array " , scope.scheduleData);
+				}).catch((error) => {
+					console.log(error)
+				}).then(() => {
+					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
+					scope.$refs.ScheduleObj.refreshEvents();
+				});
 			},
 
+			//bug is here!
 			updateTimetable(event){
+				console.log(event.data.Id); //see the output
+				//the event id is not updated
 				axios.patch('/api/timetable/'+ event.data.Id, {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
