@@ -61,7 +61,7 @@
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
 
-	let scheduleData = [];
+	// let scheduleData = [];
 	
 	export default Vue.extend({
 		created() {
@@ -71,19 +71,25 @@
 
 		data() {
 			return {
+				scheduleData : [],
+				isAppointment:true,
 				readonly: false,
 				eventSettings: {
-					dataSource: extend([], scheduleData, null, true)
+					dataSource: extend([], this.scheduleData, null, true)
 				},
 				selectedDate: new Date(2018, 10, 15),
 			};
 		},
+		
 		
 		provide: {
 			schedule: [Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]
 		},
 
 		methods: {
+			isCompany(){
+				return this.$store.getters.isCompany
+			},
 
 			// retrieve the user's timetable from database
 			retrieveTimetable(){
@@ -93,30 +99,37 @@
 					res.data.timetables.forEach(element => { 
 						 
 						//process date object
-						scheduleData.push({
+						scope.scheduleData.push({
 							Id: element.id,
 							Subject: element.subject,
 							StartTime: element.StartTime,
 							EndTime: element.EndTime,
-							// IsAllDay: element.is_all_day,
-							// Description: element.description,
-							// RecurrenceRule: element.recurrence_rule,
-							
-							// IsAppointment: element.is_appointment,
-							// LimitedTo: element.limited_to,
-							// NoOfSlots: element.no_of_slots,
-							// Location: element.location,
-							// price: element.price,
-							// CategoryColor: "#A4D2D4",
-						}); 	
+							RecurrenceRule: element.recurrence_rule,
+							IsAllDay: element.is_all_day,
+							Description: element.description,
 
-						scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
+							IsAppointment: element.is_appointment,
+							LimitedTo: element.limited_to,
+							NoOfSlots: element.no_of_slots,
+							Location: element.location,
+							Price: element.price,
+							CategoryColor: (element.is_appointment == true) ? "#7886d7" : "#38c172"
+							// IsAppointment: true,
+							// LimitedTo: "public",
+							// NoOfSlots: 5,
+							// Location: "Singapore",
+							// Price: 12,
+							// CategoryColor: "#A4D2D4",
+							
+						}); 	
 					
 					}); 
 					
 				}).catch((error) => {
 					console.log(error)
-				})
+				}).then(() => {
+					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
+				});
 				
 			},
 
@@ -161,6 +174,7 @@
 			},
 
 			updateTimetable(event){
+				console.log(event)
 				axios.post('/api/timetable/update', {
 					is_all_day: this.isAllDay,
 					date: this.date,
@@ -215,8 +229,25 @@
 
 			// Create required custom elements in initial time
 			onPopupOpen: function(args) {
-				console.log(args.type);
-			if (args.type === "Editor") {
+
+			let isAppointment = false;
+			let eventType = "";
+			let NoOfSlot = 0;
+			let Price = 0;
+				
+			if (args.type === "Editor" && this.isCompany()) {
+
+				//add data to custom fields
+				const result = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
+
+				if (result !== undefined){
+					isAppointment = result.IsAppointment;
+					eventType= result.LimitedTo;
+					NoOfSlot = result.NoOfSlots;
+					Price = result.Price;
+				}
+
+				console.log(args);
 				if (!args.element.querySelector(".custom-field-row")) {
 
 					let row = createElement("div", { className: "custom-field-row" });
@@ -239,7 +270,7 @@
 					row.appendChild(container_checkbox1);
 					var checkbox1 = new CheckBox({
 						label: "Requires Appointment",
-						checked: false
+						checked: isAppointment
 					});
 					checkbox1.appendTo(inputEle_checkbox1);
 					inputEle_checkbox1.setAttribute("name", "IsAppointment");
@@ -260,7 +291,7 @@
 							{ text: "Private", value: "private" },
 						],
 						fields: { text: "text", value: "value" },
-						value: "",
+						value: eventType,
 						floatLabelType: "Always",
 						placeholder: "This event is open to:"
 					});
@@ -280,7 +311,9 @@
 					row.appendChild(container2);
 					var numeric = new NumericTextBox({ min: 1, max: 500, format:'0', 
 						floatLabelType: "Always",
-						placeholder: "Number of slots:"
+						placeholder: "Number of slots:",
+						value: NoOfSlot
+
 					 });
 					numeric.appendTo(inputEle2);
 					inputEle2.setAttribute("name", "NoOfSlots");
@@ -291,18 +324,18 @@
 					});
 					let inputEle3 = createElement("input", {
 						className: "e-field",
-						attrs: { name: "price" }
+						attrs: { name: "Price" }
 					});
 					container3.appendChild(inputEle3);
 					row.appendChild(container3);
 					var price = new NumericTextBox({
 						format: 'c2',
-						value: '00',
-						placeholder: 'price',
+						value: Price,
+						placeholder: 'Price',
 						floatLabelType: 'Auto'
 					});
 					price.appendTo(inputEle3);
-					inputEle3.setAttribute("name", "price");
+					inputEle3.setAttribute("name", "Price");
 
 				}
 			}
