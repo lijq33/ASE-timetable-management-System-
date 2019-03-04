@@ -122,11 +122,20 @@ export default Vue.extend({
       .then(function(response) {
         // handle success
         //process data
+        console.log("here");
         scope.processGoogleCalendarData(response.data);
       })
       .catch(function(error) {
         // handle error
         console.log(error);
+      }).then(()=>{
+        scope.googleCalendarData.forEach(element => {
+          //console.log(element.Subject)
+          scheduleData.push(element);
+        });
+
+        //refresh calendar data
+        scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
       });
   },
   data() {
@@ -181,13 +190,10 @@ export default Vue.extend({
     showGoogleCalendar() {
       //this.$refs.btnGoogleCalendarShow.show();
 
-      this.googleCalendarData.forEach(element => {
-        //console.log(element.Subject)
-        scheduleData.push(element);
-      });
 
-      //refresh calendar data
-      this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scheduleData;
+      
+
+      
     },
     hideGoogleCalendar() {
       this.$refs.btnGoogleCalendarShow.hide();
