@@ -103,10 +103,6 @@ class TimetableController extends Controller
      */
     public function update(Request $request, Timetable $timetable)
     {
-        var_dump($timetable);
-        //retrieve all appointment
-        $timetable->appointment();
-
         //if appointment exist, dont allow update
         if ($timetable->hasActiveAppointment()) {
             return response()->json([
@@ -117,26 +113,25 @@ class TimetableController extends Controller
         $data = request()->all();
         
         //processDateTime
-        $data['start_time'] = formatDateTime($data['start_time'], 'g:i A');
-        $data['end_time'] = formatDateTime($data['end_time'], 'g:i A');
-        $data['start_date'] = formatDateTime($data['start_time'], 'd/m/Y');
-        $data['end_date'] = formatDateTime($data['end_time'], 'd/m/Y');
+        $start_time = (Carbon::parse(substr($data['start_time'], 11, 8)))->addHours(8);
+        $end_time = (Carbon::parse(substr($data['end_time'], 11, 8)))->addHours(8);
 
         $timetable->update([
-            'is_appointment' => $data['is_appointment'],
-            'limited_to' => $data['limited_to'],
             'subject' => $data['subject'],
-            'description' => $data['description'],
-            'no_of_slots' => $data['no_of_slots'],
-            'recurrence_rule' => $data['recurrence_rule'],
-            'location' => $data['location'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'start_time' => $data['start_time'],
-            'end_time' => $data['end_time'],            
+            'start_date' => substr($data['start_time'], 0, 10),
+            'end_date' => substr($data['end_time'], 0, 10),
+            'start_time' => $start_time,
+            'end_time' => $end_time,
             'is_all_day' => $data['is_all_day'],        
-            'require_payment' => $data['require_payment'],
-            'price' => $data['price'], 
+
+            'is_appointment' => array_key_exists('is_appointment', $data) ? $data['is_appointment'] : false,
+            'limited_to' => array_key_exists('limited_to', $data) ? $data['limited_to'] : null,
+            'description' => array_key_exists('description', $data) ? $data['description'] : null,
+            'no_of_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
+            'remaining_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
+            'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
+            'location' => array_key_exists('location', $data) ? $data['location'] : null,
+            'price' => array_key_exists('price', $data) ? $data['price'] : 0,
             ]);
        
         return response()->json([

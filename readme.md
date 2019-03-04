@@ -29,7 +29,7 @@ Delete timetable
 
 
 ## TODO
-Sync google calendar
+Sync google calendar - do with a real account
 Stripe
 CRUD APPOINTMENT AND TIMETABLE
 
