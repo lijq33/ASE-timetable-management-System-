@@ -65,30 +65,7 @@
 	
 	export default Vue.extend({
 		mounted() {
-			var scope = this;
-			//google calender api
-			var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
-			var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
-			
-			$.ajax({
-			url: "https://www.googleapis.com/calendar/v3/calendars/" +
-				calendarId +
-				"/events?key=" +
-				publicKey,
-			type: "GET",
-			success: function (data, status, jqXHR) { 
-				console.log(data);
-				scope.processGoogleCalendarData(data); 	 
-			},
-			error: function (jqXHR, status, err) {
-				console.log("Local error callback.");
-			},
-			complete: function (jqXHR, status) {
-				 
-			}
-			}) 
-  		},
-		created() {
+			this.retrieveGoogleCalendar();
 			this.retrieveTimetable();	
 			this.retrieveAppointment();
 		},
@@ -109,33 +86,60 @@
 		},
 
 		methods: {
+			//Google Calendar
+			retrieveGoogleCalendar(){
+				var scope = this;
+				//google calender api
+				var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
+				var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
+				
+				$.ajax({
+					url: "https://www.googleapis.com/calendar/v3/calendars/" +
+						calendarId + "/events?key=" +publicKey,
+					type: "GET",
+					success: function (data, status, jqXHR) { 
+						console.log(data);
+						scope.processGoogleCalendarData(data); 	 
+					},
+					error: function (jqXHR, status, err) {
+						console.log("Local error callback.");
+					},
+					complete: function (jqXHR, status) {
+					}
+				}) 
+			},
+
 			processGoogleCalendarData(e) {
 				var items = e.items;
 				//var scheduleData1 = [];
 				if (items.length > 0) {
 					for (var i = 0; i < items.length; i++) {
-					var event = items[i];
-					var when = event.start.dateTime;
-					var start = event.start.dateTime;
-					var end = event.end.dateTime;
-					if (!when) {
-						when = event.start.date;
-						start = event.start.date;
-						end = event.end.date;
-					}
-					this.scheduleData.push({
-						Id: event.id,
-						Subject: event.summary,
-						StartTime: new Date(start),
-						EndTime: new Date(end),
-						IsAllDay: !event.start.dateTime
-					});
+						var event = items[i];
+						var when = event.start.dateTime;
+						var start = event.start.dateTime;
+						var end = event.end.dateTime;
+						if (!when) {
+							when = event.start.date;
+							start = event.start.date;
+							end = event.end.date;
+						}
+						this.scheduleData.push({
+							Id: event.id,
+							Subject: "not available",
+							StartTime: new Date(start),
+							EndTime: new Date(end),
+							IsAllDay: !event.start.dateTime,
+							CategoryColor: "#faad63",
+							readonly:true
+						});
 					}
 				}   
 			},
+
 			isCompany(){
 				return this.$store.getters.isCompany
 			},
+
 			// retrieve the user's timetable from database
 			retrieveTimetable(){
 				var scope = this;
@@ -158,14 +162,7 @@
 							NoOfSlots: element.no_of_slots,
 							Location: element.location,
 							Price: element.price,
-							CategoryColor: (element.is_appointment == true) ? "#7886d7" : "#38c172"
-							// IsAppointment: true,
-							// LimitedTo: "public",
-							// NoOfSlots: 5,
-							// Location: "Singapore",
-							// Price: 12,
-							// CategoryColor: "#A4D2D4",
-							
+							CategoryColor: (element.is_appointment == true) ? "#7886d7" : "#38c172",
 						}); 	
 					
 					}); 
