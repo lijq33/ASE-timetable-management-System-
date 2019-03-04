@@ -31,6 +31,7 @@ class CreateTimetablesTable extends Migration
             $table->string('limited_to')->nullable(); //public private invites
             $table->string('description')->nullable();
             $table->integer('no_of_slots')->nullable();
+            $table->integer('remaining_slots')->nullable();
             $table->string('recurrence_rule')->nullable();
             
             $table->string('location')->nullable();
