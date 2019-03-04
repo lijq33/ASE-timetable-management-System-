@@ -33,7 +33,13 @@ export const routes = [
     {
         path : '/calendar1',
         component: require('./views/Calendar1')
+    },   
+    {
+        path: '/company/:Cid',
+        name: 'company',
+        component: require('./views/Company')
     },     
+    
     // {
     //     path : '/HealthServices/Hospital',
     //     component: require('./views/HealthServices/Hospital'),

@@ -1,13 +1,5 @@
 ## TBD
 
-# HOME PAGE
-FILLED UP HOMEPAGE WITH SOMETHING
-
-
-
-# Timetable
-Import timetable(store)
-update timetable(update)
 
 # Appointment
 Only Company can create appointment
@@ -16,22 +8,37 @@ Make Appointment(store)
 
 #Notification
 
+## TODO
+
+#calendar
+Sync google calendar - do with a real account
+Stripe
+
+#appointment
+CRUD APPOINTMENT
+
+
 
 ## COMPLETED FUNCTIONS
+
+# HOME PAGE
+Display all companies registered
+Able to access each individual company
+
+#registration
 Registration for Both Individual and company
 Login for both individual and company
+
+#timetable
 Create timetable
+Update timetable
 Delete timetable
 
 
+
+
+
 ## BUGS
-
-
-
-## TODO
-Sync google calendar - do with a real account
-Stripe
-CRUD APPOINTMENT AND TIMETABLE
 
 
 

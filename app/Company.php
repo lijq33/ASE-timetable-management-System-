@@ -89,10 +89,10 @@ class Company extends Authenticatable implements JWTSubject
             return $validator;
         }
 
-        $imageName = null;
+        $imageName = "defaultCompany.jpg";
 
         if ($data['logo'] !== "null"){        
-            $imageName= str_random(40);
+            $imageName = str_random(40);
             $image = Image::make($data['logo']->getRealPath());
             $image->save(public_path('logos\\') .  $imageName . ".{$data['logo']->getClientOriginalExtension()}"); // Original Image
             $imageName = $imageName.".".$data['logo']->getClientOriginalExtension();

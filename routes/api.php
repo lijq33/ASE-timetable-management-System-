@@ -25,6 +25,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 Route::group(['middleware' => 'auth.user'], function ($router) {
     Route::resource('timetable', 'TimetableController', ['except' => ['create', 'edit']]);
+    Route::resource('company', 'CompanyController', ['except' => ['create', 'edit']]);
     Route::resource('appointment', 'AppointmentController', ['except' => ['create', 'edit', 'update']]);
 });
 

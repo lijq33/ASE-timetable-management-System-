@@ -62,26 +62,26 @@ class TimetableController extends Controller
         $user_id = $user->fetchUser()->id;
         
         $data = request()->all();
- 
-        $start_time = (Carbon::parse(substr($data['start_time'], 11, 8)))->addHours(8);
-        $end_time = (Carbon::parse(substr($data['end_time'], 11, 8)))->addHours(8);
+        
+        $start_datetime = (Carbon::parse($data['start_time']))->addHours(8);
+        $end_datetime = (Carbon::parse($data['end_time']))->addHours(8);
 
         //store data into database
         $timetable = Timetable::create([
             'user_id' => $user_id,
             'subject' => $data['subject'],
 
-            'start_date' => substr($data['start_time'], 0, 10),
-            'end_date' => substr($data['end_time'], 0, 10),
-            'start_time' => $start_time,
-            'end_time' => $end_time,
+            'start_date' => substr($start_datetime, 0, 10),
+            'end_date' => substr($end_datetime, 0, 10),
+            'start_time' => substr($start_datetime, 11, 8),
+            'end_time' => substr($end_datetime, 11, 8),
             'is_all_day' => $data['is_all_day'],        
 
             'is_appointment' => array_key_exists('is_appointment', $data) ? $data['is_appointment'] : false,
             'limited_to' => array_key_exists('limited_to', $data) ? $data['limited_to'] : null,
             'description' => array_key_exists('description', $data) ? $data['description'] : null,
             'no_of_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
-            'remaining_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
+            'no_of_appointments' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
             'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
             'location' => array_key_exists('location', $data) ? $data['location'] : null,
             'price' => array_key_exists('price', $data) ? $data['price'] : 0,
@@ -116,6 +116,14 @@ class TimetableController extends Controller
         $start_time = (Carbon::parse(substr($data['start_time'], 11, 8)))->addHours(8);
         $end_time = (Carbon::parse(substr($data['end_time'], 11, 8)))->addHours(8);
 
+        if(array_key_exists('no_of_slots', $data)){
+            if($data['no_of_slots'] < $timetable['no_of_appointments']){
+                return response()->json([
+                    'message' => "You can't reduce the number of slots to be below" + $timetable['no_of_appointments'] ,
+                ], 402);
+            }
+        }
+
         $timetable->update([
             'subject' => $data['subject'],
             'start_date' => substr($data['start_time'], 0, 10),
@@ -128,7 +136,6 @@ class TimetableController extends Controller
             'limited_to' => array_key_exists('limited_to', $data) ? $data['limited_to'] : null,
             'description' => array_key_exists('description', $data) ? $data['description'] : null,
             'no_of_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
-            'remaining_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
             'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
             'location' => array_key_exists('location', $data) ? $data['location'] : null,
             'price' => array_key_exists('price', $data) ? $data['price'] : 0,

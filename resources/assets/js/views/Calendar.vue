@@ -70,8 +70,11 @@
 			this.retrieveAppointment();
 		},
 
+		props: ['appointments'],
+
 		data() {
 			return {
+				appointment: this.appointments,
 				scheduleData : [],
 				isAppointment:true,
 				readonly: false,
@@ -83,6 +86,31 @@
 		}, 	 
 		provide: {
 			schedule: [Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]
+		},
+
+		watch: {
+			appointments(){
+				this.appointments.forEach(element => { 
+					this.scheduleData.push({
+						Id: element.id,
+						Subject: element.subject,
+						StartTime: element.StartTime,
+						EndTime: element.EndTime,
+						RecurrenceRule: element.recurrence_rule,
+						IsAllDay: element.is_all_day,
+						Description: element.description,
+
+						IsAppointment: element.is_appointment,
+						LimitedTo: element.limited_to,
+						NoOfSlots: element.no_of_slots,
+						Location: element.location,
+						Price: element.price,
+						CategoryColor: "#000000",
+					});
+				})	
+				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
+				this.$refs.ScheduleObj.refreshEvents();
+			},
 		},
 
 		methods: {
@@ -197,7 +225,6 @@
 			//done
 			createTimetable(event){ 
 				var scope = this;
-				console.log("new event id", event.data.Id)
 				axios.post('/api/timetable', {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
@@ -212,14 +239,19 @@
 					no_of_slots: event.data.NoOfSlots,
 					limited_to: event.data.LimitedTo
 				}).then((res) => {
-					console.log(event.data.Id);
-					var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
-					console.log("index is " , index);
-					var newItem = index;
-					newItem.Id = res.data.id;
-					console.log("new id is " , index);
-					// scope.scheduleData.splice(index, 1, newItem);
-					console.log("new array " , scope.scheduleData);
+
+					console.log("id", res.data.id);
+					console.log(event.data.Id != res.data.id);
+					if (res.data.id != event.data.Id){
+						console.log(event.data.Id);
+						var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
+						console.log("index is " , index);
+						var newItem = index;
+						newItem.Id = res.data.id;
+						console.log("new id is " , index);
+						// scope.scheduleData.splice(index, 1, newItem);
+						console.log("new array " , scope.scheduleData);
+					}
 				}).catch((error) => {
 					console.log(error)
 				}).then(() => {
