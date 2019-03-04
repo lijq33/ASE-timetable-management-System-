@@ -32,7 +32,6 @@ class TimetableController extends Controller
         ], 200);
     }
 
-    
     /**
     * Display a specific resource.
     *
@@ -82,6 +81,7 @@ class TimetableController extends Controller
             'limited_to' => array_key_exists('limited_to', $data) ? $data['limited_to'] : null,
             'description' => array_key_exists('description', $data) ? $data['description'] : null,
             'no_of_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
+            'remaining_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
             'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
             'location' => array_key_exists('location', $data) ? $data['location'] : null,
             'price' => array_key_exists('price', $data) ? $data['price'] : 0,

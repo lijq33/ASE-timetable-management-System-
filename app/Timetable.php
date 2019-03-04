@@ -15,7 +15,7 @@ class Timetable extends Model
     * @var array
     */
     protected $fillable = ['user_id', 'subject', 'start_date', 'end_date', 'start_time', 'end_time','is_all_day',
-     'is_appointment', 'limited_to', 'description', 'no_of_slots', 'recurrence_rule', 'location', 'price'];
+     'is_appointment', 'limited_to', 'description', 'no_of_slots', 'remaining_slots', 'recurrence_rule', 'location', 'price'];
 
     /**
     * @return \Illuminate\Database\Eloquent\Relations\HasMany
