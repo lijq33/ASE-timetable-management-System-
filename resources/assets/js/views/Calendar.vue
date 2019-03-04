@@ -218,7 +218,7 @@
 					var newItem = index;
 					newItem.Id = res.data.id;
 					console.log("new id is " , index);
-					scope.scheduleData.splice(index, 1, newItem);
+					// scope.scheduleData.splice(index, 1, newItem);
 					console.log("new array " , scope.scheduleData);
 				}).catch((error) => {
 					console.log(error)
