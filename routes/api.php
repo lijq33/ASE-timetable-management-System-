@@ -26,15 +26,6 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'auth.user'], function ($router) {
     Route::resource('timetable', 'TimetableController', ['except' => ['create', 'edit']]);
     Route::resource('appointment', 'AppointmentController', ['except' => ['create', 'edit', 'update']]);
-    // Route::get('timetable/get', 'TimetableController@show');
-
-    // Route::post('timetable/update', 'TimetableController@update');
-    // Route::post('timetable/delete', 'TimetableController@destroy');
-    
-    // Route::get('appointment/get', 'AppointmentController@show');
-    // Route::post('appointment', 'AppointmentController@store');
-    // Route::post('appointment/update', 'AppointmentController@update');
-    // Route::post('appointment/delete', 'AppointmentController@destroy');
 });
 
 

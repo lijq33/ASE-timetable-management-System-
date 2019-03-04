@@ -103,7 +103,7 @@ class TimetableController extends Controller
      */
     public function update(Request $request, Timetable $timetable)
     {
-        
+        var_dump($timetable);
         //retrieve all appointment
         $timetable->appointment();
 

@@ -153,9 +153,31 @@
 			},
 
 			//done
-			createTimetable(event){
-				console.log(event)
+			createTimetable(event){ 
+				var scope = this;
 				axios.post('/api/timetable', {
+					is_all_day: event.data.IsAllDay,
+					start_time: event.data.StartTime,
+					end_time: event.data.EndTime,
+
+					description: event.data.Description,
+					subject: event.data.Subject,
+					location: event.data.Location,
+					recurrence_rule: event.data.RecurrenceRule,
+
+					is_appointment: event.data.IsAppointment,
+					no_of_slots: event.data.NoOfSlots,
+					limited_to: event.data.LimitedTo
+				}).then((res) => {
+					var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
+					var newItem = index;
+					newItem.Id = res.data.id;
+					scope.scheduleData.splice(index, 1, newItem);
+				})
+			},
+
+			updateTimetable(event){
+				axios.patch('/api/timetable/'+ event.data.Id, {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
 					end_time: event.data.EndTime,
@@ -173,36 +195,11 @@
 				})
 			},
 
-			updateTimetable(event){
-				console.log(event)
-				axios.post('/api/timetable/update', {
-					is_all_day: this.isAllDay,
-					date: this.date,
-					start_time: this.startTime,
-					end_time: this.endTime,
-
-					event_type: this.LimitedTo,
-					subject: this.subject,
-					is_appointment: this.isAppointment,
-					description: this.description,
-					location: this.location,
-				}).then((res) => {
-					//update timetable id with the response
-					console.log(res);
-				})
-			},
-
 			deleteTimetable(event){
 				axios.delete('/api/timetable/'+ event.data[0].Id)
 				.then((res) => {
 					console.log(res);
 				})
-			},
-
-		
-			makeAppointment(id){
-				this.timetableId = id;
-				this.showModal= true;	 
 			},
 
 			oneventRendered: function(args) {
@@ -217,7 +214,128 @@
 					args.element.style.backgroundColor = categoryColor;
 				}
 			},
-			
+
+			// Create required custom elements in initial time
+			onPopupOpen: function(args) {
+
+				let isAppointment = false;
+				let eventType = "";
+				let NoOfSlot = 0;
+				let Price = 0;
+					
+				if (args.type === "Editor" && this.isCompany()) {
+
+					//add data to custom fields
+					const result = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
+
+					if (result !== undefined){
+						isAppointment = result.IsAppointment;
+						eventType= result.LimitedTo;
+						NoOfSlot = result.NoOfSlots;
+						Price = result.Price;
+					}
+
+					console.log(args);
+					if (!args.element.querySelector(".custom-field-row")) {
+
+						let row = createElement("div", { className: "custom-field-row" });
+						let formElement = args.element.querySelector(".e-schedule-form");
+						formElement.firstChild.insertBefore(
+							row,
+							args.element.querySelector(".e-title-location-row")
+						);
+
+
+						//is appointment
+						let container_checkbox1 = createElement("div", {
+							className: "custom-field-container-checkbox1"
+						});
+						let inputEle_checkbox1 = createElement("input", {
+							className: "e-field",
+							attrs: { name: "IsAppointment" }
+						});
+						container_checkbox1.appendChild(inputEle_checkbox1);
+						row.appendChild(container_checkbox1);
+						var checkbox1 = new CheckBox({
+							label: "Requires Appointment",
+							checked: isAppointment
+						});
+						checkbox1.appendTo(inputEle_checkbox1);
+						inputEle_checkbox1.setAttribute("name", "IsAppointment");
+
+						let container = createElement("div", {
+							className: "custom-field-container"
+						});
+						let inputEle = createElement("input", {
+							className: "e-field",
+							attrs: { name: "LimitedTo" }
+						});
+						container.appendChild(inputEle);
+						row.appendChild(container);
+						var dropDownList = new DropDownList({
+							dataSource: [
+								{ text: "Public", value: "public" },
+								{ text: "Invites Only", value: "invites only" },
+								{ text: "Private", value: "private" },
+							],
+							fields: { text: "text", value: "value" },
+							value: eventType,
+							floatLabelType: "Always",
+							placeholder: "This event is open to:"
+						});
+						dropDownList.appendTo(inputEle);
+						inputEle.setAttribute("name", "LimitedTo");
+					
+
+						//number of slots							
+						let container2 = createElement("div", {
+							className: "custom-field-container"
+						});
+						let inputEle2 = createElement("input", {
+							className: "e-field",
+							attrs: { name: "NoOfSlots" }
+						});
+						container2.appendChild(inputEle2);
+						row.appendChild(container2);
+						var numeric = new NumericTextBox({ min: 1, max: 500, format:'0', 
+							floatLabelType: "Always",
+							placeholder: "Number of slots:",
+							value: NoOfSlot
+
+						});
+						numeric.appendTo(inputEle2);
+						inputEle2.setAttribute("name", "NoOfSlots");
+
+						//price
+						let container3 = createElement("div", {
+							className: "custom-field-container"
+						});
+						let inputEle3 = createElement("input", {
+							className: "e-field",
+							attrs: { name: "Price" }
+						});
+						container3.appendChild(inputEle3);
+						row.appendChild(container3);
+						var price = new NumericTextBox({
+							format: 'c2',
+							value: Price,
+							placeholder: 'Price',
+							floatLabelType: 'Auto'
+						});
+						price.appendTo(inputEle3);
+						inputEle3.setAttribute("name", "Price");
+
+					}
+				}
+			},
+					
+			//Appointment
+					
+			makeAppointment(id){
+				this.timetableId = id;
+				this.showModal= true;	 
+			},
+
 			customButtonEvent: function(event) {
 				this.$refs.myModalRef.show();
 			},
@@ -227,119 +345,6 @@
 			},
 
 
-			// Create required custom elements in initial time
-			onPopupOpen: function(args) {
-
-			let isAppointment = false;
-			let eventType = "";
-			let NoOfSlot = 0;
-			let Price = 0;
-				
-			if (args.type === "Editor" && this.isCompany()) {
-
-				//add data to custom fields
-				const result = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
-
-				if (result !== undefined){
-					isAppointment = result.IsAppointment;
-					eventType= result.LimitedTo;
-					NoOfSlot = result.NoOfSlots;
-					Price = result.Price;
-				}
-
-				console.log(args);
-				if (!args.element.querySelector(".custom-field-row")) {
-
-					let row = createElement("div", { className: "custom-field-row" });
-					let formElement = args.element.querySelector(".e-schedule-form");
-					formElement.firstChild.insertBefore(
-						row,
-						args.element.querySelector(".e-title-location-row")
-					);
-
-
-					//is appointment
-					let container_checkbox1 = createElement("div", {
-						className: "custom-field-container-checkbox1"
-					});
-					let inputEle_checkbox1 = createElement("input", {
-						className: "e-field",
-						attrs: { name: "IsAppointment" }
-					});
-					container_checkbox1.appendChild(inputEle_checkbox1);
-					row.appendChild(container_checkbox1);
-					var checkbox1 = new CheckBox({
-						label: "Requires Appointment",
-						checked: isAppointment
-					});
-					checkbox1.appendTo(inputEle_checkbox1);
-					inputEle_checkbox1.setAttribute("name", "IsAppointment");
-
-					let container = createElement("div", {
-						className: "custom-field-container"
-					});
-					let inputEle = createElement("input", {
-						className: "e-field",
-						attrs: { name: "LimitedTo" }
-					});
-					container.appendChild(inputEle);
-					row.appendChild(container);
-					var dropDownList = new DropDownList({
-						dataSource: [
-							{ text: "Public", value: "public" },
-							{ text: "Invites Only", value: "invites only" },
-							{ text: "Private", value: "private" },
-						],
-						fields: { text: "text", value: "value" },
-						value: eventType,
-						floatLabelType: "Always",
-						placeholder: "This event is open to:"
-					});
-					dropDownList.appendTo(inputEle);
-					inputEle.setAttribute("name", "LimitedTo");
-				
-
-					//number of slots							
-					let container2 = createElement("div", {
-						className: "custom-field-container"
-					});
-					let inputEle2 = createElement("input", {
-						className: "e-field",
-						attrs: { name: "NoOfSlots" }
-					});
-					container2.appendChild(inputEle2);
-					row.appendChild(container2);
-					var numeric = new NumericTextBox({ min: 1, max: 500, format:'0', 
-						floatLabelType: "Always",
-						placeholder: "Number of slots:",
-						value: NoOfSlot
-
-					 });
-					numeric.appendTo(inputEle2);
-					inputEle2.setAttribute("name", "NoOfSlots");
-
-					//price
-					let container3 = createElement("div", {
-						className: "custom-field-container"
-					});
-					let inputEle3 = createElement("input", {
-						className: "e-field",
-						attrs: { name: "Price" }
-					});
-					container3.appendChild(inputEle3);
-					row.appendChild(container3);
-					var price = new NumericTextBox({
-						format: 'c2',
-						value: Price,
-						placeholder: 'Price',
-						floatLabelType: 'Auto'
-					});
-					price.appendTo(inputEle3);
-					inputEle3.setAttribute("name", "Price");
-
-				}
-			}
-			}
 		}
 		});
 </script>

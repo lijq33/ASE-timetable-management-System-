@@ -7,11 +7,7 @@ FILLED UP HOMEPAGE WITH SOMETHING
 
 # Timetable
 Import timetable(store)
-View timetable(show)
 update timetable(update)
-create timetable(new timetable)
-database for timetable might require manual input rather than auto increment
-
 
 # Appointment
 Only Company can create appointment
@@ -24,6 +20,9 @@ Make Appointment(store)
 ## COMPLETED FUNCTIONS
 Registration for Both Individual and company
 Login for both individual and company
+Create timetable
+Delete timetable
+
 
 ## BUGS
 
