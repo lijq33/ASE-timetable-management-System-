@@ -64,6 +64,30 @@
 	// let scheduleData = [];
 	
 	export default Vue.extend({
+		mounted() {
+			var scope = this;
+			//google calender api
+			var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
+			var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
+			
+			$.ajax({
+			url: "https://www.googleapis.com/calendar/v3/calendars/" +
+				calendarId +
+				"/events?key=" +
+				publicKey,
+			type: "GET",
+			success: function (data, status, jqXHR) { 
+				console.log(data);
+				scope.processGoogleCalendarData(data); 	 
+			},
+			error: function (jqXHR, status, err) {
+				console.log("Local error callback.");
+			},
+			complete: function (jqXHR, status) {
+				 
+			}
+			}) 
+  		},
 		created() {
 			this.retrieveTimetable();	
 			this.retrieveAppointment();
@@ -79,18 +103,39 @@
 				},
 				selectedDate: new Date(2018, 10, 15),
 			};
-		},
-		
-		
+		}, 	 
 		provide: {
 			schedule: [Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]
 		},
 
 		methods: {
+			processGoogleCalendarData(e) {
+				var items = e.items;
+				//var scheduleData1 = [];
+				if (items.length > 0) {
+					for (var i = 0; i < items.length; i++) {
+					var event = items[i];
+					var when = event.start.dateTime;
+					var start = event.start.dateTime;
+					var end = event.end.dateTime;
+					if (!when) {
+						when = event.start.date;
+						start = event.start.date;
+						end = event.end.date;
+					}
+					this.scheduleData.push({
+						Id: event.id,
+						Subject: event.summary,
+						StartTime: new Date(start),
+						EndTime: new Date(end),
+						IsAllDay: !event.start.dateTime
+					});
+					}
+				}   
+			},
 			isCompany(){
 				return this.$store.getters.isCompany
 			},
-
 			// retrieve the user's timetable from database
 			retrieveTimetable(){
 				var scope = this;
