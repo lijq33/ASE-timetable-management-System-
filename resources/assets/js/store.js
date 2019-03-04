@@ -22,9 +22,9 @@ export default {
         authError(state) {
             return state.auth_error;
         },
-        isAdmin(state) {
+        isCompany(state) {
             if (state.currentUser !==null)
-                return state.currentUser.roles === 'admin' ? true : false ;
+                console.log(state.currentUser);
             return false;
         }
     },
