@@ -106,6 +106,7 @@
 						Location: element.location,
 						Price: element.price,
 						CategoryColor: "#000000",
+						//DIFFERENT POPUP => MODAL POPUP XY DO HERE
 					});
 				})	
 				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
@@ -260,10 +261,7 @@
 				});
 			},
 
-			//bug is here!
 			updateTimetable(event){
-				console.log(event.data.Id); //see the output
-				//the event id is not updated
 				axios.patch('/api/timetable/'+ event.data.Id, {
 					is_all_day: event.data.IsAllDay,
 					start_time: event.data.StartTime,
@@ -416,8 +414,6 @@
 				}
 			},
 					
-			//Appointment
-					
 			makeAppointment(id){
 				this.timetableId = id;
 				this.showModal= true;	 
@@ -430,8 +426,6 @@
 			hideModal() {
 				this.$refs.myModalRef.hide();
 			},
-
-
 		}
 		});
 </script>
