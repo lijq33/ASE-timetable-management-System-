@@ -24,8 +24,9 @@ export default {
         },
         isCompany(state) {
             if (state.currentUser !==null)
-                console.log(state.currentUser);
-            return false;
+                if(state.currentUser.roles === 'user')
+                    return false;
+            return true;
         }
     },
     mutations: {
