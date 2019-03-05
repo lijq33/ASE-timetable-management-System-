@@ -106,7 +106,8 @@
 						Location: element.location,
 						Price: element.price,
 						CategoryColor: "#000000",
-						isReadonly:true,
+						
+						IsReadonly: true,
 						ExternalTimetable:true,
 					});
 				})	
@@ -160,7 +161,7 @@
 							EndTime: new Date(end),
 							IsAllDay: !event.start.dateTime,
 							CategoryColor: "#faad63",
-							readonly:true
+							IsReadonly:true
 						});
 					}
 				}   
@@ -307,19 +308,47 @@
 				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
 				if (args.type === "QuickInfo" && "ExternalTimetable" in schedule){
 					if(schedule.ExternalTimetable == true){
-						console.log(args);
-						console.log(!args.element.querySelector("e-header-icon-wrapper"));
-
-						//  var elements = document.getElementsByClassName('e-delete');
-						// 	while(elements.length > 0){
-						// 		elements[0].parentNode.removeChild(elements[0]);
-						// 	}
+						
+						 var elements = document.getElementsByClassName('e-delete');
+							while(elements.length > 0){
+								elements[0].parentNode.removeChild(elements[0]);
+							}	 
+						
+						var elements2 = document.getElementsByClassName('e-edit');
+						while(elements2.length > 0){
+							elements2[0].parentNode.removeChild(elements2[0]);
+						}
+							
+						//add the button to trigger modal => for booking
+						
+						let row = createElement("div", { className: "custom-button-row" });
+						let formElement = args.element.querySelector(".e-popup-content");
+						
+						//custom button
+						let container_button1 = createElement("div", {
+							className: "custom-field-container-button1"
+						});
+						let inputEle_button1 = createElement("button", {
+							className: "e-field",
+							attrs: { name: "IsButton1" }
+						});
+						container_button1.appendChild(inputEle_button1);
+						formElement.appendChild(container_button1);
+						let button1 = new Button({
+							content: "More",
+							disabled: false
+						});
+						container_button1.addEventListener(
+							"click",
+							this.customButtonEvent,
+							false
+						);
+						button1.appendTo(inputEle_button1);
+						inputEle_button1.setAttribute("name", "IsButton1");  
 					}
 						
 				}
-					
-						
-
+					 
 				let isAppointment = false;
 				let eventType = "";
 				let NoOfSlot = 0;
