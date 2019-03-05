@@ -16,7 +16,7 @@
                                     - {{company.tagline}}
                                 </p>
                                 <p class = "tw-text-grey-darkest tw-text-base">
-                                    You have {{no_of_appointments}} with {{company.company_name}}
+                                    <!-- You have {{no_of_appointments}} with {{company.company_name}} -->
                                 </p>
                             </div> 
                     </div>

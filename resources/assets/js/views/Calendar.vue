@@ -1,5 +1,6 @@
 <template>
   <div>
+		<flash :message = "message"></flash>
 		<!-- calendar -->
 		<div class="col-md-12 control-section">
 			<div class="content-wrapper">
@@ -58,6 +59,8 @@
 	import { Modal } from "bootstrap-vue/es/components";
 	import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda, View, Resize, DragAndDrop } from "@syncfusion/ej2-vue-schedule";
 
+	import Flash from '../components/Flash.vue';
+
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
 
@@ -70,10 +73,16 @@
 			this.retrieveAppointment();
 		},
 
+		components: {
+            'flash': Flash,
+		},
+
 		props: ['appointments'],
 
 		data() {
 			return {
+				message:'',
+
 				appointment: this.appointments,
 				scheduleData : [],
 				isAppointment:true,
@@ -307,13 +316,17 @@
 				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
 				if (args.type === "QuickInfo" && "ExternalTimetable" in schedule){
 					if(schedule.ExternalTimetable == true){
-						console.log(args);
-						console.log(!args.element.querySelector("e-header-icon-wrapper"));
 
-						//  var elements = document.getElementsByClassName('e-delete');
-						// 	while(elements.length > 0){
-						// 		elements[0].parentNode.removeChild(elements[0]);
-						// 	}
+						 var elements = document.getElementsByClassName('e-delete');
+							while(elements.length > 0){
+								elements[0].parentNode.removeChild(elements[0]);
+							}	 
+						
+						var elements2 = document.getElementsByClassName('e-edit');
+						while(elements2.length > 0){
+							elements2[0].parentNode.removeChild(elements2[0]);
+						}
+							
 					}
 						
 				}

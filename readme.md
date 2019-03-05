@@ -6,17 +6,15 @@ Only Company can create appointment
 Create Appointment (store) -> for others to "make appointment"
 Make Appointment(store) 
 
-#Notification
 
 ## TODO
 
 #calendar
 Sync google calendar - do with a real account
-Stripe
 
 #appointment
 CRUD APPOINTMENT
-
+Stripe
 
 
 ## COMPLETED FUNCTIONS
@@ -33,13 +31,6 @@ Login for both individual and company
 Create timetable
 Update timetable
 Delete timetable
-
-
-
-
-
-## BUGS
-
 
 
 ## Commands 

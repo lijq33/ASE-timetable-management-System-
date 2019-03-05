@@ -25,9 +25,6 @@
                         <li>
                             <router-link to="/calendar" class="nav-link">Calendar</router-link>
                         </li>
-                        <li>
-                            <router-link to="/timetable" class="nav-link">Timetable</router-link>
-                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                 Appointment <span class="caret"></span>

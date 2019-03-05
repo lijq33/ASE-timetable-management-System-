@@ -2,10 +2,6 @@
 
 export const routes = [
     {
-        path : '/',
-        component: require('./views/Home')
-    },
-    {
         path : '/login',
         component: require('./views/Login.vue')
     },
@@ -13,87 +9,34 @@ export const routes = [
         path : '/register',
         component: require('./views/Register')
     }, 
-    {
-        path : '/appointment',
-        component: require('./views/Appointment')
-    }, 
 
     {
-        path : '/test',
-        component: require('./views/test')
+        path : '/',
+        component: require('./views/Home'),
+        meta: {
+            requiresAuth: true
+        }
     },
     {
-        path : '/timetable',
-        component: require('./views/Calendar')
-    },
+        path : '/appointment',
+        component: require('./views/Appointment'),
+        meta: {
+            requiresAuth: true
+        }
+    }, 
     {
         path : '/calendar',
-        component: require('./views/Calendar')
+        component: require('./views/Calendar'),
+        meta: {
+            requiresAuth: true
+        }
     },     
-    {
-        path : '/calendar1',
-        component: require('./views/Calendar1')
-    },   
     {
         path: '/company/:Cid',
         name: 'company',
-        component: require('./views/Company')
+        component: require('./views/Company'),
+        meta: {
+            requiresAuth: true
+        }
     },     
-    
-    // {
-    //     path : '/HealthServices/Hospital',
-    //     component: require('./views/HealthServices/Hospital'),
-    // },
-    // {
-    //     path : '/HealthServices/Polyclinic',
-    //     component: require('./views/HealthServices/Polyclinic'),
-    // },
-    // {
-    //     path : '/HealthServices/Dental',
-    //     component: require('./views/HealthServices/Dental'),
-    // },   
-    // {
-    //     path : '/HealthServices/ChasClinic',
-    //     component: require('./views/HealthServices/ChasClinic'),
-    // },
-    // {
-    //     path : '/HealthServices/Pharmacy',
-    //     component: require('./views/HealthServices/Pharmacy'),
-    // },
-    // {
-    //     path : '/Map',
-    //     component: require('./views/Map'),
-    // },
-
-    // //requires login
-    // {
-    //     path : '/Appointment/Create',
-    //     component: require('./views/Appointment/Create'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-    // {
-    //     path : '/Appointment/Manage',
-    //     component: require('./views/Appointment/Manage'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-    // {
-    //     path : '/Help',
-    //     component: require('./views/Help'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-
-    // //admin
-    // {
-    //     path : '/feedback/show',
-    //     component: require('./views/ViewFeedback'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
 ];
