@@ -15,7 +15,7 @@ class Appointment extends Model
     */
     protected $fillable = ['timetable_id', 'user_id'];
 
-    public function timeTable()
+    public function timetable()
     {
         return $this->belongsTo(Timetable::class, 'timetable_id');
     }

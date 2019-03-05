@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Company;
@@ -48,7 +46,8 @@ class CompanyController extends Controller
         }
 
         return response()->json([
-            'timetables' => $timetables
+            'timetables' => $timetables,
+            'company' => $company
         ], 200);
     }
 

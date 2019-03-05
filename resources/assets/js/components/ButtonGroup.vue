@@ -54,7 +54,6 @@
         
         data(){
             return{
-                publicPath: process.env.APP_URL,
                 companies: [],
             }
         },
