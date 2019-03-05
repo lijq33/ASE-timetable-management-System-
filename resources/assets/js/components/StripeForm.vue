@@ -2,10 +2,10 @@
     <div>
         
         <card class='stripe-card'
-          :class='{ complete }'
-          :stripe= "stripeKey"
-          :options='stripeOptions'
-          @change='change($event)'
+			:class='{ complete }'
+			:stripe= "stripeKey"
+			:options='stripeOptions'
+			@change='change($event)'
         />
         
         <div id="card-errors" role="alert" v-text = "errorMessage"></div>
@@ -62,23 +62,24 @@
       }
     }
 </script>
-<style>
-.stripe-card {
-  border: 1px solid #f1f5f8;
-  border-radius: 8px;   
-}
 
-.StripeElement {
-  background-color: #f1f5f8;
-  height: 40px;
-  padding: 10px 12px;
-  border-radius: 4px;
-  border: 1px solid #b8c2cc;
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
-}
-#card-errors{
-  color: #e3342f;
-}
+<style>
+	.stripe-card {
+	border: 1px solid #f1f5f8;
+	border-radius: 8px;   
+	}
+
+	.StripeElement {
+	background-color: #f1f5f8;
+	height: 40px;
+	padding: 10px 12px;
+	border-radius: 4px;
+	border: 1px solid #b8c2cc;
+	box-shadow: 0 1px 3px 0 #e6ebf1;
+	-webkit-transition: box-shadow 150ms ease;
+	transition: box-shadow 150ms ease;
+	}
+	#card-errors{
+	color: #e3342f;
+	}
 </style>

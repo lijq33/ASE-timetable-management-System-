@@ -86,6 +86,78 @@ class AppointmentController extends Controller
             ], 401);
         }
 
+// timetable_id
+// start_time
+// end_time
+
+
+
+        $validator = validator($data = request()->all(), OnlineClassBooking::$rules, OnlineClassBooking::$messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $onlineClass = OnlineTuitionClass::find($data['class_id']);
+
+        $startDate = $onlineClass->getStartDate();
+
+        //for url access
+        $data['token'] = str_random(40);
+
+        $onlineClassBooking = OnlineClassBooking::create([
+            'token'                   => $data['token'],
+            'name'                    => $data['name'],
+            'email'                   => $data['email'],
+            'telephone_number'        => $data['telephone_number'],
+            'start_date'              => $startDate,
+            'ip_address'              => getIp(),
+            'online_tuition_class_id' => $data['class_id'],
+        ]);
+
+        $tuitionClass = $onlineClassBooking->onlineTuitionClass;
+
+        $tuitionClass->update([
+            'sign_up_count'      => $tuitionClass->sign_up_count + 1,
+            'current_class_size' => $tuitionClass->current_class_size + 1,
+        ]);
+
+        // set up stripe key and make payment
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $customer = Customer::create([
+            'source' => $data['stripeToken'],
+        ]);
+
+        //because price is in cents
+        $price = OnlineTuitionClass::find($data['class_id'])->first()->price;
+        $price *= 100;
+
+        Charge::create([
+            'customer' => $customer->id,
+            'amount'   => $price,
+            'currency' => 'sgd',
+            'metadata' => [
+                'phone'           => $data['telephone_number'],
+                'email'           => $data['email'],
+                'online_class_id' => $data['class_id'],
+                'start_date'      => $startDate,
+            ],
+        ]);
+
+        Email::acknowledgeTutorOnlineClassSignupSuccess($onlineClassBooking);
+        Email::acknowledgeStudentOnlineClassSignupSuccess($onlineClassBooking);
+
+        return response()->json([
+            'url'     => url("/online_class_bookings/verify"),
+            'message' => null,
+        ]);
+
+
+
+
         //store data into database
         Appointment::create([
             'timetable_id' => $data['timetable_id'],

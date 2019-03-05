@@ -20,22 +20,11 @@
 		</div>
 
 		<div>
-			<!-- Custom Edit Modal Component -->
-			<b-modal
-				ref="myModalRef"
-				hide-footer
-				title="Using Component Methods"
-			>
-				<div class="d-block text-center">
-					<h3>Hello From My Modal!</h3>
-				</div>
-				<b-button
-					class="mt-3"
-					variant="outline-danger"
-					block
-					@click="hideModal"
-				>Close Me</b-button>
-		</b-modal>
+			<modal
+				:appointment = "appointment"
+				:show-modal = "showModal"
+				@hideModal = "hideModal"
+			></modal>
 		</div>
 	</div>
 </template>
@@ -56,10 +45,10 @@
 	import { DropDownList } from "@syncfusion/ej2-dropdowns";
 	import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
 	import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
-	import { Modal } from "bootstrap-vue/es/components";
 	import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda, View, Resize, DragAndDrop } from "@syncfusion/ej2-vue-schedule";
 
 	import Flash from '../components/Flash.vue';
+	import Modal from '../components/Modal.vue';
 
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
@@ -75,6 +64,7 @@
 
 		components: {
             'flash': Flash,
+            'modal': Modal,
 		},
 
 		props: ['appointments'],
@@ -83,7 +73,9 @@
 			return {
 				message:'',
 
-				appointment: this.appointments,
+				showModal: null,
+				appointment: null,
+
 				scheduleData : [],
 				isAppointment:true,
 				readonly: false,
@@ -314,47 +306,48 @@
 			// Create required custom elements in initial time
 			onPopupOpen: function(args) {
 				
-				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
-				if (args.type === "QuickInfo" && "ExternalTimetable" in schedule){
-					if(schedule.ExternalTimetable == true){
-						
-						 var elements = document.getElementsByClassName('e-delete');
-							while(elements.length > 0){
-								elements[0].parentNode.removeChild(elements[0]);
-							}	 
-						
-						var elements2 = document.getElementsByClassName('e-edit');
-						while(elements2.length > 0){
-							elements2[0].parentNode.removeChild(elements2[0]);
-						}
+				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id);
+				if (args.type === "QuickInfo"){
+					if (schedule != undefined && "ExternalTimetable" in schedule)
+						if(schedule.ExternalTimetable == true){
 							
-						//add the button to trigger modal => for booking
-						
-						let row = createElement("div", { className: "custom-button-row" });
-						let formElement = args.element.querySelector(".e-popup-content");
-						
-						//custom button
-						let container_button1 = createElement("div", {
-							className: "custom-field-container-button1"
-						});
-						let inputEle_button1 = createElement("button", {
-							className: "e-field",
-							attrs: { name: "IsButton1" }
-						});
-						container_button1.appendChild(inputEle_button1);
-						formElement.appendChild(container_button1);
-						let button1 = new Button({
-							content: "More",
-							disabled: false
-						});
-						container_button1.addEventListener(
-							"click",
-							this.customButtonEvent,
-							false
-						);
-						button1.appendTo(inputEle_button1);
-						inputEle_button1.setAttribute("name", "IsButton1");  
-					}
+							var elements = document.getElementsByClassName('e-delete');
+								while(elements.length > 0){
+									elements[0].parentNode.removeChild(elements[0]);
+								}	 
+							
+							var elements2 = document.getElementsByClassName('e-edit');
+							while(elements2.length > 0){
+								elements2[0].parentNode.removeChild(elements2[0]);
+							}
+								
+							this.appointment = schedule;
+							
+							let row = createElement("div", { className: "custom-button-row" });
+							let formElement = args.element.querySelector(".e-popup-content");
+							
+							//custom button
+							let container_button1 = createElement("div", {
+								className: "custom-field-container-button1"
+							});
+							let inputEle_button1 = createElement("button", {
+								className: "e-field",
+								attrs: { name: "IsButton1" }
+							});
+							container_button1.appendChild(inputEle_button1);
+							formElement.appendChild(container_button1);
+							let button1 = new Button({
+								content: "Book",
+								disabled: false
+							});
+							container_button1.addEventListener(
+								"click",
+								this.displayModal,
+								false
+							);
+							button1.appendTo(inputEle_button1);
+							inputEle_button1.setAttribute("name", "IsButton1");  
+						}
 						
 				}
 					 
@@ -468,18 +461,13 @@
 					}
 				}
 			},
-					
-			makeAppointment(id){
-				this.timetableId = id;
-				this.showModal= true;	 
+
+			displayModal() {
+				this.showModal = true;
 			},
 
-			customButtonEvent: function(event) {
-				this.$refs.myModalRef.show();
-			},
-			
 			hideModal() {
-				this.$refs.myModalRef.hide();
+				this.showModal = false;
 			},
 		}
 		});
@@ -488,5 +476,9 @@
 <style>
 	.e-time-zone-container{
 		visibility:hidden;
+	}
+
+	.custom-field-container-button1{
+		padding-top:1em;	
 	}
 </style>

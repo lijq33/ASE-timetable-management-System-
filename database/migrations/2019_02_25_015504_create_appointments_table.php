@@ -22,10 +22,10 @@ class CreateAppointmentsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                     ->references('id')->on('users');
-            // $table->date('start_date');
-            // $table->date('end_date');
-            // $table->time('start_time');
-            // $table->time('end_time');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
         });
     }
