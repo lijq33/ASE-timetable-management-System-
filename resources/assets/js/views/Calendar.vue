@@ -12,7 +12,7 @@
 				:eventRendered="oneventRendered"
 				:popupOpen="onPopupOpen"
 				:actionComplete="onActionComplete"
-				:readonly="readonly"
+
 				>
 				</ejs-schedule>
 			</div>
@@ -106,7 +106,8 @@
 						Location: element.location,
 						Price: element.price,
 						CategoryColor: "#000000",
-						//DIFFERENT POPUP => MODAL POPUP XY DO HERE
+						isReadonly:true,
+						ExternalTimetable:true,
 					});
 				})	
 				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
@@ -302,6 +303,22 @@
 
 			// Create required custom elements in initial time
 			onPopupOpen: function(args) {
+				
+				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id );
+				if (args.type === "QuickInfo" && "ExternalTimetable" in schedule){
+					if(schedule.ExternalTimetable == true){
+						console.log(args);
+						console.log(!args.element.querySelector("e-header-icon-wrapper"));
+
+						//  var elements = document.getElementsByClassName('e-delete');
+						// 	while(elements.length > 0){
+						// 		elements[0].parentNode.removeChild(elements[0]);
+						// 	}
+					}
+						
+				}
+					
+						
 
 				let isAppointment = false;
 				let eventType = "";
