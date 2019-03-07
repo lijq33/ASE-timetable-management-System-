@@ -12,11 +12,6 @@ Make Appointment(store)
 #calendar
 Sync google calendar - do with a real account
 
-#appointment
-CRUD APPOINTMENT
-Stripe
-
-
 ## COMPLETED FUNCTIONS
 
 # HOME PAGE
@@ -29,8 +24,16 @@ Login for both individual and company
 
 #timetable
 Create timetable
+Read timetable
 Update timetable
 Delete timetable
+
+#Appointment
+Create Appointment - Make payment if required (w/ flash message), Stripe
+delete APPOINTMENT 
+
+## BUGS
+Public Appointments are showing up on everyone's calendar when they check our the company, EVEN THE ORIGINAL COMPANY
 
 
 ## Commands 

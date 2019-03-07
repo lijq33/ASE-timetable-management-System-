@@ -44,6 +44,20 @@ class User extends Model
      * Fetch the Individual Or Company 
      * 
      */
+    public function fetchUserable()
+    {
+        $user = (new Illuminate(\Auth::Guard('individual')))->user();
+        
+        if( !isset($user) )
+            $user = (new Illuminate(\Auth::Guard('company')))->user();
+        
+        return $user;
+    }
+
+     /**
+     * Fetch the Individual Or Company 
+     * 
+     */
     public function fetchUser()
     {
         $user = (new Illuminate(\Auth::Guard('individual')))->user();

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Stripe\{Stripe, Charge, Customer};
+
 use App\Appointment;
+use App\Timetable;
 use App\User;
 use App\Company;
 
@@ -25,50 +29,16 @@ class AppointmentController extends Controller
         $timetables = [];
 
         foreach($appointments as $appointment){
-            $timetables += $appointment->timetable;
+            $timetable = $appointment->timetable;
+            $timetable['StartTime'] = mergeDateTime($timetable->start_time , $timetable->start_date);
+            $timetable['EndTime'] = mergeDateTime($timetable->end_time , $timetable->end_date);
+            array_push($timetables, $timetable);
         }
 
         return response()->json([
-            'appointment' => $timetables,
+            'appointments' => $timetables,
         ], 200);
     }
-
-
-    /**
-    * Display a specific resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    public function retrieveAppointment($id)
-    {
-
-        //timetable
-        // $timetables = Company::find($id)
-        //             ->user
-        //             ->timetable
-        //             ->where('is_appointment', '1')
-        //             ->where('limited_to', 'public')
-        //             ->pluck('id');
-
-        // $user = new User();
-        // $user_id = $user->fetchUser()->id;
-
-        // var_dump($timetables);
-
-        // $appointments = [];
-        // foreach($timetables as $timetable){
-        //     $appointments += Appointment::where('user_id', $user_id)
-        //                 ->where('timetable_id', $timetable)
-        //                 ->get();
-        // }
-
-        // return response()->json([
-        //     // 'appointment' => $appointments,
-        //     'appointments' => $appointments,
-        //     // 'user' => $user,
-        // ], 200);
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -80,48 +50,47 @@ class AppointmentController extends Controller
     {
         $data = request()->all();
 
-        if ($data['isAppointment'] === false){   
+        
+        $timetable = Timetable::find($data['timetable_id']);
+        
+        $userable = User::find($timetable->user_id);
+        $company = $userable->userable;
+        
+        $user = new User();
+        $user = $user->fetchUser();
+
+        $individual = $user->fetchUserable();
+
+        $cur_appointment = Appointment::where('timetable_id', $data['timetable_id'])
+                                        ->where('user_id', $user->user_id)
+                                        ->first();
+
+        if($cur_appointment != null)
             return response()->json([
-                'message' => 'Invalid request'
-            ], 401);
-        }
-
-// timetable_id
-// start_time
-// end_time
-
-
-
-        $validator = validator($data = request()->all(), OnlineClassBooking::$rules, OnlineClassBooking::$messages);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors(),
+                'message' => "You have already secure this appointment!",
             ], 422);
+
+        if ($timetable->no_of_slots != null){
+            if ($timetable->no_of_slots <= $timetable->no_of_appointments)
+                return response()->json([
+                    'message' => "Booking is not possible as there are no more slots remaining",
+                ], 422);
         }
 
-        $onlineClass = OnlineTuitionClass::find($data['class_id']);
-
-        $startDate = $onlineClass->getStartDate();
-
-        //for url access
-        $data['token'] = str_random(40);
-
-        $onlineClassBooking = OnlineClassBooking::create([
-            'token'                   => $data['token'],
-            'name'                    => $data['name'],
-            'email'                   => $data['email'],
-            'telephone_number'        => $data['telephone_number'],
-            'start_date'              => $startDate,
-            'ip_address'              => getIp(),
-            'online_tuition_class_id' => $data['class_id'],
+        //store data into database
+        Appointment::create([
+            'timetable_id' => $data['timetable_id'],
+            'user_id' => $user->id,
+            
+            'start_date' => $timetable->start_date,
+            'end_date' => $timetable->end_date,
+            'start_time' => $timetable->start_time,
+            'end_time' => $timetable->end_time,
         ]);
 
-        $tuitionClass = $onlineClassBooking->onlineTuitionClass;
-
-        $tuitionClass->update([
-            'sign_up_count'      => $tuitionClass->sign_up_count + 1,
-            'current_class_size' => $tuitionClass->current_class_size + 1,
+        
+        $timetable->update([
+            'no_of_appointments' => $timetable->no_of_appointments + 1,
         ]);
 
         // set up stripe key and make payment
@@ -132,7 +101,7 @@ class AppointmentController extends Controller
         ]);
 
         //because price is in cents
-        $price = OnlineTuitionClass::find($data['class_id'])->first()->price;
+        $price = $timetable->price;
         $price *= 100;
 
         Charge::create([
@@ -140,28 +109,24 @@ class AppointmentController extends Controller
             'amount'   => $price,
             'currency' => 'sgd',
             'metadata' => [
-                'phone'           => $data['telephone_number'],
-                'email'           => $data['email'],
-                'online_class_id' => $data['class_id'],
-                'start_date'      => $startDate,
-            ],
-        ]);
+                
+                //Company Info
+                'company_name'  => $company->company_name,
+                'company_email' => $company->email,
+                'company_phone' => $company->telephone_number,
 
-        Email::acknowledgeTutorOnlineClassSignupSuccess($onlineClassBooking);
-        Email::acknowledgeStudentOnlineClassSignupSuccess($onlineClassBooking);
+                //User Info
+                'user_name'     => $individual->name,
+                'user_email'    => $individual->email,
+                'user_phone'    => $individual->telephone_number,
 
-        return response()->json([
-            'url'     => url("/online_class_bookings/verify"),
-            'message' => null,
-        ]);
-
-
-
-
-        //store data into database
-        Appointment::create([
-            'timetable_id' => $data['timetable_id'],
-            'user_id' => $data['user_id'],
+                //Booking Info
+                'timetable_id'  => $data['timetable_id'],
+                'start_date'    => $timetable->start_date,
+                'end_date'      => $timetable->end_date,
+                'start_time'    => $timetable->start_time,
+                'end_time'      => $timetable->end_time,
+            ]
         ]);
 
         return response()->json([
@@ -176,8 +141,22 @@ class AppointmentController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function destroy(Appointment $appointment)
+    public function destroy($timetable_id)
     {
+        
+        $user = new User();
+        $user = $user->fetchUser();
+
+
+        $timetable = Timetable::find($timetable_id)->first();
+        
+        $timetable->update([
+            'no_of_appointments' => $timetable->no_of_appointments - 1,
+        ]);
+
+        $appointment = Appointment::where('timetable_id', $timetable_id)
+                                    ->where('user_id', $user->id)
+                                    ->first();
         $appointment->delete();
        
         return response()->json([

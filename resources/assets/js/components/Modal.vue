@@ -131,21 +131,21 @@
 	import { Modal } from "bootstrap-vue/es/components";
     import { createToken, Card } from 'vue-stripe-elements-plus'
 	import StripeForm from './StripeForm';
+    import Flash from './Flash.vue';
 
     export default {
+        name: "feed-back",
 
         components: {
+            'flash': Flash,
     		'stripe-form': StripeForm,
         },
 
         props:['showModal', 'appointment'],
         
-        mounted() {
-         
-        },
-
         data(){
             return{
+                message: '',
                 stripeToken: '',
                 error: [],
                 isLoading: false,
@@ -160,7 +160,9 @@
 				    this.$refs.myModalRef.hide();
             },
 
-            
+            message() {
+				this.$emit('message', this.message);
+            }
         },
 
         computed: {
@@ -227,18 +229,19 @@
             makeAppointment(token) {
                 this.isLoading = true;
 
+                this.message = "";
 				axios.post('/api/appointment', {
                     timetable_id: this.appointment.Id,
-                    start_time: this.appointment.StartTime,
-                    end_time: this.appointment.EndTime,
                     stripeToken: token,
 				})
 				.then(res => {
-                    // window.location.href = res.data.url;
+                    this.message = res.data.message;
+                    this.closeModal();
                 })
 				.catch((error) => {
-                    this.error = error.response.data.errors;
+                    this.message = error.response.data.message;
                     this.isLoading = false;
+                    this.closeModal();
 				});
                
             },

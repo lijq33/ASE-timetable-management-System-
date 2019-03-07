@@ -84,7 +84,7 @@ class TimetableController extends Controller
             'no_of_appointments' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
             'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
             'location' => array_key_exists('location', $data) ? $data['location'] : null,
-            'price' => array_key_exists('price', $data) ? $data['price'] : 0,
+            'price' => array_key_exists('price', $data) ? substr($data['price'], 1) : 0,
         ]);
         
         return response()->json([
@@ -138,8 +138,8 @@ class TimetableController extends Controller
             'no_of_slots' => array_key_exists('no_of_slots', $data) ? $data['no_of_slots'] : null,
             'recurrence_rule' => array_key_exists('recurrence_rule', $data) ? $data['recurrence_rule'] : null,
             'location' => array_key_exists('location', $data) ? $data['location'] : null,
-            'price' => array_key_exists('price', $data) ? $data['price'] : 0,
-            ]);
+            'price' => array_key_exists('price', $data) ? substr($data['price'], 1) : 0,
+        ]);
        
         return response()->json([
             'message' => 'Timetable has been successfully updated'

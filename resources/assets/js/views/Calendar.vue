@@ -24,6 +24,7 @@
 				:appointment = "appointment"
 				:show-modal = "showModal"
 				@hideModal = "hideModal"
+				@message = "updateCalendar"
 			></modal>
 		</div>
 	</div>
@@ -53,13 +54,18 @@
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
 
-	// let scheduleData = [];
-	
+	//Category:
+	//An Appointment With other company:3, 
+	//Your Personal Timetable:2
+	//An external appointment before you book:1, 
+	// Google:4
+
+
 	export default Vue.extend({
-		mounted() {
+		created() {
 			// this.retrieveGoogleCalendar();
-			this.retrieveTimetable();	
 			this.retrieveAppointment();
+			this.retrieveTimetable();	
 		},
 
 		components: {
@@ -92,25 +98,29 @@
 		watch: {
 			appointments(){
 				this.appointments.forEach(element => { 
-					this.scheduleData.push({
-						Id: element.id,
-						Subject: element.subject,
-						StartTime: element.StartTime,
-						EndTime: element.EndTime,
-						RecurrenceRule: element.recurrence_rule,
-						IsAllDay: element.is_all_day,
-						Description: element.description,
+					console.log("here first @ appointments");
+				var index = this.scheduleData.find( calendar => calendar.Id === element.id );
 
-						IsAppointment: element.is_appointment,
-						LimitedTo: element.limited_to,
-						NoOfSlots: element.no_of_slots,
-						Location: element.location,
-						Price: element.price,
-						CategoryColor: "#000000",
-						
-						IsReadonly: true,
-						ExternalTimetable:true,
-					});
+					if(index == null)
+						this.scheduleData.push({
+							Id: element.id,
+							Subject: element.subject,
+							StartTime: element.StartTime,
+							EndTime: element.EndTime,
+							RecurrenceRule: element.recurrence_rule,
+							IsAllDay: element.is_all_day,
+							Description: element.description,
+
+							IsAppointment: element.is_appointment,
+							LimitedTo: element.limited_to,
+							NoOfSlots: element.no_of_slots,
+							Location: element.location,
+							Price: element.price,
+							CategoryColor: "#000000",
+							
+							IsReadonly: true,
+							Category : 1,
+						});
 				})	
 				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
 				this.$refs.ScheduleObj.refreshEvents();
@@ -118,6 +128,82 @@
 		},
 
 		methods: {
+			
+			// retrieve the user's timetable from database
+			retrieveTimetable(){
+				var scope = this;
+				axios.get('/api/timetable')
+				.then((res) => {	
+					res.data.timetables.forEach(element => { 
+						 
+						//process date object
+						scope.scheduleData.push({
+							Id: element.id,
+							Subject: element.subject,
+							StartTime: element.StartTime,
+							EndTime: element.EndTime,
+							RecurrenceRule: element.recurrence_rule,
+							IsAllDay: element.is_all_day,
+							Description: element.description,
+
+							IsAppointment: element.is_appointment,
+							LimitedTo: element.limited_to,
+							NoOfSlots: element.no_of_slots,
+							Location: element.location,
+							Price: element.price,
+							CategoryColor: (element.is_appointment == true) ? "#7886d7" : "#38c172",
+							Category : 2,
+						}); 	
+					
+					}); 
+					
+				}).catch((error) => {
+					console.log(error)
+				}).then(() => {
+					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
+				});
+				
+			},
+
+			retrieveAppointment(){
+				var scope = this;
+				axios.get('/api/appointment')
+				.then((res) => {
+					res.data.appointments.forEach(element => {  
+						//process date object
+					var index = this.scheduleData.find( calendar => calendar.Id === element.Id );
+						if(index != null){
+							var newItem = index;
+							newItem.Category = 3;
+							newItem.CategoryColor = "#f6993f";
+						}else
+							scope.scheduleData.push({
+								Id: element.id,
+								Subject: element.subject,
+								StartTime: element.StartTime,
+								EndTime: element.EndTime,
+								RecurrenceRule: element.recurrence_rule,
+								IsAllDay: element.is_all_day,
+								Description: element.description,
+
+								IsAppointment: element.is_appointment,
+								LimitedTo: element.limited_to,
+								NoOfSlots: element.no_of_slots,
+								Location: element.location,
+								Price: element.price,
+								CategoryColor: "#f6993f",
+								Category : 3,
+							}); 
+					}); 
+
+				}).catch((error) => {
+					console.log(error)
+				}).then(() => {
+					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
+					scope.$refs.ScheduleObj.refreshEvents();
+				});
+			},
+
 			//Google Calendar
 			retrieveGoogleCalendar(){
 				var scope = this;
@@ -162,7 +248,8 @@
 							EndTime: new Date(end),
 							IsAllDay: !event.start.dateTime,
 							CategoryColor: "#faad63",
-							IsReadonly:true
+							IsReadonly:true,
+							Category : 4,
 						});
 					}
 				}   
@@ -171,62 +258,18 @@
 			isCompany(){
 				return this.$store.getters.isCompany
 			},
-
-			// retrieve the user's timetable from database
-			retrieveTimetable(){
-				var scope = this;
-				axios.get('/api/timetable')
-				.then((res) => {	
-					res.data.timetables.forEach(element => { 
-						 
-						//process date object
-						scope.scheduleData.push({
-							Id: element.id,
-							Subject: element.subject,
-							StartTime: element.StartTime,
-							EndTime: element.EndTime,
-							RecurrenceRule: element.recurrence_rule,
-							IsAllDay: element.is_all_day,
-							Description: element.description,
-
-							IsAppointment: element.is_appointment,
-							LimitedTo: element.limited_to,
-							NoOfSlots: element.no_of_slots,
-							Location: element.location,
-							Price: element.price,
-							CategoryColor: (element.is_appointment == true) ? "#7886d7" : "#38c172",
-						}); 	
-					
-					}); 
-					
-				}).catch((error) => {
-					console.log(error)
-				}).then(() => {
-					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
-				});
-				
-			},
-
-			retrieveAppointment(){
-				axios.get('/api/appointment')
-				.then((res) => {
-					// this.eventSettings.dataSource = res.data.timetables;
-				}).catch((error) => {
-
-				})
-			},
-
-			//New event, update event
+			
 			onActionComplete: function(event) {
+				console.log(event)
 				if (event.requestType == "eventCreated")
 					this.createTimetable(event);
 				else if (event.requestType == "eventChanged") 
 					this.updateTimetable(event);
 				else if (event.requestType == "eventRemoved")
 					this.deleteTimetable(event);
+					
 			},
 
-			//done
 			createTimetable(event){ 
 				var scope = this;
 				axios.post('/api/timetable', {
@@ -241,20 +284,17 @@
 
 					is_appointment: event.data.IsAppointment,
 					no_of_slots: event.data.NoOfSlots,
-					limited_to: event.data.LimitedTo
+					limited_to: event.data.LimitedTo,
+					price: event.data.Price
 				}).then((res) => {
 
-					console.log("id", res.data.id);
-					console.log(event.data.Id != res.data.id);
+					var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
+					var newItem = index;
+					newItem.Category = 2;
+					newItem.CategoryColor = "#38c172";
+
 					if (res.data.id != event.data.Id){
-						console.log(event.data.Id);
-						var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
-						console.log("index is " , index);
-						var newItem = index;
 						newItem.Id = res.data.id;
-						console.log("new id is " , index);
-						// scope.scheduleData.splice(index, 1, newItem);
-						console.log("new array " , scope.scheduleData);
 					}
 				}).catch((error) => {
 					console.log(error)
@@ -264,6 +304,7 @@
 				});
 			},
 
+			//TBD UPDATE CATEGORY COLOR
 			updateTimetable(event){
 				axios.patch('/api/timetable/'+ event.data.Id, {
 					is_all_day: event.data.IsAllDay,
@@ -277,7 +318,8 @@
 
 					is_appointment: event.data.IsAppointment,
 					no_of_slots: event.data.NoOfSlots,
-					limited_to: event.data.LimitedTo
+					limited_to: event.data.LimitedTo,
+					price: event.data.Price
 				}).then((res) => {
 					console.log(res);
 				})
@@ -286,8 +328,54 @@
 			deleteTimetable(event){
 				axios.delete('/api/timetable/'+ event.data[0].Id)
 				.then((res) => {
-					console.log(res);
+					this.message = res.data.message
 				})
+			},
+
+			deleteAppointment(){
+				var scope = this;
+				axios.delete('/api/appointment/'+ this.appointment.Id)
+				.then((res) => {
+					this.message = res.data.message
+
+					var index = scope.scheduleData.find( calendar => calendar.Id === scope.appointment.Id );
+
+					console.log(index);
+					var newItem = index;
+					newItem.Category = 1;
+					newItem.CategoryColor = "#000000";
+
+					// scope.scheduleData.splice(index, 1);
+
+					this.$refs.ScheduleObj.refreshEvents();
+				})
+			},
+
+			
+			displayModal() {
+				this.showModal = true;
+			},
+
+			hideModal() {
+				this.showModal = false;
+			},
+
+			updateCalendar(payload) {
+				this.message = payload;
+
+				var sch_index = this.scheduleData.find( calendar => calendar.Id === this.appointment.Id );
+				var app_index = this.appointments.find( calendar => calendar.id === this.appointment.Id );
+
+				console.log(sch_index);
+				console.log(app_index);
+
+				if(sch_index != null && app_index != null){
+					var newItem = sch_index;
+					newItem.Category = 3;
+					newItem.CategoryColor = "#f6993f";
+				}
+
+				this.$refs.ScheduleObj.refreshEvents();
 			},
 
 			oneventRendered: function(args) {
@@ -308,8 +396,8 @@
 				
 				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id);
 				if (args.type === "QuickInfo"){
-					if (schedule != undefined && "ExternalTimetable" in schedule)
-						if(schedule.ExternalTimetable == true){
+					if (schedule != undefined){
+						if(schedule.Category == 1){
 							
 							var elements = document.getElementsByClassName('e-delete');
 								while(elements.length > 0){
@@ -348,7 +436,46 @@
 							button1.appendTo(inputEle_button1);
 							inputEle_button1.setAttribute("name", "IsButton1");  
 						}
-						
+						//APPOINTMENT MADE BY OTHERS
+						else if(schedule.Category == 3){
+							var elements = document.getElementsByClassName('e-delete');
+								while(elements.length > 0){
+									elements[0].parentNode.removeChild(elements[0]);
+								}	 
+							
+							var elements2 = document.getElementsByClassName('e-edit');
+							while(elements2.length > 0){
+								elements2[0].parentNode.removeChild(elements2[0]);
+							}
+							
+							this.appointment = schedule;
+
+							let row = createElement("div", { className: "custom-button-row" });
+							let formElement = args.element.querySelector(".e-popup-content");
+							
+							//custom button
+							let container_button2 = createElement("div", {
+								className: "custom-field-container-button2"
+							});
+							let inputEle_button2 = createElement("button", {
+								className: "e-field",
+								attrs: { name: "IsButton2" }
+							});
+							container_button2.appendChild(inputEle_button2);
+							formElement.appendChild(container_button2);
+							let button2 = new Button({
+								content: "Cancel Appointment",
+								disabled: false
+							});
+							container_button2.addEventListener(
+								"click",
+								this.deleteAppointment,
+								false
+							);
+							button2.appendTo(inputEle_button2);
+							inputEle_button2.setAttribute("name", "IsButton2");  
+						}
+					}
 				}
 					 
 				let isAppointment = false;
@@ -461,16 +588,8 @@
 					}
 				}
 			},
-
-			displayModal() {
-				this.showModal = true;
-			},
-
-			hideModal() {
-				this.showModal = false;
-			},
 		}
-		});
+	});
 </script>
 
 <style>
