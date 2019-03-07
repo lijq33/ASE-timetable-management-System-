@@ -106,7 +106,7 @@
         data() {
             return {
                 form: {
-                    registration_type:'individual',
+                    registration_type: 'individual',
                     email: '',
                     password: '',
                 },

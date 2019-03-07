@@ -22,7 +22,6 @@
                 <td> 
                     <span class = "tw-flex tw-justify-around tw-items-center" v-if = "appointment.status === 'booked'">
                         <i class="fas fa-trash-alt tw-cursor-pointer"  @click = "deletes(appointment)"></i>
-                        <i class="fas fa-pencil-alt tw-cursor-pointer" @click = "update(appointment)"></i>
                     </span>
                 </td>
             </tr>  
@@ -48,7 +47,6 @@
             @updateSuccess = "updateSuccess"
         >
         </edit-appointment>
-    
     </b-modal>
 
     </div>

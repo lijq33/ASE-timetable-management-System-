@@ -7,8 +7,7 @@
 Sync google calendar - do with a real account
 xy - legend
 
-## BUGS
-Public Appointments are showing up on everyone's calendar when they check our the company, EVEN THE ORIGINAL COMPANY
+view all appointments?
 
 
 ## COMPLETED FUNCTIONS

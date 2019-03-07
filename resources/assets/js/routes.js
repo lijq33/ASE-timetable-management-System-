@@ -18,13 +18,6 @@ export const routes = [
         }
     },
     {
-        path : '/appointment',
-        component: require('./views/Appointment'),
-        meta: {
-            requiresAuth: true
-        }
-    }, 
-    {
         path : '/calendar',
         component: require('./views/Calendar'),
         meta: {
