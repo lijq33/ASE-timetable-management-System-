@@ -9,6 +9,10 @@ xy - legend
 
 view all appointments?
 
+Make it such that ppl can book 
+
+timetable id, invitation url
+
 
 ## COMPLETED FUNCTIONS
 
@@ -56,7 +60,6 @@ php artisan migrate --step
 Only company can make appointment!
 User can book appointments.
 if a user book appointment that requires payment, use test card, 4242 4242 4242 4242 dd/dd CVC(any number) to test
-
 
 
 ## Flow of Web
