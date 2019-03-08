@@ -1,6 +1,11 @@
 <template>
   <div>
 		<flash :message = "message"></flash>
+		<!-- google calendar -->
+		<googleCalendar 
+			@googleCalendarData = "processGoogleCalendarData"
+		/>
+		 
 		<!-- calendar -->
 		<div class="col-md-12 control-section">
 			<div class="content-wrapper">
@@ -13,11 +18,40 @@
 				:eventRendered="oneventRendered"
 				:popupOpen="onPopupOpen"
 				:actionComplete="onActionComplete"
-
 				>
 				</ejs-schedule>
 			</div>
 		</div>
+
+		<!-- legend -->
+		    <div class="col-lg-3 property-section">
+            <div id="property" class="property-panel-content" title="Show / Hide Resource">
+                <table id="property" title="Show / Hide Resource" style="width: 100%">
+                    <tbody>
+                        <tr style="height: 50px">
+                            <td style="width: 100%">
+                                <ejs-checkbox cssClass="external_apt" label="External Appointment" value="1" :checked="true" :change="onChange"></ejs-checkbox>
+                            </td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width: 100%">
+                                <ejs-checkbox cssClass="personal_apt" label="Personal Appointment" value="2" :checked="false" :change="onChange"></ejs-checkbox>
+                            </td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width: 100%">
+                                <ejs-checkbox cssClass="other_apt" label="Other Company" value="3" :checked="false" :change="onChange"></ejs-checkbox>
+                            </td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width: 100%">
+                                <ejs-checkbox cssClass="google_apt" label="Google Calendar" value="4" :checked="false" :change="onChange"></ejs-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
 		<div>
 			<modal
@@ -44,16 +78,24 @@
 	import { NumericTextBox } from '@syncfusion/ej2-inputs';
 	import { createElement, extend, enableRipple } from "@syncfusion/ej2-base";
 	import { DropDownList } from "@syncfusion/ej2-dropdowns";
-	import { CheckBox, Button } from "@syncfusion/ej2-vue-buttons";
+	import { CheckBox, Button, CheckBoxPlugin } from "@syncfusion/ej2-vue-buttons";
 	import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 	import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda, View, Resize, DragAndDrop } from "@syncfusion/ej2-vue-schedule";
-
+	import GoogleCalendar from '../components/GoogleCalendar.vue';
 	import Flash from '../components/Flash.vue';
 	import Modal from '../components/Modal.vue';
 
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
+	Vue.use(CheckBoxPlugin);
 
+	var calendarCollections = [
+        { CalendarText: 'External', CalendarId: 1, CalendarColor: '#000000' },
+        { CalendarText: 'Personal', CalendarId: 2, CalendarColor: '#38c172' },
+        { CalendarText: 'OtherCompany', CalendarId: 3, CalendarColor: '#f6993f' },
+        { CalendarText: 'Google', CalendarId: 4, CalendarColor: '#fa7ea8' }
+	];
+	
 	//Category:
 	//An Appointment With other company:3, 
 	//Your Personal Timetable:2
@@ -62,7 +104,7 @@
 
 
 	export default Vue.extend({
-		created() {
+		mounted() {
 			// this.retrieveGoogleCalendar();
 			this.retrieveAppointment();
 			this.retrieveTimetable();	
@@ -70,7 +112,8 @@
 
 		components: {
             'flash': Flash,
-            'modal': Modal,
+			'modal': Modal,
+			'googleCalendar':GoogleCalendar
 		},
 
 		props: ['appointments'],
@@ -78,17 +121,17 @@
 		data() {
 			return {
 				message:'',
-
+				googleCalendarId:'',
 				showModal: null,
 				appointment: null,
-
+				 cssClass: 'schedule-add-remove-resources',
 				scheduleData : [],
 				isAppointment:true,
 				readonly: false,
 				eventSettings: {
 					dataSource: extend([], this.scheduleData, null, true)
 				},
-				selectedDate: new Date(2018, 10, 15),
+				selectedDate: new Date(),
 			};
 		}, 	 
 		provide: {
@@ -128,14 +171,42 @@
 		},
 
 		methods: {
-			
+			onChange(args){
+				 
+				let scheduleObj = this.$refs.ScheduleObj;
+				let value = parseInt((args.event.target).getAttribute('value'), 10);
+				console.log(value)
+				let resourceData = this.scheduleData.filter(function (data) { return data.Category == value; });
+				  //console.log(this.scheduleData);
+                if (args.checked) {
+                    // scheduleObj.addResource(resourceData, 'Category', value );
+					// scheduleObj.dataBind();
+					//this.scheduleData = [];
+					//this.retrieveGoogleCalendar();
+                } else {
+					 var temp = this.scheduleData.filter(function (data) { return data.Category != value;});
+					 
+
+					 if(temp.length != 0){
+						 
+							  this.scheduleData = [];
+							  this.scheduleData = temp;
+							this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource =  temp;
+							
+						this.$refs.ScheduleObj.refreshEvents();
+						console.log(this.scheduleData);
+					 }
+				
+                }
+            	
+			}, 
 			// retrieve the user's timetable from database
 			retrieveTimetable(){
 				var scope = this;
 				axios.get('/api/timetable')
 				.then((res) => {	
 					res.data.timetables.forEach(element => { 
-						 
+
 						//process date object
 						scope.scheduleData.push({
 							Id: element.id,
@@ -161,6 +232,7 @@
 					console.log(error)
 				}).then(() => {
 					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
+					scope.$refs.ScheduleObj.refreshEvents();
 				});
 				
 			},
@@ -204,30 +276,8 @@
 				});
 			},
 
-			//Google Calendar
-			retrieveGoogleCalendar(){
-				var scope = this;
-				//google calender api
-				var calendarId = "5105trob9dasha31vuqek6qgp0@group.calendar.google.com";
-				var publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
-				
-				$.ajax({
-					url: "https://www.googleapis.com/calendar/v3/calendars/" +
-						calendarId + "/events?key=" +publicKey,
-					type: "GET",
-					success: function (data, status, jqXHR) { 
-						console.log(data);
-						scope.processGoogleCalendarData(data); 	 
-					},
-					error: function (jqXHR, status, err) {
-						console.log("Local error callback.");
-					},
-					complete: function (jqXHR, status) {
-					}
-				}) 
-			},
-
 			processGoogleCalendarData(e) {
+				console.log(e.items);
 				var items = e.items;
 				//var scheduleData1 = [];
 				if (items.length > 0) {
@@ -247,12 +297,14 @@
 							StartTime: new Date(start),
 							EndTime: new Date(end),
 							IsAllDay: !event.start.dateTime,
-							CategoryColor: "#faad63",
+							CategoryColor: "#fa7ea8",
 							IsReadonly:true,
 							Category : 4,
 						});
 					}
-				}   
+				}  
+				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
+				this.$refs.ScheduleObj.refreshEvents(); 
 			},
 
 			isCompany(){
@@ -600,4 +652,24 @@
 	.custom-field-container-button1{
 		padding-top:1em;	
 	}
+       
+    .property-panel-content .e-checkbox-wrapper.external_apt .e-frame {
+        background-color: #000000;
+        border-color: transparent;
+    }
+
+    .property-panel-content .e-checkbox-wrapper.personal_apt .e-frame {
+        background-color: #38c172;
+        border-color: transparent;
+    }
+
+    .property-panel-content .e-checkbox-wrapper.other_apt .e-frame {
+        background-color: #f6993f;
+        border-color: transparent;
+    }
+
+    .property-panel-content .e-checkbox-wrapper.google_apt .e-frame {
+        background-color: #fa7ea8;
+        border-color: transparent;
+    }
 </style>
