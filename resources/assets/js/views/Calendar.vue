@@ -25,31 +25,34 @@
 			<!-- legend -->
 			<div class = "tw-w-1/4">
 				<div class="col-lg-3 property-section">
-					<div id="property" class="property-panel-content" title="Show / Hide Resource">
-						<table id="property" title="Show / Hide Resource" style="width: 100%">
-							<tbody>
-								<tr style="height: 50px">
-									<td style="width: 100%">
-										<ejs-checkbox cssClass="external_apt" label="External Appointment" value="1" :checked="true" :change="onChange"></ejs-checkbox>
-									</td>
-								</tr>
-								<tr style="height: 50px">
-									<td style="width: 100%">
-										<ejs-checkbox cssClass="personal_apt" label="Personal Appointment" value="2" :checked="false" :change="onChange"></ejs-checkbox>
-									</td>
-								</tr>
-								<tr style="height: 50px">
-									<td style="width: 100%">
-										<ejs-checkbox cssClass="other_apt" label="Other Company" value="3" :checked="false" :change="onChange"></ejs-checkbox>
-									</td>
-								</tr>
-								<tr style="height: 50px">
-									<td style="width: 100%">
-										<ejs-checkbox cssClass="google_apt" label="Google Calendar" value="4" :checked="false" :change="onChange"></ejs-checkbox>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					<div id="property" class="property-panel-content">
+						<div class="tw-flex">
+							<div class="">
+								<i class="fas fa-stop tw-text-black"></i>
+							</div>
+							<div class="tw-text-xs tw-ml-2">
+								External Appointment
+							</div>
+						</div>
+
+						<div class="tw-flex">
+							<div class="">
+								<i class="fas fa-stop tw-text-green"></i>
+							</div>
+							<div class="tw-text-xs tw-ml-2">
+								Personal Timetable
+							</div>
+						</div>
+
+						<div class="tw-flex">
+							<div class="">
+								<i class="fas fa-stop tw-text-orange"></i>
+							</div>
+							<div class="tw-text-xs tw-ml-2">
+								Personal Appointment
+							</div>
+						</div>
+						 
 					</div>
 				</div>
 			</div>
@@ -140,6 +143,7 @@
 		},
 
 		watch: {
+			//THIS IS EXTERNAL APPOINTMENT
 			appointments(){
 				this.appointments.forEach(element => { 
 					console.log("here first @ appointments");
@@ -613,33 +617,3 @@
 		}
 	});
 </script>
-
-<style>
-	.e-time-zone-container{
-		visibility:hidden;
-	}
-
-	.custom-field-container-button1{
-		padding-top:1em;	
-	}
-       
-    .property-panel-content .e-checkbox-wrapper.external_apt .e-frame {
-        background-color: #000000;
-        border-color: transparent;
-    }
-
-    .property-panel-content .e-checkbox-wrapper.personal_apt .e-frame {
-        background-color: #38c172;
-        border-color: transparent;
-    }
-
-    .property-panel-content .e-checkbox-wrapper.other_apt .e-frame {
-        background-color: #f6993f;
-        border-color: transparent;
-    }
-
-    .property-panel-content .e-checkbox-wrapper.google_apt .e-frame {
-        background-color: #fa7ea8;
-        border-color: transparent;
-    }
-</style>
