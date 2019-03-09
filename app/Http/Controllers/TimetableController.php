@@ -62,9 +62,14 @@ class TimetableController extends Controller
         $user_id = $user->fetchUser()->id;
         
         $data = request()->all();
-        
-        $start_datetime = (Carbon::parse($data['start_time']))->addHours(8);
-        $end_datetime = (Carbon::parse($data['end_time']))->addHours(8);
+
+        if(substr($data['start_time'], 19, 3) !== '+08'){
+            $start_datetime = (Carbon::parse($data['start_time']))->addHours(8);
+            $end_datetime = (Carbon::parse($data['end_time']))->addHours(8);
+        }else{
+            $start_datetime = (Carbon::parse($data['start_time']));
+            $end_datetime = (Carbon::parse($data['end_time']));
+        }
 
         //store data into database
         $timetable = Timetable::create([

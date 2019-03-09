@@ -1,15 +1,8 @@
 <template>
   <div>
-	<!-- status -->
-	<label class="col-form-label text-md-right">Status: </label>
+	<flash :message = "message"></flash>
 
-	<!-- success --> 
-	<b-alert v-if ="connectStatus" variant="success" show>Connected</b-alert>
-
-	<!-- failed --> 
-	<b-alert v-if ="!connectStatus" variant="danger" show>Not Connected</b-alert>
-
-	<div v-if ="!connectStatus">
+	<div v-if = "!connectStatus">
 	<b-form-group label-cols="4" label-cols-lg="2" label="Google Calendar ID" label-for="input_default">
 		<b-form-input v-model="googleIdInput" type="text" />
 		</b-form-group>
@@ -30,9 +23,16 @@
 </template>
 
 <script>
-  export default {
-     data() {
+import Flash from '../components/Flash.vue';
+
+export default {
+	components: {
+		'flash': Flash,
+	},
+
+	data() {
 		return {
+			message: '',
 			isLoading: false,
 			googleId:'',
 			connectStatus:false,
@@ -40,7 +40,17 @@
 			googleApiKeyInput:'',
 			googleCalendar: [],
 		}
-    },
+	},
+	
+	watch:{
+		connectStatus(){
+			if(this.connectStatus == true)
+				this.message = "You have successfully connected to the google calendar! You will be redirected shortly."
+			else 
+				this.message = "Connection Failed! Please try again!"
+		}
+	},
+
     methods: {
         retrieveGoogleCalendar(){
             var scope = this;
@@ -72,9 +82,7 @@
         },
 
 		processGoogleCalendarData(e) {
-			
 			var items = e.items;
-			console.log(items);
 			if (items.length > 0) {
 				for (var i = 0; i < items.length; i++) {
 					var event = items[i];
@@ -97,6 +105,7 @@
 
 						limited_to: "private",
 					}).then((res) => {
+						setTimeout(this.$router.push({path: '/Calendar'}), 5000);
 					}).catch((error) => {
 						console.log(error)
 					})

@@ -40,21 +40,11 @@
             <button class = "tw-ml-2 btn btn-primary" id='deleteButton'>Delete</button>
         </div>
     </b-modal>
-
-    <b-modal ref="myModalRef" size="lg" hide-footer title = "Current Appointment Details:">
-        <edit-appointment :appointment = "editAppointment"
-            @hideModal = "hideModal"
-            @updateSuccess = "updateSuccess"
-        >
-        </edit-appointment>
-    </b-modal>
-
     </div>
 </template>
 
 <script>   
 
-    import Edit from './Edit';
     import Flash from '../../components/Flash.vue';
     
     export default {
@@ -62,11 +52,10 @@
 
         components: {
             'flash': Flash,
-            'edit-appointment' : Edit
         },
         
         mounted() {
-            this.getAppointment();
+			this.retrieveAppointment();
 
             setTimeout(function() { 
                 $("#appointment").DataTable(); 
@@ -87,15 +76,15 @@
         },
 
         methods: {
-            getAppointment() {
-                axios.get('/api/appointment/get')
-                .then((res) => {
-                    this.appointment = res.data.appointment;
-                })
-                .catch((error) => {
-                    this.error = error.response;
-                })
-            },
+			retrieveAppointment(){
+				var scope = this;
+				axios.get('/api/appointment')
+				.then((res) => {
+					this.appointments = res.data.appointments;
+				}).catch((error) => {
+					console.log(error)
+				});
+			},
 
             deletes(appointment) {
                 this.modalShow = true;

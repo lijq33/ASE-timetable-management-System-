@@ -30,6 +30,13 @@ export const routes = [
         meta: {
             requiresAuth: true
         }
+    },   
+    {
+        path : '/Appointment/Manage',
+        component: require('./views/ManageAppointment'),
+        meta: {
+            requiresAuth: true
+        }
     },     
     {
         path: '/company/:Cid',
