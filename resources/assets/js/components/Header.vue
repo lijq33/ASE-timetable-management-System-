@@ -22,16 +22,23 @@
 
                     <template v-else>
 
-                        <li>
-                            <router-link to="/calendar" class="nav-link">Calendar</router-link>
+                         <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                Calendar <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <router-link to="/Calendar" class="nav-link">My Calendar</router-link>
+                                <router-link to="/GoogleCalendar" class="nav-link">Import Google Calendar</router-link>
+                            </div>
                         </li>
+                        
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                 Appointment <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <router-link to="/Appointment/Create" class="nav-link">Book Appointment</router-link>
                                 <router-link to="/Appointment/Manage" class="nav-link">Manage Appointment</router-link>
                             </div>
                         </li>
@@ -44,9 +51,6 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a href="#!" @click.prevent="logout" class="dropdown-item">Logout</a>
                             </div>
-                        </li>
-                        <li>
-                            <router-link to="/help" class="nav-link">Help</router-link>
                         </li>
                     </template>
                 </ul>

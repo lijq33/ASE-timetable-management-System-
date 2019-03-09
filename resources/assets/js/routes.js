@@ -25,6 +25,13 @@ export const routes = [
         }
     },     
     {
+        path : '/googlecalendar',
+        component: require('./views/GoogleCalendar'),
+        meta: {
+            requiresAuth: true
+        }
+    },     
+    {
         path: '/company/:Cid',
         name: 'company',
         component: require('./views/Company'),

@@ -1,57 +1,59 @@
 <template>
   <div>
 		<flash :message = "message"></flash>
-		<!-- google calendar -->
-		<googleCalendar 
-			@googleCalendarData = "processGoogleCalendarData"
-		/>
 		 
 		<!-- calendar -->
-		<div class="col-md-12 control-section">
-			<div class="content-wrapper">
-				<ejs-schedule
-				id='Schedule'
-				ref="ScheduleObj"
-				height="650px"
-				:selectedDate='selectedDate'
-				:eventSettings='eventSettings'
-				:eventRendered="oneventRendered"
-				:popupOpen="onPopupOpen"
-				:actionComplete="onActionComplete"
-				>
-				</ejs-schedule>
+		<div class = "tw-flex">
+			<div class = "tw-3/4">
+				<div class="col-md-12 control-section">
+					<div class="content-wrapper">
+						<ejs-schedule
+						id='Schedule'
+						ref="ScheduleObj"
+						height="650px"
+						:selectedDate='selectedDate'
+						:eventSettings='eventSettings'
+						:eventRendered="oneventRendered"
+						:popupOpen="onPopupOpen"
+						:actionComplete="onActionComplete"
+						>
+						</ejs-schedule>
+					</div>
+				</div>
+			</div>
+
+			<!-- legend -->
+			<div class = "tw-w-1/4">
+				<div class="col-lg-3 property-section">
+					<div id="property" class="property-panel-content" title="Show / Hide Resource">
+						<table id="property" title="Show / Hide Resource" style="width: 100%">
+							<tbody>
+								<tr style="height: 50px">
+									<td style="width: 100%">
+										<ejs-checkbox cssClass="external_apt" label="External Appointment" value="1" :checked="true" :change="onChange"></ejs-checkbox>
+									</td>
+								</tr>
+								<tr style="height: 50px">
+									<td style="width: 100%">
+										<ejs-checkbox cssClass="personal_apt" label="Personal Appointment" value="2" :checked="false" :change="onChange"></ejs-checkbox>
+									</td>
+								</tr>
+								<tr style="height: 50px">
+									<td style="width: 100%">
+										<ejs-checkbox cssClass="other_apt" label="Other Company" value="3" :checked="false" :change="onChange"></ejs-checkbox>
+									</td>
+								</tr>
+								<tr style="height: 50px">
+									<td style="width: 100%">
+										<ejs-checkbox cssClass="google_apt" label="Google Calendar" value="4" :checked="false" :change="onChange"></ejs-checkbox>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
-
-		<!-- legend -->
-		    <div class="col-lg-3 property-section">
-            <div id="property" class="property-panel-content" title="Show / Hide Resource">
-                <table id="property" title="Show / Hide Resource" style="width: 100%">
-                    <tbody>
-                        <tr style="height: 50px">
-                            <td style="width: 100%">
-                                <ejs-checkbox cssClass="external_apt" label="External Appointment" value="1" :checked="true" :change="onChange"></ejs-checkbox>
-                            </td>
-                        </tr>
-                        <tr style="height: 50px">
-                            <td style="width: 100%">
-                                <ejs-checkbox cssClass="personal_apt" label="Personal Appointment" value="2" :checked="false" :change="onChange"></ejs-checkbox>
-                            </td>
-                        </tr>
-                        <tr style="height: 50px">
-                            <td style="width: 100%">
-                                <ejs-checkbox cssClass="other_apt" label="Other Company" value="3" :checked="false" :change="onChange"></ejs-checkbox>
-                            </td>
-                        </tr>
-                        <tr style="height: 50px">
-                            <td style="width: 100%">
-                                <ejs-checkbox cssClass="google_apt" label="Google Calendar" value="4" :checked="false" :change="onChange"></ejs-checkbox>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
 		<div>
 			<modal
@@ -81,7 +83,7 @@
 	import { CheckBox, Button, CheckBoxPlugin } from "@syncfusion/ej2-vue-buttons";
 	import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 	import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda, View, Resize, DragAndDrop } from "@syncfusion/ej2-vue-schedule";
-	import GoogleCalendar from '../components/GoogleCalendar.vue';
+	import GoogleCalendar from './GoogleCalendar.vue';
 	import Flash from '../components/Flash.vue';
 	import Modal from '../components/Modal.vue';
 
@@ -101,7 +103,6 @@
 	//Your Personal Timetable:2
 	//An external appointment before you book:1, 
 	// Google:4
-
 
 	export default Vue.extend({
 		mounted() {
@@ -274,37 +275,6 @@
 					scope.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = scope.scheduleData;
 					scope.$refs.ScheduleObj.refreshEvents();
 				});
-			},
-
-			processGoogleCalendarData(e) {
-				console.log(e.items);
-				var items = e.items;
-				//var scheduleData1 = [];
-				if (items.length > 0) {
-					for (var i = 0; i < items.length; i++) {
-						var event = items[i];
-						var when = event.start.dateTime;
-						var start = event.start.dateTime;
-						var end = event.end.dateTime;
-						if (!when) {
-							when = event.start.date;
-							start = event.start.date;
-							end = event.end.date;
-						}
-						this.scheduleData.push({
-							Id: event.id,
-							Subject: "not available",
-							StartTime: new Date(start),
-							EndTime: new Date(end),
-							IsAllDay: !event.start.dateTime,
-							CategoryColor: "#fa7ea8",
-							IsReadonly:true,
-							Category : 4,
-						});
-					}
-				}  
-				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
-				this.$refs.ScheduleObj.refreshEvents(); 
 			},
 
 			isCompany(){

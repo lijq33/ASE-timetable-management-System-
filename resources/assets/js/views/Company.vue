@@ -3,22 +3,19 @@
         <div class = "tw-flex tw-justify-center tw-my-8">
             <div class="tw-w-5/6 tw-rounded tw-overflow-hidden tw-shadow-lg">
                     <div class="tw-flex tw-items-center">
-                            <img :src="'/logos/' + company.logo" alt=":(" class="tw-w-24 tw-h-24 tw-rounded-full tw-my-8 tw-mx-24"> 
-                            <div class="tw-mr-8">
-                                <div class="tw-font-bold tw-text-xl tw-mb-2">
-                                    {{company.company_name}} 
+                        <img :src="'/logos/' + company.logo" alt=":(" class="tw-w-24 tw-h-24 tw-rounded-full tw-my-8 tw-mx-24"> 
+                        <div class="tw-mr-8">
+                            <div class="tw-font-bold tw-text-xl tw-mb-2">
+                                {{company.company_name}} 
 
-                                    <span class="tw-mx-2 tw-text-sm tw-font-normal tw-text-grey-dark">
-                                        ({{company.company_type}})
-                                    </span>
-                                </div> 
-                                <p v-if = "company.tagline !== null" class = "tw-text-grey-darker tw-text-base tw-italic">
-                                    - {{company.tagline}}
-                                </p>
-                                <p class = "tw-text-grey-darkest tw-text-base">
-                                    <!-- You have {{no_of_appointments}} with {{company.company_name}} -->
-                                </p>
+                                <span class="tw-mx-2 tw-text-sm tw-font-normal tw-text-grey-dark">
+                                    ({{company.company_type}})
+                                </span>
                             </div> 
+                            <p v-if = "company.tagline !== null" class = "tw-text-grey-darker tw-text-base tw-italic">
+                                - {{company.tagline}}
+                            </p>
+                        </div> 
                     </div>
                 
                     <div class="tw-px-6 tw-py-4">
@@ -58,15 +55,6 @@ import calendar from './Calendar'
             }).catch((error) => {
                 console.log(error)
             });
-              
-            // axios.get('/api/appointment/company/' + this.$route.params.Cid)
-            // .then((res) => {	
-            //     console.log("appointments", res.data.appointments);
-            //     // console.log(res.data.timetables);
-            //     console.log("users", res.data.user);
-            // }).catch((error) => {
-            //     console.log(error)
-            // });
         },
 
         data() {
