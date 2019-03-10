@@ -13,14 +13,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for = "(appointment, index) in Appointment" :key = "index">
+            <tr v-for = "(appointment, index) in appointments" :key = "index">
                 <td>{{appointment.subject}}</td>
                 <td>{{appointment.description}}</td>
                 <td>{{appointment.location}}</td>
-                <td>{{appointment.startTime}} - {{appointment.endTime}}</td>
-                <td>{{appointment.date}}</td>
+                <td>{{appointment.start_time}} - {{appointment.end_time}}</td>
+                <td>{{appointment.start_date}}</td>
                 <td> 
-                    <span class = "tw-flex tw-justify-around tw-items-center" v-if = "appointment.status === 'booked'">
+                    <span class = "tw-flex tw-justify-around tw-items-center" v-if = "before(appointment.start_date)">
                         <i class="fas fa-trash-alt tw-cursor-pointer"  @click = "deletes(appointment)"></i>
                     </span>
                 </td>
@@ -45,11 +45,9 @@
 
 <script>   
 
-    import Flash from '../../components/Flash.vue';
+    import Flash from '../components/Flash.vue';
     
     export default {
-        props: ['appointment'],
-
         components: {
             'flash': Flash,
         },
@@ -66,12 +64,9 @@
             return {
                 appointments: [],
                 error: '',
-
                 confirmDelete:false,
-                modalShow: false,
-
-                editAppointment: '',
                 message:'',
+                modalShow: false,
             }
         },
 
@@ -84,7 +79,11 @@
 				}).catch((error) => {
 					console.log(error)
 				});
-			},
+            },
+
+            before(date) {
+                return (date > new Date());
+            },
 
             deletes(appointment) {
                 this.modalShow = true;
@@ -105,13 +104,13 @@
                 });
                 
                 promise.then(function() { 
-                    axios.post('/api/appointment/delete', {
+                    axios.delete('/api/appointment/'+ appointment.id, {
                         appointment_id: appointment.id,
                     })
                     .then((res) => {
                         scope.message = "We've successfully cancel your appointment!";
                         scope.resetAppointment();
-                        scope.getAppointment();
+                        scope.retrieveAppointment();
                     })
                     .catch((error) => {
                         scope.error = error.response;
@@ -119,22 +118,8 @@
                 });
             },
 
-            update(appointment) {
-                this.$refs.myModalRef.show()
-                this.editAppointment = appointment;
-            },
 
-            hideModal() {
-                this.$refs.myModalRef.hide()
-            },
 
-            updateSuccess(){
-                this.hideModal();
-                this.message = "We've successfully update your appointment details!";
-                this.resetAppointment();
-                this.getAppointment();
-            },
-       
             resetAppointment() {
                 this.appointment = [];
             }

@@ -412,13 +412,18 @@
 				}
 			},
 
+			before(date){
+				console.log(date);
+				return true;
+			},
+
 			// Create required custom elements in initial time
 			onPopupOpen: function(args) {
 				
 				var schedule = this.scheduleData.find( calendar => calendar.Id === args.data.Id);
 				if (args.type === "QuickInfo"){
 					if (schedule != undefined){
-						if(schedule.Category == 1){
+						if(schedule.Category == 1 && this.before(schedule.StartTime)){
 							
 							var elements = document.getElementsByClassName('e-delete');
 								while(elements.length > 0){
