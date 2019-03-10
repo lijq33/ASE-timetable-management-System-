@@ -46,6 +46,7 @@
 <script>   
 
     import Flash from '../components/Flash.vue';
+    import moment from 'moment';
     
     export default {
         components: {
@@ -82,7 +83,7 @@
             },
 
             before(date) {
-                return (date > new Date());
+				return moment(date).format("DD/MM/YYYY") > moment().format("DD/MM/YYYY");
             },
 
             deletes(appointment) {

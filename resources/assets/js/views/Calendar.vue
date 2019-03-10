@@ -89,6 +89,7 @@
 	import GoogleCalendar from './GoogleCalendar.vue';
 	import Flash from '../components/Flash.vue';
 	import Modal from '../components/Modal.vue';
+    import moment from 'moment'
 
 	enableRipple(true);
 	Vue.use(SchedulePlugin);
@@ -417,8 +418,7 @@
 			},
 
 			before(date){
-				console.log(date);
-				return true;
+				return moment(date).format("DD/MM/YYYY") > moment().format("DD/MM/YYYY");
 			},
 
 			// Create required custom elements in initial time
