@@ -119,8 +119,6 @@
                 });
             },
 
-
-
             resetAppointment() {
                 this.appointment = [];
             }

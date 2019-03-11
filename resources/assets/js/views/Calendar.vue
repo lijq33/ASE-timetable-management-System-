@@ -24,6 +24,7 @@
 
 			<!-- legend -->
 			<div class = "tw-w-1/4">
+				<h6 class = "tw-underline tw-flex tw-justify-center">Legend</h6> 
 				<div class="col-lg-3 property-section">
 					<div id="property" class="property-panel-content">
 						<div class="tw-flex">
@@ -52,7 +53,14 @@
 								Personal Appointment
 							</div>
 						</div>
-						 
+						<div class="tw-flex">
+							<div class="">
+								<i class="fas fa-stop tw-text-indigo-light"></i>
+							</div>
+							<div class="tw-text-xs tw-ml-2">
+								Companies Appointment
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -95,13 +103,6 @@
 	Vue.use(SchedulePlugin);
 	Vue.use(CheckBoxPlugin);
 
-	var calendarCollections = [
-        { CalendarText: 'External', CalendarId: 1, CalendarColor: '#000000' },
-        { CalendarText: 'Personal', CalendarId: 2, CalendarColor: '#38c172' },
-        { CalendarText: 'OtherCompany', CalendarId: 3, CalendarColor: '#f6993f' },
-        { CalendarText: 'Google', CalendarId: 4, CalendarColor: '#fa7ea8' }
-	];
-	
 	//Category:
 	//An Appointment With other company:3, 
 	//Your Personal Timetable:2
@@ -145,31 +146,33 @@
 		watch: {
 			//THIS IS EXTERNAL APPOINTMENT
 			appointments(){
-				this.appointments.forEach(element => { 
-					console.log("here first @ appointments");
-				var index = this.scheduleData.find( calendar => calendar.Id === element.id );
+				
+				for (var key in this.appointments) {
+					if (this.appointments.hasOwnProperty(key)) {
+						var index = this.scheduleData.find( calendar => calendar.Id === this.appointments[key].id );
 
-					if(index == null)
-						this.scheduleData.push({
-							Id: element.id,
-							Subject: element.subject,
-							StartTime: element.StartTime,
-							EndTime: element.EndTime,
-							RecurrenceRule: element.recurrence_rule,
-							IsAllDay: element.is_all_day,
-							Description: element.description,
+						if(index == null)
+							this.scheduleData.push({
+								Id: this.appointments[key].id,
+								Subject: this.appointments[key].subject,
+								StartTime: this.appointments[key].StartTime,
+								EndTime: this.appointments[key].EndTime,
+								RecurrenceRule: this.appointments[key].recurrence_rule,
+								IsAllDay: this.appointments[key].is_all_day,
+								Description: this.appointments[key].description,
 
-							IsAppointment: element.is_appointment,
-							LimitedTo: element.limited_to,
-							NoOfSlots: element.no_of_slots,
-							Location: element.location,
-							Price: element.price,
-							CategoryColor: "#000000",
-							
-							IsReadonly: true,
-							Category : 1,
-						});
-				})	
+								IsAppointment: this.appointments[key].is_appointment,
+								LimitedTo: this.appointments[key].limited_to,
+								NoOfSlots: this.appointments[key].no_of_slots,
+								Location: this.appointments[key].location,
+								Price: this.appointments[key].price,
+								CategoryColor: "#000000",
+								
+								IsReadonly: true,
+								Category : 1,
+							});
+					}
+				}	
 				this.$refs.ScheduleObj.ej2Instances.eventSettings.dataSource = this.scheduleData;
 				this.$refs.ScheduleObj.refreshEvents();
 			},
@@ -317,7 +320,7 @@
 					var index = scope.scheduleData.find( calendar => calendar.Id === event.data.Id );
 					var newItem = index;
 					newItem.Category = 2;
-					newItem.CategoryColor = "#38c172";
+					newItem.CategoryColor = (newItem.IsAppointment == true) ? "#7886d7" : "#38c172";
 
 					if (res.data.id != event.data.Id){
 						newItem.Id = res.data.id;

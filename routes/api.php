@@ -27,9 +27,6 @@ Route::group(['middleware' => 'auth.user'], function ($router) {
     Route::resource('timetable', 'TimetableController', ['except' => ['create', 'edit']]);
     Route::resource('company', 'CompanyController', ['except' => ['create', 'edit']]);
     Route::resource('appointment', 'AppointmentController', ['except' => ['create', 'edit', 'update']]);
-    Route::get('appointment/company/{id}', 'AppointmentController@retrieveAppointment');
-
-    
 });
 
 

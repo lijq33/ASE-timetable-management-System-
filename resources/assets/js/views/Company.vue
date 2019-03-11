@@ -61,7 +61,6 @@ import calendar from './Calendar'
             return {
                 appointments: [],
                 company: [],
-                no_of_appointments: '',
             }
         }, 
     }
