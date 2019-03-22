@@ -143,5 +143,12 @@
         }
     }
 </script>
-                
-       
+
+<style>
+    .login_id {
+        border-radius: 25px;
+        border: 5px #ABA5A5;
+        padding: 2px; 
+        width: 100%;
+    }
+</style>

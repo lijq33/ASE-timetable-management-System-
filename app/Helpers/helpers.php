@@ -3,14 +3,6 @@
 use Carbon\Carbon;
 
 /**
- *  
-*/
-function formatDateTime($datetime, $format)
-{
-    return Carbon::createFromFormat($format, $datetime);
-}
-
-/**
  *   $timetable['StartTime'] = "Wed Feb 14 2018 15:00:00 GMT+0800 (Singapore Standard Time)";
  *   Wed Feb 14 2018 16:00:00 GMT+0800 (Singapore Standard Time)";
  *  day month date year Hour:min:second GMT+0800 (Singapore Standard Time)

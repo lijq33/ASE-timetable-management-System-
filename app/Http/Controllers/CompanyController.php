@@ -15,15 +15,12 @@ class CompanyController extends Controller
      */
     public function index()
     {
-
         $company = Company::all();
 
         return response()->json([
             'company' => $company
         ], 200);
-
     }
-
     
     /**
      * Display the specified resource.
@@ -51,42 +48,4 @@ class CompanyController extends Controller
         ], 200);
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // for both timetable 
-        // and appointment
-    }
-
-    
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //timetable only
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        // for both timetable 
-        // and appointment
-    }
 }

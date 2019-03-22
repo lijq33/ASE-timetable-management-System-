@@ -144,7 +144,6 @@
 		},
 
 		watch: {
-			//THIS IS EXTERNAL APPOINTMENT
 			appointments(){
 				
 				for (var key in this.appointments) {
