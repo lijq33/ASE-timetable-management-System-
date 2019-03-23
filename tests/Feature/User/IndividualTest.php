@@ -3,7 +3,7 @@
 namespace Tests\Feature\User;
 
 use Tests\TestCase;
-USE Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Individual;
 
 use Illuminate\Foundation\Testing\WithFaker;

@@ -50,7 +50,6 @@ class AppointmentController extends Controller
     {
         $data = request()->all();
 
-        
         $timetable = Timetable::find($data['timetable_id']);
         
         $userable = User::find($timetable->user_id);
@@ -92,6 +91,12 @@ class AppointmentController extends Controller
         $timetable->update([
             'no_of_appointments' => $timetable->no_of_appointments + 1,
         ]);
+
+        if ($timetable->price == 0)
+            return response()->json([
+                'message' => 'Appointment has been successfully booked !'
+            ], 200);
+        
 
         // set up stripe key and make payment
         Stripe::setApiKey(config('services.stripe.secret'));

@@ -3,6 +3,11 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Individual::class, function (Faker $faker) {
+
+    factory(App\User::class)            
+        ->states('individual')
+        ->create();
+        
     return [
         'name' => $faker->name,
         'nric' => 'S1234566Z',         
@@ -12,3 +17,4 @@ $factory->define(App\Individual::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+

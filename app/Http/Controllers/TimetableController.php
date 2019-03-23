@@ -21,6 +21,8 @@ class TimetableController extends Controller
 
         $timetables = $user->timetable->all();
 
+        var_dump($timetables);
+
         //processDateTime
         foreach($timetables as $timetable) {
             $timetable['StartTime'] = mergeDateTime($timetable->start_time , $timetable->start_date);

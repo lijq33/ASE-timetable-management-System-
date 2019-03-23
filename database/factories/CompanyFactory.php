@@ -4,7 +4,13 @@ use Faker\Generator as Faker;
 
 
 $factory->define(App\Company::class, function (Faker $faker) {
+
+    factory(App\User::class)            
+        ->states('company')
+        ->create();
+    
     return [
+        'id' => '1',
         'company_name' => $faker->name,
         'company_type' => 'Public company',
         'industry_type' => 'Accounting',
