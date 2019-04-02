@@ -7,7 +7,9 @@ use Illuminate\Database\Migrations\Migration;
 class CreateUsersTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. 
+     * Create a database table called 'users' 
+     * with 'id', 'userable_id', 'userable_type' and 'timestamps' attributes
      *
      * @return void
      */
@@ -22,7 +24,7 @@ class CreateUsersTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. Remove the database table called 'users'
      *
      * @return void
      */

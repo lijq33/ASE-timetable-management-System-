@@ -13,6 +13,13 @@ use Faker\Generator as Faker;
 |
 */
 
+
+/**
+* A method used to generate a random string of name, email and remember_token
+* However, password will be fixed
+*
+* @return name, email, password and remember_token
+*/
 $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
