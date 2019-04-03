@@ -24,7 +24,7 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * The system will redirect the user to our homepage once their registration is successful.
      *
      * @var string
      */
@@ -32,10 +32,15 @@ class RegisterController extends Controller
 
 
     /**
-     * Create a new user instance after a valid registration.
+     * The new user information will be stored in our database.
+     * The system will check for the registration type so that we can store the information in the correct table.
+     * After which, the system will use a set of rules defined by us to check if all the information provided is in the correct format.
+     * Appropriate error message will be displayed to let the user know which information is in the wrong format.
+     * The user data will then be stored into our database.
+     * A successful message will be displayed after the storing has been completed.
      *
-     * @param  User  $data
-     * @return \App\User
+     * @param  $request - Contains all the information regarding the new user.
+     * @return Display of successful message.
      */
     protected function store(Request $request)
     {

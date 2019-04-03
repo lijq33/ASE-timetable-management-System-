@@ -9,9 +9,9 @@ use App\Company;
 class CompanyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * This method will retrieve all of the information of companies who registered an account with us.
      *
-     * @return \Illuminate\Http\Response
+     * @return A list of companies information.
      */
     public function index()
     {
@@ -26,10 +26,10 @@ class CompanyController extends Controller
 
     
     /**
-     * Display the specified resource.
+     * The system will retrieve all of the company's public event information and merge the time and date together.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  $company - Contains the company information that the user wants to query on.
+     * @return All the particular company's public event and the company information.
      */
     public function show(Company $company)
     {
@@ -54,10 +54,9 @@ class CompanyController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created company into our database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  $request - Contains the information of the company that is going to be stored into our database.
      */
     public function store(Request $request)
     {
@@ -67,11 +66,10 @@ class CompanyController extends Controller
 
     
     /**
-     * Update the specified resource in storage.
+     * Update the specified company in our database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  $request - Contains all of the new information provided.
+     * @param  $id - The ID of the company that is going to be updated.
      */
     public function update(Request $request, $id)
     {
@@ -79,10 +77,9 @@ class CompanyController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified company and all related timetable events from our database.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  $id - The ID of the company that is going to be deleted soon.
      */
     public function destroy($id)
     {
