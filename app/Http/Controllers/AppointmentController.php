@@ -14,10 +14,10 @@ use App\Company;
 class AppointmentController extends Controller
 {
     /**
-    * Display a listing of the resource.
-    * Retrieve a listing of all appointment that the current user made
-    *
-    * @return \Illuminate\Http\Response
+    * Retrieve a listing of all appointment that the current user has made.
+    * After retrieving, merge the date and time together and add it to the back of the array $timetables.
+    * 
+    * @return \Illuminate\Http\JsonResponse - An array that contains all of the appointment information.
     */
     public function index()
     {
@@ -41,10 +41,14 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created appointment into the database. 
+     * First, retrieve the user and his/her timetable in order to get the user current appointment.
+     * If the current appointment is not null or the current timeslot doesnt have enough slot allocated for the new appointment, a message will be displayed.
+     * Else, the appointment will be stored inside the database and increase the no_of_appointments by 1 to indicate that one of the timeslot is taken.
+     * After which, Stripe will be set up and user can make payment through Stripe.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse - Message to indicate that the appointment is successfully booked.
      */
     public function store(Request $request)
     {
@@ -135,11 +139,10 @@ class AppointmentController extends Controller
     }
 
     /**
-    * Remove the specified resource from storage.
+    * Remove a specified appointment from the database and reduce the no_of_appointments by 1.
     *
-    *  @param Appointment $appointment
-    *
-    * @return \Illuminate\Http\Response
+    * @param $timetable_id - To easily retrieve the timetable of the current user.
+    * @return \Illuminate\Http\JsonResponse - Message to indicate that the appointment has been successfully removed.
     */
     public function destroy($timetable_id)
     {

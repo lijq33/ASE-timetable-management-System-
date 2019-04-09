@@ -11,7 +11,7 @@ class CompanyController extends Controller
     /**
      * This method will retrieve all of the information of companies who registered an account with us.
      *
-     * @return A list of companies information.
+     * @return \Illuminate\Http\JsonResponse - A list of companies information.
      */
     public function index()
     {
@@ -28,8 +28,8 @@ class CompanyController extends Controller
     /**
      * The system will retrieve all of the company's public event information and merge the time and date together.
      *
-     * @param  $company - Contains the company information that the user wants to query on.
-     * @return All the particular company's public event and the company information.
+     * @param  Company $company - Contains the company information that the user wants to query on.
+     * @return \Illuminate\Http\JsonResponse - All the particular company's public event and the company information.
      */
     public function show(Company $company)
     {
@@ -56,7 +56,7 @@ class CompanyController extends Controller
     /**
      * Store a newly created company into our database.
      *
-     * @param  $request - Contains the information of the company that is going to be stored into our database.
+     * @param  \Illuminate\Http\Request $request - Contains the information of the company that is going to be stored into our database.
      */
     public function store(Request $request)
     {
@@ -68,8 +68,8 @@ class CompanyController extends Controller
     /**
      * Update the specified company in our database.
      *
-     * @param  $request - Contains all of the new information provided.
-     * @param  $id - The ID of the company that is going to be updated.
+     * @param  \Illuminate\Http\Request $request - Contains all of the new information provided.
+     * @param  \Illuminate\Http\Request $id - The ID of the company that is going to be updated.
      */
     public function update(Request $request, $id)
     {

@@ -8,9 +8,13 @@ class AuthController extends Controller
 {
     protected $auth = '';
     protected $user = '';
+
     /**
      * Create a new AuthController instance.
+     * The system will first check if the registration_type is not null and retrieve it
+     * Depending on its registration type, the user will be given the appropriate access to their functions.
      *
+     * @param \Illuminate\Http\Request $request - Contains the information of the user
      * @return void
      */
     public function __construct(Request $request)
@@ -36,9 +40,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Get a JWT via given credentials. 
+     * If the token doesnt match up, the user will be denied access.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param \Illuminate\Http\Request $request - Contains the user login credentials
+     * @return \Illuminate\Http\JsonResponse or a message
      */
     public function login(Request $request)
     {
@@ -53,7 +59,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Authenticate if the current user is the correct user.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -63,7 +69,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Log the current user out and invalidate the token.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -87,8 +93,7 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
-     *
+     * @param $token - The current user's token
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token)
@@ -101,6 +106,11 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Used to authenticate and register user. 
+     *
+     * @return Auth::Guard.
+     */
     public function guard() {
         return \Auth::Guard($this->user);
     }

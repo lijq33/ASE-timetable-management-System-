@@ -39,8 +39,8 @@ class RegisterController extends Controller
      * The user data will then be stored into our database.
      * A successful message will be displayed after the storing has been completed.
      *
-     * @param  $request - Contains all the information regarding the new user.
-     * @return Display of successful message.
+     * @param  \Illuminate\Http\Request $request - Contains all the information regarding the new user.
+     * @return \Illuminate\Http\JsonResponse - Display of successful message.
      */
     protected function store(Request $request)
     {

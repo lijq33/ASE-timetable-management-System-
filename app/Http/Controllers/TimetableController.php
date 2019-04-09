@@ -12,7 +12,7 @@ class TimetableController extends Controller
     /**
     * Retrieve all the timetable events that belongs to a particular user.
     * After retrieving the events from database, the time and date will be merged before returning to the system.
-    * @return All of the user's events stored in the database.
+    * @return \Illuminate\Http\JsonResponse - All of the user's events stored in the database.
     */
     public function index()
     {
@@ -37,8 +37,8 @@ class TimetableController extends Controller
     * The system will first check if the selected timetable event is an appointment.
     * If yes, the timeslot event information will be displayed.
     * Else, a message, stating it is not an appointment, will be displayed.
-    * @param The selected timeslot event information.
-    * @return The particular timeslot event details.
+    * @param Timetable $timetable - The selected timeslot event information.
+    * @return \Illuminate\Http\JsonResponse - The particular timeslot event details.
     */
     public function show(Timetable $timetable)
     {
@@ -59,8 +59,8 @@ class TimetableController extends Controller
      * If it is not from GMT +8, 8 hours will be added to match our timezone.
      * After which the newly created event will be stored into our database.
      * A successful message will be displayed after the storing is completed.
-     * @param  The newly created event information.
-     * @return Display of successful message and the id of the newly stored timetable event.
+     * @param  \Illuminate\Http\Request $request - The newly created event information.
+     * @return \Illuminate\Http\JsonResponse - Display of successful message and the id of the newly stored timetable event.
      */
     public function store(Request $request)
     {
@@ -112,9 +112,9 @@ class TimetableController extends Controller
      * After which the newly updated event information will replace the old event stored inside our database.
      * A successful message will be displayed after the update has been completed.
      *
-     * @param  $request - Contains all the information of the updated event.
-     * @param  $timetable - Contains all the timetable information.
-     * @return Display of successful message.
+     * @param  \Illuminate\Http\Request $request - Contains all the information of the updated event.
+     * @param  Timetable $timetable - Contains all the timetable information.
+     * @return \Illuminate\Http\JsonResponse - Display of successful message.
      */
     public function update(Request $request, Timetable $timetable)
     {
@@ -168,7 +168,7 @@ class TimetableController extends Controller
     * Else, the system will proceed with deleting the timetable from the database.
     * A successful message will be displayed after the deletion has been completed.
     * @param Timetable $timetable - Contains all the timetable information
-    * @return Display of successful message.
+    * @return \Illuminate\Http\JsonResponse - Display of successful message.
     */
     public function destroy(Timetable $timetable)
     {

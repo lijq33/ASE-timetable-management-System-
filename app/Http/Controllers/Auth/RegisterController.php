@@ -24,14 +24,14 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * To redirect the user back to the homepage after they have successfully registered with us.
      *
      * @var string
      */
     protected $redirectTo = '/home';
 
     /**
-     * Create a new controller instance.
+     * Create a new RegisterController instance.
      *
      * @return void
      */
@@ -41,10 +41,10 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get a validator for an incoming registration request so that we can ensure that the format given by the user is correct.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param array $data
+     * @return \Illuminate\Contracts\Validation\Validator - which check the format of name, email and password given by the user.
      */
     protected function validator(array $data)
     {
@@ -56,7 +56,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new user after a valid registration and store it inside our database.
      *
      * @param  array  $data
      * @return \App\User
