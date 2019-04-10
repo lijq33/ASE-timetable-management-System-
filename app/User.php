@@ -9,7 +9,7 @@ class User extends Model
 {
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are editable and assignable.
      *
      * @var array
      */
@@ -17,6 +17,8 @@ class User extends Model
 
 
     /**
+     * Get all of the User models. Return either a POST or USER instance depending on which type of model owns the User.
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function userable()
@@ -25,7 +27,7 @@ class User extends Model
     }
 
     /**
-    * Get the timetable for the user.
+    * Retrieve the timetable for a particular user.
     */
     public function timetable()
     {
@@ -33,7 +35,7 @@ class User extends Model
     }
 
     /**
-    * Get the appointment for the user.
+    * Retrieve the appointment for a particular user.
     */
     public function appointment()
     {
@@ -41,8 +43,9 @@ class User extends Model
     }
 
     /**
-     * Fetch the Individual Or Company 
+     * Fetch the registration type of the user, either Individual or Company.
      * 
+     * @return $user
      */
     public function fetchUserable()
     {
@@ -55,8 +58,9 @@ class User extends Model
     }
 
      /**
-     * Fetch the Individual Or Company 
+     * Fetch the registration type of the user, either Individual or Company.
      * 
+     * @return $user->user
      */
     public function fetchUser()
     {
