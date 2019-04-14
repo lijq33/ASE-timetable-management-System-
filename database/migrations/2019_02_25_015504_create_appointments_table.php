@@ -8,6 +8,8 @@ class CreateAppointmentsTable extends Migration
 {
     /**
      * Run the migrations.
+     * Create a database table called 'appointments'
+     * with 'id', 'timetable_id', 'user_id', 'start_date', 'end_date', 'start_time', 'end_time', 'timestamps' attributes
      *
      * @return void
      */
@@ -31,7 +33,7 @@ class CreateAppointmentsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. Remove the database table called 'appointments'
      *
      * @return void
      */

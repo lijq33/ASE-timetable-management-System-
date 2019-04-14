@@ -15,7 +15,7 @@ class Individual extends Authenticatable implements JWTSubject
     use Notifiable;
     
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are editable and assignable.
      *
      * @var array
      */
@@ -24,6 +24,8 @@ class Individual extends Authenticatable implements JWTSubject
     ];
 
     /**
+    * Setting up one is to many relation between Individual and Timetable.
+    *
     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
     */
     public function user()
@@ -52,7 +54,9 @@ class Individual extends Authenticatable implements JWTSubject
     }
 
     /**
-    * Get the timetable for the individual.
+    * Get the timetable for the particular individual. Setting up one is to many relation between Individual and Timetable.
+    *
+    * @return timetables
     */
     public function timetable()
     {
@@ -60,10 +64,12 @@ class Individual extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Create an individual account based on $data. $rules contains all the correct format we are looking for when users are doing their registration.
+     * After validating their inputs, we will be creating the user and storing it into our database. 
+     * Else, we will return the appropriate message so that the user knows which input is incorrect.
+     * 
      * @param $data
-     * 
-     * Create an individual account based on $data
-     * 
+     * @return $validator - if one of the inputs is in incorrect format
      */
     public function createAccount($data)
     {

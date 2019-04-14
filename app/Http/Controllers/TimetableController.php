@@ -10,9 +10,9 @@ use App\Timetable;
 class TimetableController extends Controller
 {
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
+    * Retrieve all the timetable events that belongs to a particular user.
+    * After retrieving the events from database, the time and date will be merged before returning to the system.
+    * @return \Illuminate\Http\JsonResponse - All of the user's events stored in the database.
     */
     public function index()
     {
@@ -33,9 +33,12 @@ class TimetableController extends Controller
     }
 
     /**
-    * Display a specific resource.
-    *
-    * @return \Illuminate\Http\Response
+    * Display a specific timeslot event.
+    * The system will first check if the selected timetable event is an appointment.
+    * If yes, the timeslot event information will be displayed.
+    * Else, a message, stating it is not an appointment, will be displayed.
+    * @param Timetable $timetable - The selected timeslot event information.
+    * @return \Illuminate\Http\JsonResponse - The particular timeslot event details.
     */
     public function show(Timetable $timetable)
     {
@@ -51,10 +54,13 @@ class TimetableController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created event in database.
+     * First, the timezone of the event will be checked first to ensure that it is from the same timezone as the system. 
+     * If it is not from GMT +8, 8 hours will be added to match our timezone.
+     * After which the newly created event will be stored into our database.
+     * A successful message will be displayed after the storing is completed.
+     * @param  \Illuminate\Http\Request $request - The newly created event information.
+     * @return \Illuminate\Http\JsonResponse - Display of successful message and the id of the newly stored timetable event.
      */
     public function store(Request $request)
     {
@@ -100,11 +106,15 @@ class TimetableController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a particular event and store the new data into our database.
+     * The system will check if there is any existing event in that timeslot. If yes, no update will be performed.
+     * The system will ensure that the updated event will take up the expected number of timeslot.
+     * After which the newly updated event information will replace the old event stored inside our database.
+     * A successful message will be displayed after the update has been completed.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request - Contains all the information of the updated event.
+     * @param  Timetable $timetable - Contains all the timetable information.
+     * @return \Illuminate\Http\JsonResponse - Display of successful message.
      */
     public function update(Request $request, Timetable $timetable)
     {
@@ -153,11 +163,12 @@ class TimetableController extends Controller
 
 
     /**
-    * Remove the specified resource from storage.
-    *
-    *  @param Timetable $timetable
-    *
-    * @return \Illuminate\Http\Response
+    * Remove the timetable from the database.
+    * The system will check if there is any active appointment in the timetable. If yes, deletion will not be allowed.
+    * Else, the system will proceed with deleting the timetable from the database.
+    * A successful message will be displayed after the deletion has been completed.
+    * @param Timetable $timetable - Contains all the timetable information
+    * @return \Illuminate\Http\JsonResponse - Display of successful message.
     */
     public function destroy(Timetable $timetable)
     {

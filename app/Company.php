@@ -16,7 +16,7 @@ class Company extends Authenticatable implements JWTSubject
 
     use Notifiable;
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are editable and assignable.
      *
      * @var array
      */
@@ -50,19 +50,21 @@ class Company extends Authenticatable implements JWTSubject
         return [];
     }
 
-    // /**
-    // * Get the timetable for the company.
-    // */
-    // public function timetable()
-    // {
-    //     return $this->hasMany('App\Timetable');
-    // }
+    /**
+    * Get the timetable for the company.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
+    }
 
     /**
+     * Create a Company account based on $data. $rules contains all the correct format we are looking for when companies are doing their registration.
+     * After validating their inputs, we will be creating the Company account and storing it into our database. 
+     * Else, we will return the appropriate message so that the company knows which input is incorrect.
+     * 
      * @param $data
-     * 
-     * Create an individual account based on $data
-     * 
+     * @return $validator - if one of the inputs is in incorrect format
      */
     public function createAccount($data)
     {
