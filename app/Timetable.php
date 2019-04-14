@@ -10,7 +10,7 @@ class Timetable extends Model
 {
 
     /**
-    * The attributes that are mass assignable.
+    * The attributes that are editable and assignable.
     *
     * @var array
     */
@@ -18,6 +18,8 @@ class Timetable extends Model
      'is_appointment', 'limited_to', 'description', 'no_of_slots', 'no_of_appointments', 'recurrence_rule', 'location', 'price'];
 
     /**
+    * Retrieve the appointment for a particular timetable.
+    *
     * @return \Illuminate\Database\Eloquent\Relations\HasMany
     */
     public function appointment(){
@@ -25,7 +27,7 @@ class Timetable extends Model
     }
 
     /**
-     * Determine if timetable has any active Appointment.
+     * Determine if the particular timetable has any active Appointment at the moment.
      * @return bool
     */
     public function hasActiveAppointment()
@@ -37,8 +39,8 @@ class Timetable extends Model
     }
 
     /**
-     * Determine if has Appointment.
-     * @return bool
+     * Determine if the particular timetable has Appointment at the moment.
+     * @return appointment - if the appointment is not null
      */
     private function hasAppointment()
     {

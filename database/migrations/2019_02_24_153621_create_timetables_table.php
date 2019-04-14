@@ -8,6 +8,9 @@ class CreateTimetablesTable extends Migration
 {
     /**
      * Run the migrations.
+     * Create a database table called 'timetables'
+     * with 'id', 'user_id', 'subject', 'start_date', 'end_date', 'start_time', 'end_time', 'is_all_day', 'is_appointment', 'limited_to', 'description',
+     * 'no_of_slots', 'no_of_appointments', 'recurrence_rule', 'location', 'price' and 'timestamps' attributes
      *
      * @return void
      */
@@ -43,7 +46,7 @@ class CreateTimetablesTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. Remove the database table called 'timetables'
      *
      * @return void
      */

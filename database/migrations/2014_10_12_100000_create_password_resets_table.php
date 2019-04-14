@@ -7,7 +7,9 @@ use Illuminate\Database\Migrations\Migration;
 class CreatePasswordResetsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. 
+     * Create a database table called 'password_resets' 
+     * with 'email', 'token' and 'created_at' attributes
      *
      * @return void
      */
@@ -21,7 +23,7 @@ class CreatePasswordResetsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. Remove the database table called 'password_resets'
      *
      * @return void
      */

@@ -7,7 +7,9 @@ use Illuminate\Database\Migrations\Migration;
 class CreateIndividualsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. 
+     * Create a database table called 'individuals' 
+     * with 'id', 'name', 'nric', 'email', 'password', 'telephone_number', 'roles' 'token' and 'timestamps' attributes
      *
      * @return void
      */
@@ -27,7 +29,7 @@ class CreateIndividualsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. Remove the database table called 'individuals'
      *
      * @return void
      */

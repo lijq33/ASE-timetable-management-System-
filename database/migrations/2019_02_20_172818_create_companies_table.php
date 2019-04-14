@@ -7,7 +7,9 @@ use Illuminate\Database\Migrations\Migration;
 class CreateCompaniesTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. 
+     * Create a database table called 'companies' 
+     * with 'id', 'company_name' 'company_type', 'industry_type', 'website', 'tagline', 'logo', 'email', 'password', 'telephone_number', 'token' and 'timestamps' attributes
      *
      * @return void
      */
@@ -33,7 +35,7 @@ class CreateCompaniesTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. Remove the database table called 'companies'
      *
      * @return void
      */
