@@ -2,8 +2,6 @@
 
 use Faker\Generator as Faker;
 
-<<<<<<< HEAD
-=======
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -22,7 +20,6 @@ use Faker\Generator as Faker;
 *
 * @return name, email, password and remember_token
 */
->>>>>>> develop
 $factory->define(App\User::class, function (Faker $faker) {
     
     return [
