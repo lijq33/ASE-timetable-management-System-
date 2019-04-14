@@ -1,5 +1,6 @@
 <template>
   <div>
+		
 		<flash :message = "message"></flash>
 		 
 		<!-- calendar -->
@@ -145,7 +146,6 @@
 
 		watch: {
 			appointments(){
-				
 				for (var key in this.appointments) {
 					if (this.appointments.hasOwnProperty(key)) {
 						var index = this.scheduleData.find( calendar => calendar.Id === this.appointments[key].id );

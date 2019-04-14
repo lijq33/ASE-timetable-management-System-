@@ -98,7 +98,9 @@
                             disabled
                         >
                     </div>
+                    
                     <stripe-form></stripe-form>
+
                     <div class = "tw-flex tw-justify-center">
                         <img src = "/assets/img/stripe-payment.png" alt = "Payment Through Stripe">
                     </div>

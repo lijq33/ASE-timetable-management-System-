@@ -1,7 +1,7 @@
 <template>
     <div>
         
-        <card class='stripe-card'
+      <card class='stripe-card'
 			:class='{ complete }'
 			:stripe= "stripeKey"
 			:options='stripeOptions'

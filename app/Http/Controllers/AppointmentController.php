@@ -152,11 +152,10 @@ class AppointmentController extends Controller
         $user = new User();
         $user = $user->fetchUser();
 
+        $timetable = Timetable::whereId($timetable_id)->first();
 
-        $timetable = Timetable::find($timetable_id)->first();
-        
         $timetable->update([
-            'no_of_appointments' => $timetable->no_of_appointments - 1,
+            'no_of_appointments' => $timetable->no_of_appointments-1,
         ]);
 
         $appointment = Appointment::where('timetable_id', $timetable_id)
