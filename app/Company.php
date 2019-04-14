@@ -50,13 +50,13 @@ class Company extends Authenticatable implements JWTSubject
         return [];
     }
 
-    // /**
-    // * Get the timetable for the company.
-    // */
-    // public function timetable()
-    // {
-    //     return $this->hasMany('App\Timetable');
-    // }
+    /**
+    * Get the timetable for the company.
+    */
+    public function timetable()
+    {
+        return $this->hasMany('App\Timetable');
+    }
 
     /**
      * Create a Company account based on $data. $rules contains all the correct format we are looking for when companies are doing their registration.

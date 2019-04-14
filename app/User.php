@@ -17,7 +17,7 @@ class User extends Model
 
 
     /**
-     * Get all of the User models. Return either a POST or USER instance depending on which type of model owns the User.
+     * Get all of the User models. Return either a INDIVIDUAL or COMPANY instance depending on which type of model owns the User.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
